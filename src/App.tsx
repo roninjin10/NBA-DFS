@@ -1,28 +1,37 @@
-import React, { Component } from 'react';
-import logo from './logo.svg';
-import './App.css';
+import React, { Component } from 'react'
+import { AnyAction } from 'redux';
+import './App.css'
+import { connect } from 'react-redux';
+import * as actions from './redux/actions'
+import { AppState } from './redux/AppState';
 
-class App extends Component {
+export interface StateProps {
+  title: string
+}
+
+export interface AppProps extends StateProps {
+  reduxDispatch: (action: AnyAction) => AnyAction
+}
+
+class _App extends Component<AppProps> {
+  changeTitle = () => this.props.reduxDispatch(actions.setTitle('I got clicked'))
+
   render() {
     return (
-      <div className="App">
-        <header className="App-header">
-          <img src={logo} className="App-logo" alt="logo" />
-          <p>
-            Edit <code>src/App.tsx</code> and save to reload.
-          </p>
-          <a
-            className="App-link"
-            href="https://reactjs.org"
-            target="_blank"
-            rel="noopener noreferrer"
-          >
-            Learn React
-          </a>
-        </header>
+      <div
+        className="App"
+        onClick={() => this.changeTitle()}
+      >
+        { this.props.title }
       </div>
     );
   }
 }
 
-export default App;
+function mapStateToProps(state: AppState): StateProps {
+  return {
+    title: state.title,
+  }
+}
+
+export const App = connect(mapStateToProps)(_App)

@@ -7,10 +7,20 @@
     "@types/node": "10.12.18",
     "@types/react": "16.7.17",
     "@types/react-dom": "16.0.11",
+    "axios": "^0.18.0",
+    "classnames": "^2.2.6",
+    "moment": "^2.23.0",
+    "ololog": "^1.1.114",
+    "ramda": "^0.26.1",
     "react": "^16.7.0",
     "react-dom": "^16.7.0",
+    "react-redux": "^6.0.0",
     "react-scripts": "2.1.1",
-    "typescript": "3.2.2"
+    "redux": "^4.0.1",
+    "redux-logger": "^3.0.6",
+    "typescript": "^3.2.2",
+    "typescript-fsa": "^3.0.0-beta-2",
+    "typescript-fsa-reducers": "^1.1.0"
   },
   "scripts": {
     "start": "react-scripts start",
@@ -26,5 +36,8 @@
     "not dead",
     "not ie <= 11",
     "not op_mini all"
-  ]
+  ],
+  "devDependencies": {
+    "@types/react-redux": "^6.0.11"
+  }
 }
