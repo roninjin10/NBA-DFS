@@ -1,9 +1,8 @@
 import React, { Component } from 'react'
-import { AnyAction } from 'redux';
-import './App.css'
-import { connect } from 'react-redux';
+import { AnyAction } from 'redux'
+import { connect } from 'react-redux'
 import * as actions from './redux/actions'
-import { AppState } from './redux/AppState';
+import { AppState } from './redux/AppState'
 
 export interface StateProps {
   title: string
@@ -18,13 +17,10 @@ class _App extends Component<AppProps> {
 
   render() {
     return (
-      <div
-        className="App"
-        onClick={() => this.changeTitle()}
-      >
-        { this.props.title }
+      <div className='App'>
+        <div>Nav bar fantasy stacks</div>
       </div>
-    );
+    )
   }
 }
 
