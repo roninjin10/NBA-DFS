@@ -2,18 +2,14 @@ import path from 'path'
 import webpack from 'webpack'
 import UglifyJsPlugin from 'uglifyjs-webpack-plugin'
 import HtmlWebpackPlugin from 'html-webpack-plugin'
+import { spreadIfProd, isProd } from './src/lib/isProd'
 
-const NODE_ENV = process.env.NODE_ENV
-const IS_PROD = NODE_ENV === 'production'
-
-function ifProd<T>(obj: T): T | {} {
-  return IS_PROD ? obj : {}
-}
+const IS_PROD = isProd()
 
 const htmlPlugin = new HtmlWebpackPlugin({
   inject: true,
   template: path.resolve(__dirname, './src/index.html'),
-  ...ifProd({
+  ...spreadIfProd({
     minify: {
       removeComments: true,
       collapseWhitespace: true,
