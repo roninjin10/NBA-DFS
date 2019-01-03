@@ -17,7 +17,7 @@ class _App extends Component<AppProps> {
 
   render() {
     return (
-      <div className='App'>
+      <div className="App">
         <div>Nav bar fantasy stacks</div>
       </div>
     )

@@ -23,11 +23,8 @@ function renderApp(mountPointId: string) {
   const history = createBrowserHistory()
 
   const middleware = redux.applyMiddleware(routerMiddleware(history))
-
   const store: redux.Store<AppState> = redux.createStore(reducers, INITIAL_STATE, middleware)
-
   const reduxDispatch = store.dispatch.bind(store)
-
   const connectedApp = (
     <Provider store={store}>
       <Router>
@@ -35,10 +32,7 @@ function renderApp(mountPointId: string) {
       </Router>
     </Provider>
   )
-
   ReactDOM.render(connectedApp, document.getElementById('root'))
-
-  // register a service worker here
 }
 
 renderApp(MOUNT_POINT_ID)

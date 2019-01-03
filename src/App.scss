@@ -1,32 +1,112 @@
-.App {
+body {
+  background-color: rgb(243, 247, 255);
+}
+
+a:link {
+  color: #1493ff;
+  text-decoration: none;
+}
+
+a:visited {
+  color: #1493ff;
+  text-decoration: none;
+}
+
+a:hover {
+  color: #1078f7;
+  text-decoration: none;
+}
+
+a:active {
+  color: #1493ff;
+  text-decoration: none;
+}
+
+.top-bar {
+  background-color: black;
+  overflow: hidden;
+  width: 100%;
+}
+
+.top-bar a {
+  float: left;
+  display: block;
   text-align: center;
-}
-
-.App-logo {
-  animation: App-logo-spin infinite 20s linear;
-  height: 40vmin;
-}
-
-.App-header {
-  background-color: #282c34;
-  min-height: 100vh;
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  justify-content: center;
-  font-size: calc(10px + 2vmin);
+  padding: 14px 16px;
+  text-decoration: none;
+  font-size: 7px;
   color: white;
 }
 
-.App-link {
-  color: #61dafb;
+table {
+  border-collapse: collapse;
 }
 
-@keyframes App-logo-spin {
-  from {
-    transform: rotate(0deg);
-  }
-  to {
-    transform: rotate(360deg);
-  }
+button {
+  background-color: white;
+}
+
+.add-remove {
+  color: black;
+  background-color: white;
+}
+
+.in-lineup {
+  color: white;
+  background-color: black;
+}
+
+table,
+th,
+td {
+  border: 1px solid black;
+}
+
+th,
+td {
+  background-color: white;
+}
+
+.add-remove {
+  float: right;
+}
+
+li {
+  list-style-type: none;
+}
+
+.row {
+  display: flex;
+}
+.column {
+  flex: 50%;
+}
+
+.position {
+  width: 25px;
+}
+
+.nickname {
+  width: 150px;
+}
+
+.game {
+  width: 47px;
+}
+
+.fp {
+  width: 50px;
+}
+
+.salary {
+  width: 60px;
+}
+
+.games-bar {
+  display: inline;
+}
+
+.filtered {
+  color: white;
+  background-color: black;
 }

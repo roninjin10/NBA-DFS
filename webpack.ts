@@ -45,7 +45,6 @@ export const webpackConfig: webpack.Configuration = {
   },
   module: {
     rules: [
-      // TODO run the linter here
       {
         test: /\.tsx?$/,
         exclude: [/node_modules/],
