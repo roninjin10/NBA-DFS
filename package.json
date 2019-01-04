@@ -7,7 +7,7 @@
     "prettier": "prettier --write \"client/**/*.{ts,tsx,css}\"",
     "build": "ts-node ./scripts/build.ts",
     "dev:front": "ts-node ./scripts/dev.ts",
-    "dev:back": "ts-node ./server/index.ts",
+    "dev:back": "nodemon",
     "nuke": "yarn cache clean && rm -r node_modules/"
   },
   "dependencies": {
