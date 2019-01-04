@@ -4,7 +4,7 @@
   "private": true,
   "author": "William Cory <willcory10@gmail.com>",
   "scripts": {
-    "prettier": "prettier --write \"src/**/*.{ts,tsx,css}\"",
+    "prettier": "prettier --write \"client/**/*.{ts,tsx,css}\"",
     "build": "ts-node ./scripts/build.ts",
     "dev": "ts-node ./scripts/dev.ts",
     "nuke": "yarn cache clean && rm -r node_modules/"

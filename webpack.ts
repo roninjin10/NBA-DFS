@@ -2,13 +2,13 @@ import path from 'path'
 import webpack from 'webpack'
 import UglifyJsPlugin from 'uglifyjs-webpack-plugin'
 import HtmlWebpackPlugin from 'html-webpack-plugin'
-import { spreadIfProd, isProd } from './src/lib/isProd'
+import { spreadIfProd, isProd } from './client/lib/isProd'
 
 const IS_PROD = isProd()
 
 const htmlPlugin = new HtmlWebpackPlugin({
   inject: true,
-  template: path.resolve(__dirname, './src/index.html'),
+  template: path.resolve(__dirname, './client/index.html'),
   ...spreadIfProd({
     minify: {
       removeComments: true,
@@ -30,7 +30,7 @@ export const webpackConfig: webpack.Configuration = {
   mode: IS_PROD ? 'production' : 'development',
   bail: IS_PROD,
   entry: {
-    main: path.resolve(__dirname, './src/index.tsx'),
+    main: path.resolve(__dirname, './client/index.tsx'),
   },
   output: {
     path: path.resolve(__dirname, 'dist'),

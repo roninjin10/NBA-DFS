@@ -4,13 +4,11 @@ type TODO = any
 type Config = TODO
 
 function shouldRegister(): boolean {
-  if (!isProd()) return false
-  if (!navigator.serviceWorker) return false
-  return true
+  return !!(!isProd() || !navigator.serviceWorker)
 }
 
 export async function register(config?: Config) {
-  if (!shouldRegister()) return
+  if (shouldRegister()) return
 
   window.addEventListener('load', async () => {
     const swUrl = `${process.env.PUBLIC_URL}/service-worker.js`
