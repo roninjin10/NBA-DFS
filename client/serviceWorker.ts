@@ -1,38 +1,7 @@
-import { isProd } from './lib/isProd'
+export async function register() {
+  if (!navigator.serviceWorker) return
 
-type TODO = any
-type Config = TODO
-
-function shouldRegister(): boolean {
-  return !!(!isProd() || !navigator.serviceWorker)
-}
-
-export async function register(config?: Config) {
-  if (shouldRegister()) return
-
-  window.addEventListener('load', async () => {
-    const swUrl = `${process.env.PUBLIC_URL}/service-worker.js`
-
-    const reg: ServiceWorkerRegistration = await window.navigator!.serviceWorker.register(swUrl)
-
-    reg.onupdatefound = (ev: Event) => {
-      if (!reg.installing) return
-
-      reg.installing.onstatechange = (ev: Event) => {
-        if (reg.installing!.state !== 'installed') return
-
-        if (!navigator.serviceWorker.controller) {
-          console.log('content cached for offline use.')
-          if (config && config.onSuccess) config.onSuccess(reg)
-          return
-        }
-
-        console.log('Service Worker installed and ready to be activated.')
-
-        if (config && config.onUpdate) config.onUpdate(reg)
-      }
-    }
-  })
+  window.addEventListener('load', () => onLoad())
 }
 
 export function unregister() {
@@ -40,5 +9,23 @@ export function unregister() {
     navigator.serviceWorker.ready.then((registration) => {
       registration.unregister()
     })
+  }
+}
+
+async function onLoad() {
+  const swUrl = `${process.env.PUBLIC_URL}/service-worker.js`
+
+  const reg: ServiceWorkerRegistration = await window.navigator!.serviceWorker.register(swUrl)
+
+  reg.onupdatefound = (ev: Event) => {
+    if (!reg.installing) return
+
+    reg.installing.onstatechange = (ev: Event) => {
+      if (reg.installing!.state !== 'installed') return
+
+      navigator.serviceWorker.controller
+        ? console.log('content cached for offline use.')
+        : console.log('Service Worker installed and ready to be activated.')
+    }
   }
 }
