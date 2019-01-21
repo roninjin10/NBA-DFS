@@ -103,4 +103,9 @@ const techStack = `
 const premiumPlan = `
   we might be able to optimize on behalf of users on backend for faster results
   we might be able to provide something that is kinda like insurance for users in case of late scratches (if legal (likely not legal))
+  we might be able to offer ownership predictions
+`
+
+const trackingService = `
+  long term plan is to make it easy to track winnings
 `
