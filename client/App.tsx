@@ -2,11 +2,11 @@ import React, { Component } from 'react'
 import { AnyAction } from 'redux'
 import { connect } from 'react-redux'
 import { AppState, Player } from './redux/AppState'
-import { GamesBar, GameProps } from './GamesBar'
-import { PoolFilters } from './PoolFilters'
-import { PlayerPool } from './PlayerPool'
+import { GamesBar, GameProps } from './components/GamesBar'
+import { PoolFilters } from './components/PoolFilters'
+import { PlayerPool } from './components/PlayerPool'
 import './App.scss'
-import { EditableLineup } from './EditableLineup'
+import { EditableLineup } from './components/EditableLineup'
 
 const NavBar = () => <div>Nav bar fantasy stacks</div>
 
@@ -48,7 +48,7 @@ function mapStateToProps(state: AppState): StateProps {
     playerPool.map(player => player.gameInfo).map(gameInfo => JSON.stringify(gameInfo))
   ).map(item => JSON.parse(item))
 
-  const lineup = []
+  const lineup: any[] = []
 
   return { playerPool, games, lineup }
 }

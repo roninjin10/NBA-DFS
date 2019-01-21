@@ -1,5 +1,5 @@
 import React from 'react'
-import { Player } from './redux/AppState'
+import { Player } from '../redux/AppState'
 
 export interface PoolProps {
   playerPool: Player[]

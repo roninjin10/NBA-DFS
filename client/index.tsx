@@ -6,7 +6,8 @@ const MOUNT_POINT_ID = 'root'
 
 function start() {
   renderApp(MOUNT_POINT_ID)
-  worker.register()
+  // TODO make this works
+  // worker.register()
 }
 
 start()
