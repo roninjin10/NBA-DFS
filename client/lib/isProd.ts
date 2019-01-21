@@ -4,5 +4,9 @@ const IS_PROD = NODE_ENV === 'production'
 export const isProd = () => IS_PROD
 
 export function spreadIfProd<T>(obj: T): T | {} {
+  if (Array.isArray(obj)) {
+    return IS_PROD ? obj : []
+  }
+
   return IS_PROD ? obj : {}
 }
