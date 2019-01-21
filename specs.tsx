@@ -1,3 +1,5 @@
+function optimizerFlow() {}
+
 const PHILOSOPHY = `
   We want to lean towards providing users with the least amount of options possible.
     guide the users towards making the right decision and provide them less freedom than they think they want.

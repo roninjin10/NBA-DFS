@@ -11,10 +11,6 @@ import { AppState, INITIAL_STATE } from './redux/AppState'
 import { isProd } from './lib/isProd'
 import { composeWithDevTools } from 'redux-devtools-extension'
 
-function identity<T extends any>(x: T): T {
-  return x
-}
-
 function getMiddleware() {
   const history = createBrowserHistory()
 

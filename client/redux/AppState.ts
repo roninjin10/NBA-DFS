@@ -1,4 +1,4 @@
-const rawPlayerPool = require('../dummyData/pool.json') as _Player[]
+import * as rawPlayerPool from '../dummyData/pool.json'
 
 interface _Player {
   AvgPointsPerGame: string
