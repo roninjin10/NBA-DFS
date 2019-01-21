@@ -1,19 +1,19 @@
 import React from 'react'
-type Player = any
+import { Player } from './redux/AppState'
 
 export interface PoolProps {
-  pool: Player[]
+  playerPool: Player[]
 }
 
 export function PlayerPool(props: PoolProps) {
-  const { pool } = props
+  const { playerPool } = props
 
   return (
     <table>
       <PlayerPoolHeadings />
       <tbody>
-        {pool.map(player => (
-          <PlayerPoolRow player={player} />
+        {playerPool.map((player, i) => (
+          <PlayerPoolRow player={player} key={i} />
         ))}
       </tbody>
     </table>
@@ -41,13 +41,14 @@ export function PlayerPoolHeadings() {
 
 export function PlayerPoolRow(props: PlayerPoolRowProps) {
   const { player } = props
-  const { position, nickname, game, fantasyPoints, salary } = player
+  const { name, salary, gameInfo, position, fantasyPoints } = player
+  // TODO figure out the game via what team the player is on
 
   return (
     <tr>
       <td className="position">{position}</td>
-      <td className="nickname">{nickname}</td>
-      <td className="game">{game}</td>
+      <td className="nickname">{name}</td>
+      <td className="game">{`${gameInfo.away}@${gameInfo.home}`}</td>
       <td className="fantasy-points">{fantasyPoints}</td>
       <td className="salary">{salary}</td>
     </tr>

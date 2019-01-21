@@ -1,22 +1,27 @@
 export async function register() {
-  if (!navigator.serviceWorker) return
+  if (!navigator.serviceWorker) {
+    return
+  }
 
-  window.addEventListener('load', () => onLoad())
+  window.addEventListener('load', onLoad)
 }
 
 export function unregister() {
-  if ('serviceWorker' in navigator) {
-    navigator.serviceWorker.ready.then((registration) => {
-      registration.unregister()
-    })
+  if (!navigator.serviceWorker) {
+    return
   }
+
+  navigator.serviceWorker.ready.then(registration => {
+    registration.unregister()
+  })
 }
 
 async function onLoad() {
-  const swUrl = `${process.env.PUBLIC_URL}/service-worker.js`
+  const swUrl = `${process.env.NODE_ENV}/service-worker.js`
+  console.log({ swUrl })
 
   const reg: ServiceWorkerRegistration = await window.navigator!.serviceWorker.register(swUrl)
-
+  console.log({ reg })
   reg.onupdatefound = (ev: Event) => {
     if (!reg.installing) return
 

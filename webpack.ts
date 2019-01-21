@@ -8,6 +8,7 @@ const IS_PROD = isProd()
 
 const htmlPlugin = new HtmlWebpackPlugin({
   inject: true,
+  title: 'HTML Webpack Plugin',
   template: path.resolve(__dirname, './client/index.html'),
   ...spreadIfProd({
     minify: {
@@ -19,7 +20,15 @@ const htmlPlugin = new HtmlWebpackPlugin({
   }),
 })
 
-const SHARED_PLUGINS: webpack.Plugin[] = [htmlPlugin]
+const stringify = JSON.stringify.bind(JSON)
+
+const envPlugin = new webpack.DefinePlugin({
+  'process.env': {
+    NODE_ENV: stringify(process.env.NODE_ENV),
+  },
+})
+
+const SHARED_PLUGINS: webpack.Plugin[] = [envPlugin, htmlPlugin]
 
 const DEV_PLUGINS: webpack.Plugin[] = [...SHARED_PLUGINS]
 const PROD_PLUGINS: webpack.Plugin[] = [...SHARED_PLUGINS, new UglifyJsPlugin()]
@@ -32,6 +41,7 @@ export const webpackConfig: webpack.Configuration = {
   entry: {
     main: path.resolve(__dirname, './client/index.tsx'),
   },
+  devtool: 'source-map',
   output: {
     path: path.resolve(__dirname, 'dist'),
     filename: '[name].js',

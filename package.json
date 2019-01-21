@@ -5,8 +5,8 @@
   "author": "William Cory <willcory10@gmail.com>",
   "scripts": {
     "prettier": "prettier --write \"client/**/*.{ts,tsx,css}\"",
-    "build": "ts-node ./scripts/build.ts",
-    "dev": "ts-node ./scripts/dev.ts",
+    "build": "ts-node ./scripts/build.ts NODE_ENV=\"production\"",
+    "dev": "NODE_ENV=\"development\" ts-node ./scripts/dev.ts",
     "dev:back": "nodemon",
     "nuke": "yarn cache clean && rm -r node_modules/"
   },

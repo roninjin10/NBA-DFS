@@ -1,15 +1,19 @@
 const rawPlayerPool = require('../dummyData/pool.json') as _Player[]
 
-export interface _Player {
+interface _Player {
+  AvgPointsPerGame: string
+  Salary: string
   Position: string
-  'Name + ID': string
   Name: string
   ID: string
   'Roster Position': string
-  Salary: string
+  'Name + ID': string
   'Game Info': string
-  AvgPointsPerGame: string
 }
+
+type Team = string
+
+type HomeAway = { home: Team; away: Team }
 
 export interface Player {
   position: string
@@ -18,11 +22,23 @@ export interface Player {
   id: string
   rosterPosition: string
   salary: string
-  gameInfo: string
-  avgPointsPerGame: string
+  gameInfo: HomeAway
+  fantasyPoints: string
+}
+
+function getHomeAway(gameInfo: string): HomeAway {
+  const homeAway = gameInfo.split(' ')[0].split('@')
+  return {
+    away: homeAway[0],
+    home: homeAway[1],
+  }
 }
 
 function dummyDataToPlayer(player: _Player): Player {
+  const gameInfo = player['Game Info']
+
+  const { home, away } = getHomeAway(gameInfo)
+
   return {
     position: player.Position,
     namePlusId: player['Name + ID'],
@@ -30,8 +46,8 @@ function dummyDataToPlayer(player: _Player): Player {
     id: player.ID,
     rosterPosition: player['Roster Position'],
     salary: player.Salary,
-    gameInfo: player['Game Info'],
-    avgPointsPerGame: player.AvgPointsPerGame,
+    gameInfo: { home, away },
+    fantasyPoints: player.AvgPointsPerGame,
   }
 }
 
