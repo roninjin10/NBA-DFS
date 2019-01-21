@@ -2,13 +2,13 @@ import React, { Component } from 'react'
 import { AnyAction } from 'redux'
 import { connect } from 'react-redux'
 import * as actions from './redux/actions'
-import { AppState } from './redux/AppState'
+import { AppState, Player } from './redux/AppState'
 import { GamesBar } from './GamesBar'
 import { PoolFilters } from './PoolFilters'
 import { PlayerPool } from './PlayerPool'
 
 export interface StateProps {
-  title: string
+  playerPool: Player[]
 }
 
 export interface AppProps extends StateProps {
@@ -18,8 +18,6 @@ export interface AppProps extends StateProps {
 const EditableLineup = () => <div />
 
 class _App extends Component<AppProps> {
-  changeTitle = () => this.props.reduxDispatch(actions.setTitle('I got clicked'))
-
   render() {
     const games: any[] = []
     const pool: any[] = []
@@ -38,7 +36,7 @@ class _App extends Component<AppProps> {
 
 function mapStateToProps(state: AppState): StateProps {
   return {
-    title: state.title,
+    playerPool: state.playerPool,
   }
 }
 

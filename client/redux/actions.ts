@@ -3,10 +3,10 @@ import { AppState } from './AppState'
 
 const actionCreator = actionCreatorFactory('app')
 
+// delete me
 export const setTitle: ActionCreator<string> = actionCreator<string>('setTitle')
-export function setTitleHandler(state: AppState, title: string): AppState {
+export function setTitleHandler(state: AppState): AppState {
   return {
     ...state,
-    title,
   }
 }
