@@ -2,6 +2,11 @@ body {
   background-color: rgb(243, 247, 255);
 }
 
+.App {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+}
+
 a:link {
   color: #1493ff;
   text-decoration: none;
@@ -78,6 +83,7 @@ li {
 .row {
   display: flex;
 }
+
 .column {
   flex: 50%;
 }

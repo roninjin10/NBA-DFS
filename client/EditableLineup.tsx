@@ -18,16 +18,18 @@ export function EditableLineup(props: EditableLineupProps) {
     <div>
       <table>
         <thead>
-          <th>POS</th>
-          <th>PLAYER</th>
-          <th>GAME</th>
-          <th>POINTS</th>
-          <th>SALARY</th>
+          <tr>
+            <th>POS</th>
+            <th>PLAYER</th>
+            <th>GAME</th>
+            <th>POINTS</th>
+            <th>SALARY</th>
+          </tr>
         </thead>
         <tbody>{renderLineup(lineup)}</tbody>
-        <div>FantasyPoints: {points}</div>
-        <div>SalaryUsed: {salary}</div>
       </table>
+      <div>FantasyPoints: {points}</div>
+      <div>SalaryUsed: {salary}</div>
     </div>
   )
 }

@@ -1,6 +1,6 @@
 import React from 'react'
 
-interface GameProps {
+export interface GameProps {
   home: string
   away: string
 }
@@ -10,8 +10,8 @@ interface GamesBarProps {
 }
 
 export function GamesBar(props: GamesBarProps) {
-  const games = props.games.map(({ home, away }) => {
-    return <Game home={home} away={away} />
+  const games = props.games.map(({ home, away }, i) => {
+    return <Game key={i} home={home} away={away} />
   })
 
   return <div className="gamesbar">{games}</div>
