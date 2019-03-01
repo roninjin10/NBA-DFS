@@ -3,20 +3,27 @@ import { AppState } from './AppState'
 
 const actionCreator = actionCreatorFactory('app')
 
-// delete me
-export const setTitle: ActionCreator<string> = actionCreator<string>('setTitle')
-export function setTitleHandler(state: AppState): AppState {
-  return {
-    ...state,
-  }
-}
-
 export const addToLineup: ActionCreator<number> = actionCreator<number>('addToLineup')
 export function addToLineupHandler(state: AppState, playerIndex: number): AppState {
   const player = state.playerPool[playerIndex]
 
   const playerPool = state.playerPool.filter((_, i) => i !== playerIndex)
   const lineup = [...state.lineup, player]
+  return {
+    ...state,
+    playerPool,
+    lineup,
+  }
+}
+
+export const removeFromLineup: ActionCreator<number> = actionCreator<number>('removeFromLineup')
+export function removeFromLineupHandler(state: AppState, playerIndex: number): AppState {
+  const player = state.lineup[playerIndex]
+
+  const playerPool = [...state.playerPool, player]
+
+  const lineup = state.lineup.filter((_, i) => i !== playerIndex)
+
   return {
     ...state,
     playerPool,

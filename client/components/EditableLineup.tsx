@@ -1,6 +1,8 @@
 import React from 'react'
 import { PlayerPoolRow } from './PlayerPool'
 import { ReduxDispatch } from './DispatchProvider';
+import * as actions from '../redux/actions'
+
 type Player = any
 
 const TODO = 90
@@ -38,6 +40,8 @@ export function EditableLineup(props: EditableLineupProps) {
 
 function renderLineup(lineup: Player[], reduxDispatch: ReduxDispatch) {
   return lineup.map((player, i) => {
-    return <PlayerPoolRow player={player} reduxDispatch={reduxDispatch} playerIndex={i} key={i} />
+    const removeFromPool = () => reduxDispatch(actions.removeFromLineup(i))
+
+    return <PlayerPoolRow player={player} key={i} onClick={removeFromPool} />
   })
 }

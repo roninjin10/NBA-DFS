@@ -8,7 +8,7 @@ import { PlayerPool } from './components/PlayerPool'
 import './App.scss'
 import { EditableLineup } from './components/EditableLineup'
 import { DispatchContext, ReduxDispatch } from './components/DispatchProvider';
-import { NavBar } from './components/NavBar';
+// import { NavBar } from './components/NavBar';
 
 export interface StateProps {
   playerPool: Player[]
