@@ -5,18 +5,36 @@ import * as actions from '../redux/actions'
 
 type Player = any
 
-const TODO = 90
-
 export interface EditableLineupProps {
   lineup: Player[]
   reduxDispatch: ReduxDispatch
 }
 
+function sum(a: number, b: number) {
+  return a + b
+}
+
+function getPoints(lineup: Player[]) {
+  return lineup
+    .map(({ fantasyPoints }) => fantasyPoints)
+    .map(Number)
+    .reduce(sum, 0)
+    .toFixed(1)
+}
+
+function getSalary(lineup: Player[]) {
+  return lineup
+    .map(({ salary }) => salary)
+    .map(Number)
+    .reduce(sum, 0)
+    .toFixed(0)
+}
+
 export function EditableLineup(props: EditableLineupProps) {
   const { lineup, reduxDispatch } = props
 
-  const points = TODO
-  const salary = TODO
+  const points = getPoints(lineup)
+  const salary = getSalary(lineup)
 
   return (
     <div>
