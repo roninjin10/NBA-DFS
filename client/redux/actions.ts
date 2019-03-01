@@ -5,13 +5,20 @@ const actionCreator = actionCreatorFactory('app')
 
 const freeze = Object.freeze.bind(Object) as typeof Object.freeze
 
+function maybeAsNumber(x: string): Number | string {
+  if (isNaN(x as any)) {
+    return x
+  }
+  return Number(x)
+}
+
 function sortPool(field: keyof Player, playerPool: Player[]): Player[] {
   return freeze(playerPool.sort((a, b) => {
-    return a[field] > b[field] ? 1 : -1
+    return maybeAsNumber(b[field] as string) > maybeAsNumber(a[field] as string) ? 1 : -1
   })) as Player[]
 }
 
-function resortPool(state: AppState) {
+export function resortPool(state: AppState) {
   return freeze({
     ...state,
     playerPool: sortPool(state.sortBy, state.playerPool)

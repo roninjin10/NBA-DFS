@@ -1,8 +1,9 @@
 import rawPlayerPool from '../dummyData/pool.json'
 import { Player, Filters, SortBy, AppState } from './AppState';
 import { dummyDataToPlayer } from '../lib/dummyDataToPlayer'
+import { resortPool } from './actions'
 
-const INITIAL_POOL: Player[] = rawPlayerPool.map(player => dummyDataToPlayer(player))
+const INITIAL_POOL: Player[] = rawPlayerPool.map(dummyDataToPlayer)
 
 const INITIAL_LINEUP: Player[] = []
 
@@ -13,7 +14,7 @@ const INITIAL_FILTERS: Filters = {
 
 const INITIAL_SORT_BY: SortBy = 'salary'
 
-export const INITIAL_STATE: AppState = Object.freeze({
+export const INITIAL_STATE: AppState = resortPool({
   initialPool: INITIAL_POOL,
   playerPool: INITIAL_POOL,
   lineup: INITIAL_LINEUP,
