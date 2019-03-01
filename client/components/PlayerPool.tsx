@@ -13,10 +13,10 @@ export const PlayerPool: StatelessComponent<PoolProps> = props => {
 
   console.log('newPlayerPool', playerPool)
 
-  const renderedPool = playerPool.map((player, i) => {
-    const addToPool = () => reduxDispatch(actions.addToLineup(i))
+  const renderedPool = playerPool.map((player) => {
+    const addToPool = () => reduxDispatch(actions.addToLineup(player.id))
 
-    return <PlayerPoolRow player={player} onClick={addToPool} key={i} />
+    return <PlayerPoolRow player={player} onClick={addToPool} key={player.id} />
   })
 
   return (

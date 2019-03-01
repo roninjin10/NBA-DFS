@@ -4,15 +4,15 @@ import { ERANGE } from 'constants';
 
 const actionCreator = actionCreatorFactory('app')
 
+type PlayerId = string
 
+export const addToLineup: ActionCreator<PlayerId> = actionCreator<PlayerId>('addToLineup')
+export function addToLineupHandler(state: AppState, id: PlayerId): AppState {
+  const newPlayer = state.playerPool.find(player => player.id === id)!
 
-export const addToLineup: ActionCreator<number> = actionCreator<number>('addToLineup')
-export function addToLineupHandler(state: AppState, playerIndex: number): AppState {
-  const player = state.playerPool[playerIndex]
+  const playerPool = state.playerPool.filter(player => player !== newPlayer)
 
-  const playerPool = state.playerPool.filter((_, i) => i !== playerIndex)
-
-  const lineup = [...state.lineup, player]
+  const lineup = [...state.lineup, newPlayer]
   return {
     ...state,
     playerPool,
