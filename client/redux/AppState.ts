@@ -48,12 +48,28 @@ function dummyDataToPlayer(player: _Player): Player {
   }
 }
 
-export interface AppState {
-  playerPool: Player[]
-  lineup: Player[]
+export interface Filters {
+  team: Team | null
+  position: Team | null
 }
 
-export const INITIAL_STATE: AppState = {
-  playerPool: rawPlayerPool.map(player => dummyDataToPlayer(player)),
-  lineup: []
+export type SortBy = keyof Player
+
+export interface AppState {
+  readonly filters: Filters
+  readonly initialPool: Player[]
+  readonly playerPool: Player[]
+  readonly lineup: Player[]
+  readonly sortBy: SortBy
 }
+
+export const INITIAL_STATE: AppState = Object.freeze(new class InitialState implements AppState {
+  initialPool = rawPlayerPool.map(player => dummyDataToPlayer(player))
+  playerPool = rawPlayerPool.map(player => dummyDataToPlayer(player))
+  lineup = []
+  filters = {
+    team: null,
+    position: null,
+  }
+  sortBy = 'salary' as 'salary'
+}())

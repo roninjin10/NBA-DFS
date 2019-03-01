@@ -32,7 +32,6 @@ interface PlayerPoolRowProps {
   onClick: Function
 }
 
-// TODO generate these dynamically
 export function PlayerPoolHeadings() {
   return (
     <thead>
@@ -50,7 +49,6 @@ export function PlayerPoolHeadings() {
 export const PlayerPoolRow: StatelessComponent<PlayerPoolRowProps> = props => {
   const { player, onClick } = props
   const { name, salary, gameInfo, position, fantasyPoints } = player
-  // TODO figure out the game via what team the player is on
 
   return (
     <tr onClick={() => onClick()}>
