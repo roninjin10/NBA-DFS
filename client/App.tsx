@@ -8,6 +8,7 @@ import { PlayerPool } from './components/PlayerPool'
 import './App.scss'
 import { EditableLineup } from './components/EditableLineup'
 import { DispatchContext, ReduxDispatch } from './components/DispatchProvider';
+import { sortPool } from './lib/sortPool';
 // import { NavBar } from './components/NavBar';
 
 export interface StateProps {
@@ -20,13 +21,11 @@ export interface AppProps extends StateProps {
   reduxDispatch: (action: AnyAction) => AnyAction
 }
 
-function unique<T extends any[]>(arr: T): T {
-  return Array.from(new Set(arr)) as T
-}
 
 function _App(props: AppProps) {
   const { playerPool, games, lineup } = props
 
+  console.log('rerender')
   return (
     <DispatchContext.Consumer>
       {(reduxDispatch) => (
@@ -44,13 +43,9 @@ function _App(props: AppProps) {
 }
 
 function mapStateToProps(state: AppState): StateProps {
-  const { playerPool, lineup } = state
+  const { playerPool, lineup, games, sortBy, isSortByReversed } = state
 
-  const games: any[] = unique(
-    playerPool.map(player => player.gameInfo).map(gameInfo => JSON.stringify(gameInfo))
-  ).map(item => JSON.parse(item))
-
-  return { playerPool, games, lineup }
+  return { playerPool: sortPool(sortBy, playerPool, isSortByReversed), games, lineup }
 }
 
 export const App = connect(mapStateToProps)(_App)

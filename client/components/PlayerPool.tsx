@@ -8,8 +8,10 @@ export interface PoolProps {
   reduxDispatch: ReduxDispatch
 }
 
-export function PlayerPool(props: PoolProps) {
+export const PlayerPool: StatelessComponent<PoolProps> = props => {
   const { playerPool, reduxDispatch } = props
+
+  console.log('newPlayerPool', playerPool)
 
   const renderedPool = playerPool.map((player, i) => {
     const addToPool = () => reduxDispatch(actions.addToLineup(i))
@@ -19,7 +21,7 @@ export function PlayerPool(props: PoolProps) {
 
   return (
     <table>
-      <PlayerPoolHeadings />
+      <PlayerPoolHeadings reduxDispatch={reduxDispatch} />
       <tbody>
         {renderedPool}
       </tbody>
@@ -27,23 +29,29 @@ export function PlayerPool(props: PoolProps) {
   )
 }
 
-interface PlayerPoolRowProps {
-  player: Player
-  onClick: Function
+interface PlayerPoolHeadingsProps {
+  reduxDispatch: ReduxDispatch
 }
 
-export function PlayerPoolHeadings() {
+export const PlayerPoolHeadings: StatelessComponent<PlayerPoolHeadingsProps> = ({ reduxDispatch }) => {
+  const onClick = (heading: keyof Player) => reduxDispatch(actions.setPlayerSort(heading))
+
   return (
     <thead>
       <tr>
-        <th>POS</th>
-        <th>PLAYER</th>
-        <th>GAME</th>
-        <th>POINTS</th>
-        <th>SALARY</th>
+        <th onClick={() => onClick('position')}>POS</th>
+        <th onClick={() => onClick('name')}>PLAYER</th>
+        <th onClick={() => onClick('gameInfo')}>GAME</th>
+        <th onClick={() => onClick('fantasyPoints')}>POINTS</th>
+        <th onClick={() => onClick('salary')}>SALARY</th>
       </tr>
     </thead>
   )
+}
+
+interface PlayerPoolRowProps {
+  player: Player
+  onClick: Function
 }
 
 export const PlayerPoolRow: StatelessComponent<PlayerPoolRowProps> = props => {

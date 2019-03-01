@@ -1,29 +1,10 @@
 import actionCreatorFactory, { ActionCreator } from 'typescript-fsa'
-import { AppState, Player } from './AppState'
+import { AppState, Player, HomeAway } from './AppState'
+import { ERANGE } from 'constants';
 
 const actionCreator = actionCreatorFactory('app')
 
-const freeze = Object.freeze.bind(Object) as typeof Object.freeze
 
-function maybeAsNumber(x: string): Number | string {
-  if (isNaN(x as any)) {
-    return x
-  }
-  return Number(x)
-}
-
-function sortPool(field: keyof Player, playerPool: Player[]): Player[] {
-  return freeze(playerPool.sort((a, b) => {
-    return maybeAsNumber(b[field] as string) > maybeAsNumber(a[field] as string) ? 1 : -1
-  })) as Player[]
-}
-
-export function resortPool(state: AppState) {
-  return freeze({
-    ...state,
-    playerPool: sortPool(state.sortBy, state.playerPool)
-  })
-}
 
 export const addToLineup: ActionCreator<number> = actionCreator<number>('addToLineup')
 export function addToLineupHandler(state: AppState, playerIndex: number): AppState {
@@ -32,11 +13,11 @@ export function addToLineupHandler(state: AppState, playerIndex: number): AppSta
   const playerPool = state.playerPool.filter((_, i) => i !== playerIndex)
 
   const lineup = [...state.lineup, player]
-  return freeze(resortPool({
+  return {
     ...state,
     playerPool,
     lineup,
-  }))
+  }
 }
 
 export const removeFromLineup: ActionCreator<number> = actionCreator<number>('removeFromLineup')
@@ -47,17 +28,18 @@ export function removeFromLineupHandler(state: AppState, playerIndex: number): A
 
   const lineup = state.lineup.filter((_, i) => i !== playerIndex)
 
-  return freeze(resortPool({
+  return {
     ...state,
     playerPool,
     lineup,
-  }))
+  }
 }
 
 export const setPlayerSort: ActionCreator<keyof Player> = actionCreator<keyof Player>('setPlayerSort')
 export function setPlayerSortHandler(state: AppState, sortBy: keyof Player): AppState {
-  return freeze(resortPool({
+  return {
     ...state,
     sortBy,
-  }))
+    isSortByReversed: sortBy === state.sortBy && !state.isSortByReversed
+  }
 }

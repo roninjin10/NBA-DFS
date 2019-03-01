@@ -6,6 +6,7 @@ interface DummyDataPlayer {
   Position: string
   Name: string
   ID: string
+  TeamAbbrev: string
   'Roster Position': string
   'Name + ID': string
   'Game Info': string
@@ -26,6 +27,7 @@ export function dummyDataToPlayer(player: DummyDataPlayer): Player {
     namePlusId: player['Name + ID'],
     name: player.Name,
     id: player.ID,
+    team: player.TeamAbbrev,
     rosterPosition: player['Roster Position'],
     salary: player.Salary,
     gameInfo: { home, away },

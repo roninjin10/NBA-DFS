@@ -1,9 +1,11 @@
 export interface AppState {
   readonly filters: Filters
-  readonly initialPool: Player[]
   readonly playerPool: Player[]
   readonly lineup: Player[]
   readonly sortBy: SortBy
+  readonly games: HomeAway[]
+  readonly isSortByReversed: boolean
+  readonly initialPool: Player[]
 }
 
 export type Team = string
@@ -19,6 +21,7 @@ export interface Player {
   salary: string
   gameInfo: HomeAway
   fantasyPoints: string
+  team: string
 }
 
 export interface Filters {
@@ -27,6 +30,3 @@ export interface Filters {
 }
 
 export type SortBy = keyof Player
-
-
-
