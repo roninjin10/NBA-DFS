@@ -11,7 +11,7 @@ import { AppState } from './redux/AppState'
 import { isProd } from './lib/isProd'
 import { composeWithDevTools } from 'redux-devtools-extension'
 import { DispatchProvider } from './components/DispatchProvider';
-import { INITIAL_STATE } from './redux/InitialState';
+import { INITIAL_STATE } from './redux/initialState';
 
 function getMiddleware() {
   const history = createBrowserHistory()
