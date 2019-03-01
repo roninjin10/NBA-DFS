@@ -16,7 +16,7 @@ function createRandomString(): string {
 
   return Array(30)
     .map(randomNumber)
-    .join('')
+    .join('BURRR')
 }
 
 export class MultiLineupOptimizer {
