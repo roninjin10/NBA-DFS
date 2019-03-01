@@ -1,11 +1,12 @@
-import {FantasyLineup} from '../lib/FantasyLineup'
-import {IPlayer} from '../lib/Player'
-import {IsValidFunction} from './lib/IsValidFunction'
-import {SingleLineupOptimizer} from './SingleLineupOptimizer'
-import { log } from '../lib/log'
+import { FantasyLineup } from './lib/FantasyLineup'
+import { IPlayer } from './lib/Player'
+import { IsValidFunction } from './lib/IsValidFunction'
+import { SingleLineupOptimizer } from './SingleLineupOptimizer'
 import { OnNewLineupHandler } from './lib/OnNewLineupHandler'
 import { hashLineup } from './lib/hashLineup'
 import { validateLineup } from './lib/validateLineup'
+
+const getObjectValues = (obj: Object) => Object.keys(obj).map(key => obj[key])
 
 export class MultiLineupOptimizer {
   private playerPool: IPlayer[]
@@ -14,8 +15,8 @@ export class MultiLineupOptimizer {
   private isValid: IsValidFunction
   private isRunning: boolean = false
   private lineupHashes = new Set<string>()
-  private optimizer:  SingleLineupOptimizer
-  private onNewLineupHandlers: {[handlerId: string]: OnNewLineupHandler} = {}
+  private optimizer: SingleLineupOptimizer
+  private onNewLineupHandlers: { [handlerId: string]: OnNewLineupHandler } = {}
 
   private optimals: FantasyLineup[] = []
 
@@ -58,7 +59,7 @@ export class MultiLineupOptimizer {
   }
 
   public stop = (): void => {
-    if (!this.isRunning) log.warn('Lineup optimizer is already stopped')
+    if (!this.isRunning) console.warn('Lineup optimizer is already stopped')
     this.isRunning = false
   }
 
@@ -79,8 +80,8 @@ export class MultiLineupOptimizer {
   }
 
   private emitNewLineup = async (): Promise<void> => {
-    const handlers = Object.values(this.onNewLineupHandlers)
-    await Promise.all(handlers.map(async handler => handler(this.optimals))).catch(log.error)
+    const handlers = getObjectValues(this.onNewLineupHandlers)
+    await Promise.all(handlers.map(async handler => handler(this.optimals))).catch(console.error.bind(console))
   }
 
   private findNextLineup = () => {
@@ -98,7 +99,7 @@ export class MultiLineupOptimizer {
   }
 
   private logError = (e: Error) => {
-    log.error('Unable to find lineups', {
+    console.error('Unable to find lineups', {
       e,
       lineupsFound: this.optimals.length,
       playerPool: this.playerPool,

@@ -1,10 +1,8 @@
 import { IsValidFunction } from "./lib/IsValidFunction";
-import { FantasyLineup } from "../lib/FantasyLineup";
-import { IPlayer } from "../lib/Player";
+import { FantasyLineup } from "./lib/FantasyLineup";
+import { IPlayer } from "./lib/Player";
 import { MultiLineupOptimizer } from "./MultiLineupOptimizer";
-import * as Bluebird from 'bluebird'
-
-global.Promise = Bluebird
+import { expect } from 'chai'
 
 interface TestData {
   playerPool: IPlayer[]
@@ -19,19 +17,20 @@ const testData: TestData[] = []
 describe('MultiLineupOptimizler', () => {
 
   it('should find the optimal lineups', async () => {
-    // @ts-ignore
-    Promise.map(testData, async ({
-      playerPool,
-      salaryCap,
-      rosterSpots,
-      isValid,
-      optimalLineups,
-    }: TestData) => {
+    for (const testCase of testData) {
+      const {
+        playerPool,
+        salaryCap,
+        rosterSpots,
+        isValid,
+        optimalLineups,
+      } = testCase
+
       const slo = new MultiLineupOptimizer(playerPool, salaryCap, rosterSpots, isValid)
 
-      expect (
+      expect(
         await slo.start(optimalLineups.length)
-      ).toEqual(optimalLineups)
-    })
+      ).to.deep.equal(optimalLineups)
+    }
   })
 })

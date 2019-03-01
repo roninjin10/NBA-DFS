@@ -1,4 +1,4 @@
-import * as rawPlayerPool from '../dummyData/pool.json'
+import rawPlayerPool from '../dummyData/pool.json'
 
 interface _Player {
   AvgPointsPerGame: string
@@ -27,11 +27,8 @@ export interface Player {
 }
 
 function getHomeAway(gameInfo: string): HomeAway {
-  const homeAway = gameInfo.split(' ')[0].split('@')
-  return {
-    away: homeAway[0],
-    home: homeAway[1],
-  }
+  const [away, home] = gameInfo.split(' ')[0].split('@')
+  return { away, home }
 }
 
 function dummyDataToPlayer(player: _Player): Player {
