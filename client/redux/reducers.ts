@@ -1,6 +1,7 @@
 import * as actions from './actions'
-import { INITIAL_STATE, AppState } from './AppState'
+import { AppState } from './AppState'
 import { reducerWithInitialState, ReducerBuilder } from 'typescript-fsa-reducers/dist'
+import { INITIAL_STATE } from './InitialState';
 
 export const reducers: ReducerBuilder<AppState, AppState> = reducerWithInitialState(INITIAL_STATE)
   .case(actions.removeFromLineup, actions.removeFromLineupHandler)

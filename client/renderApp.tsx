@@ -7,10 +7,11 @@ import { createBrowserHistory } from 'history'
 import { routerMiddleware } from 'connected-react-router'
 import { App } from './App'
 import { reducers } from './redux/reducers'
-import { AppState, INITIAL_STATE } from './redux/AppState'
+import { AppState } from './redux/AppState'
 import { isProd } from './lib/isProd'
 import { composeWithDevTools } from 'redux-devtools-extension'
 import { DispatchProvider } from './components/DispatchProvider';
+import { INITIAL_STATE } from './redux/InitialState';
 
 function getMiddleware() {
   const history = createBrowserHistory()
