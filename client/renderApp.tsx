@@ -10,6 +10,7 @@ import { reducers } from './redux/reducers'
 import { AppState, INITIAL_STATE } from './redux/AppState'
 import { isProd } from './lib/isProd'
 import { composeWithDevTools } from 'redux-devtools-extension'
+import { DispatchProvider } from './components/DispatchProvider';
 
 function getMiddleware() {
   const history = createBrowserHistory()
@@ -40,7 +41,9 @@ export function renderApp(mountPointId: string) {
   const connectedApp = (
     <Provider store={store}>
       <Router>
-        <App reduxDispatch={reduxDispatch} />
+        <DispatchProvider reduxDispatch={reduxDispatch}>
+          <App reduxDispatch={reduxDispatch} />
+        </DispatchProvider>
       </Router>
     </Provider>
   )

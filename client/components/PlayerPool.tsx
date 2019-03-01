@@ -1,19 +1,22 @@
-import React from 'react'
+import React, { StatelessComponent } from 'react'
 import { Player } from '../redux/AppState'
+import { ReduxDispatch } from './DispatchProvider';
+import * as actions from '../redux/actions'
 
 export interface PoolProps {
   playerPool: Player[]
+  reduxDispatch: ReduxDispatch
 }
 
 export function PlayerPool(props: PoolProps) {
-  const { playerPool } = props
+  const { playerPool, reduxDispatch } = props
 
   return (
     <table>
       <PlayerPoolHeadings />
       <tbody>
         {playerPool.map((player, i) => (
-          <PlayerPoolRow player={player} key={i} />
+          <PlayerPoolRow player={player} playerIndex={i} reduxDispatch={reduxDispatch} key={i} />
         ))}
       </tbody>
     </table>
@@ -22,6 +25,8 @@ export function PlayerPool(props: PoolProps) {
 
 interface PlayerPoolRowProps {
   player: Player
+  playerIndex: number
+  reduxDispatch: ReduxDispatch
 }
 
 // TODO generate these dynamically
@@ -39,10 +44,14 @@ export function PlayerPoolHeadings() {
   )
 }
 
-export function PlayerPoolRow(props: PlayerPoolRowProps) {
-  const { player } = props
+export const PlayerPoolRow: StatelessComponent<PlayerPoolRowProps> = props => {
+  const { player, reduxDispatch, playerIndex } = props
   const { name, salary, gameInfo, position, fantasyPoints } = player
   // TODO figure out the game via what team the player is on
+
+  function addToPool() {
+    reduxDispatch(actions.addToLineup(playerIndex))
+  }
 
   return (
     <tr>
@@ -51,6 +60,7 @@ export function PlayerPoolRow(props: PlayerPoolRowProps) {
       <td className="game">{`${gameInfo.away}@${gameInfo.home}`}</td>
       <td className="fantasy-points">{fantasyPoints}</td>
       <td className="salary">{salary}</td>
+      <td><button onClick={addToPool}>x</button></td>
     </tr>
   )
 }

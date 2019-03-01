@@ -1,4 +1,5 @@
 import React from 'react'
+import { ReduxDispatch } from './DispatchProvider'
 
 export interface GameProps {
   home: string
@@ -7,6 +8,7 @@ export interface GameProps {
 
 interface GamesBarProps {
   games: GameProps[]
+  reduxDispatch: ReduxDispatch
 }
 
 export function GamesBar(props: GamesBarProps) {
@@ -17,7 +19,7 @@ export function GamesBar(props: GamesBarProps) {
   return <div className="gamesbar">{games}</div>
 }
 
-const noop = () => {}
+const noop = () => { }
 
 function Game(props: GameProps) {
   const { away, home } = props

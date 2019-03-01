@@ -1,15 +1,17 @@
 import React from 'react'
 import { PlayerPoolRow } from './PlayerPool'
+import { ReduxDispatch } from './DispatchProvider';
 type Player = any
 
 const TODO = 90
 
 export interface EditableLineupProps {
   lineup: Player[]
+  reduxDispatch: ReduxDispatch
 }
 
 export function EditableLineup(props: EditableLineupProps) {
-  const { lineup } = props
+  const { lineup, reduxDispatch } = props
 
   const points = TODO
   const salary = TODO
@@ -26,7 +28,7 @@ export function EditableLineup(props: EditableLineupProps) {
             <th>SALARY</th>
           </tr>
         </thead>
-        <tbody>{renderLineup(lineup)}</tbody>
+        <tbody>{renderLineup(lineup, reduxDispatch)}</tbody>
       </table>
       <div>FantasyPoints: {points}</div>
       <div>SalaryUsed: {salary}</div>
@@ -34,8 +36,8 @@ export function EditableLineup(props: EditableLineupProps) {
   )
 }
 
-function renderLineup(lineup: Player[]) {
-  return lineup.map(player => {
-    return <PlayerPoolRow player={player} />
+function renderLineup(lineup: Player[], reduxDispatch: ReduxDispatch) {
+  return lineup.map((player, i) => {
+    return <PlayerPoolRow player={player} reduxDispatch={reduxDispatch} playerIndex={i} key={i} />
   })
 }

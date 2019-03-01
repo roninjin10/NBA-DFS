@@ -50,8 +50,10 @@ function dummyDataToPlayer(player: _Player): Player {
 
 export interface AppState {
   playerPool: Player[]
+  lineup: Player[]
 }
 
 export const INITIAL_STATE: AppState = {
   playerPool: rawPlayerPool.map(player => dummyDataToPlayer(player)),
+  lineup: []
 }

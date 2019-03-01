@@ -50,18 +50,18 @@ export class MultiLineupOptimizer {
     )
   }
 
-  public getOptimals = (/*maybe something like sortby*/): FantasyLineup[] => {
+  public getOptimals = (): FantasyLineup[] => {
     return this._optimals
   }
 
-  public subscribe = (onNewLineup: OnNewLineupHandler): string => {
+  public subscribe = (onNewLineup: OnNewLineupHandler) => {
     const handlerId = createRandomString()
-    this._onNewLineupHandlers[handlerId] = onNewLineup
-    return handlerId
-  }
 
-  public unsubscribe = (handlerId: string): void => {
-    delete this._onNewLineupHandlers[handlerId]
+    this._onNewLineupHandlers[handlerId] = onNewLineup
+
+    const unsubscribe = () => delete this._onNewLineupHandlers[handlerId]
+
+    return unsubscribe
   }
 
   public start = async (n: number): Promise<FantasyLineup[]> => {

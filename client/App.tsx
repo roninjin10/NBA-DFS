@@ -1,4 +1,4 @@
-import React, { Component } from 'react'
+import React, { createContext, StatelessComponent } from 'react'
 import { AnyAction } from 'redux'
 import { connect } from 'react-redux'
 import { AppState, Player } from './redux/AppState'
@@ -7,8 +7,8 @@ import { PoolFilters } from './components/PoolFilters'
 import { PlayerPool } from './components/PlayerPool'
 import './App.scss'
 import { EditableLineup } from './components/EditableLineup'
-
-const NavBar = () => <div>Nav bar fantasy stacks</div>
+import { DispatchContext, ReduxDispatch } from './components/DispatchProvider';
+import { NavBar } from './components/NavBar';
 
 export interface StateProps {
   playerPool: Player[]
@@ -28,27 +28,27 @@ function _App(props: AppProps) {
   const { playerPool, games, lineup } = props
 
   return (
-    <React.Fragment>
-      <NavBar />
-      <div className="App">
-        <GamesBar games={games} />
-        <PoolFilters />
-        <PlayerPool playerPool={playerPool} />
-        <EditableLineup lineup={lineup} />
-      </div>
-    </React.Fragment>
+    <DispatchContext.Consumer>
+      {(reduxDispatch) => (
+        <div className="App">
+          {//          <NavBar reduxDispatch={reduxDispatch} />
+          }
+          <GamesBar games={games} reduxDispatch={reduxDispatch} />
+          <PoolFilters />
+          <PlayerPool playerPool={playerPool} reduxDispatch={reduxDispatch} />
+          <EditableLineup lineup={lineup} reduxDispatch={reduxDispatch} />
+        </div>
+      )}
+    </DispatchContext.Consumer>
   )
 }
 
 function mapStateToProps(state: AppState): StateProps {
-  const { playerPool } = state
+  const { playerPool, lineup } = state
 
-  // TODO make this readable
   const games: any[] = unique(
     playerPool.map(player => player.gameInfo).map(gameInfo => JSON.stringify(gameInfo))
   ).map(item => JSON.parse(item))
-
-  const lineup: any[] = []
 
   return { playerPool, games, lineup }
 }
