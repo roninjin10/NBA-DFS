@@ -44,38 +44,30 @@ export function setPlayerSortHandler(state: AppState, sortBy: keyof Player): App
   }
 }
 
+function toggleItemInSet<T>(set: Set<T>, item: T): Set<T> {
+  return set.has(item)
+    ? new Set([...set].filter(x => x !== item))
+    : new Set([...set, item])
+}
+
 export const setTeamFilter: ActionCreator<string> = actionCreator<string>('setTeamFilter')
 export function setTeamFilterHandler(state: AppState, team: string): AppState {
-  const newTeamFilter = new Set([...state.filters.team])
-
-  newTeamFilter.has(team)
-    ? newTeamFilter.delete(team)
-    : newTeamFilter.add(team)
-
-
   return {
     ...state,
     filters: {
       ...state.filters,
-      team: newTeamFilter
+      team: toggleItemInSet(state.filters.team, team)
     }
   }
 }
 
 export const setPositionFilter: ActionCreator<string> = actionCreator<string>('setTeamFilter')
 export function setPositionFilterHandler(state: AppState, position: string): AppState {
-  const newPositionFilter = new Set([...state.filters.team])
-
-  newPositionFilter.has(position)
-    ? newPositionFilter.delete(position)
-    : newPositionFilter.add(position)
-
-
   return {
     ...state,
     filters: {
       ...state.filters,
-      team: newPositionFilter
+      team: toggleItemInSet(state.filters.position, position)
     }
   }
 }
