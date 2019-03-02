@@ -43,3 +43,39 @@ export function setPlayerSortHandler(state: AppState, sortBy: keyof Player): App
     isSortByReversed: sortBy === state.sortBy && !state.isSortByReversed
   }
 }
+
+export const setTeamFilter: ActionCreator<string> = actionCreator<string>('setTeamFilter')
+export function setTeamFilterHandler(state: AppState, team: string): AppState {
+  const newTeamFilter = new Set([...state.filters.team])
+
+  newTeamFilter.has(team)
+    ? newTeamFilter.delete(team)
+    : newTeamFilter.add(team)
+
+
+  return {
+    ...state,
+    filters: {
+      ...state.filters,
+      team: newTeamFilter
+    }
+  }
+}
+
+export const setPositionFilter: ActionCreator<string> = actionCreator<string>('setTeamFilter')
+export function setPositionFilterHandler(state: AppState, position: string): AppState {
+  const newPositionFilter = new Set([...state.filters.team])
+
+  newPositionFilter.has(position)
+    ? newPositionFilter.delete(position)
+    : newPositionFilter.add(position)
+
+
+  return {
+    ...state,
+    filters: {
+      ...state.filters,
+      team: newPositionFilter
+    }
+  }
+}

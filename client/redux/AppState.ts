@@ -8,9 +8,10 @@ export interface AppState {
   readonly initialPool: Player[]
 }
 
-export type Team = string
+export type Team = Set<string>
+export type Position = Set<string>
 
-export type HomeAway = { home: Team; away: Team }
+export type HomeAway = { home: string; away: string }
 
 export interface Player {
   position: string
@@ -25,8 +26,8 @@ export interface Player {
 }
 
 export interface Filters {
-  team: Team | null
-  position: Team | null
+  team: Team
+  position: Team
 }
 
 export type SortBy = keyof Player
