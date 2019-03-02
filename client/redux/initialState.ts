@@ -21,8 +21,8 @@ const INITIAL_POOL: Player[] = freeze(rawPlayerPool.map(dummyDataToPlayer)) as P
 const INITIAL_LINEUP: Player[] = freeze([] as Player[]) as Player[]
 
 const INITIAL_FILTERS: Filters = freeze({
-  team: null,
-  position: null,
+  team: new Set(),
+  position: new Set(),
 })
 
 const INITIAL_SORT_BY: SortBy = 'salary'
