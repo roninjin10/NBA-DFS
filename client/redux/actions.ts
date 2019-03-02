@@ -1,6 +1,7 @@
 import actionCreatorFactory, { ActionCreator } from 'typescript-fsa'
-import { AppState, Player, HomeAway } from './AppState'
-import { ERANGE } from 'constants';
+import { AppState, Player, HomeAway, Filters } from './AppState'
+import * as functionalSets from '../lib/functionalSets'
+import { INITIAL_STATE } from './initialState';
 
 const actionCreator = actionCreatorFactory('app')
 
@@ -44,30 +45,26 @@ export function setPlayerSortHandler(state: AppState, sortBy: keyof Player): App
   }
 }
 
-function toggleItemInSet<T>(set: Set<T>, item: T): Set<T> {
-  return set.has(item)
-    ? new Set([...set].filter(x => x !== item))
-    : new Set([...set, item])
+function filterHandler(state: AppState, team: string, filter: keyof Filters): AppState {
+  const oldFilter = state.filters[filter]
+
+  const newFilter = functionalSets.toggleItem(oldFilter, team)
+
+  return {
+    ...state,
+    filters: {
+      ...state.filters,
+      [filter]: newFilter
+    }
+  }
 }
 
 export const setTeamFilter: ActionCreator<string> = actionCreator<string>('setTeamFilter')
 export function setTeamFilterHandler(state: AppState, team: string): AppState {
-  return {
-    ...state,
-    filters: {
-      ...state.filters,
-      team: toggleItemInSet(state.filters.team, team)
-    }
-  }
+  return filterHandler(state, team, 'team')
 }
 
 export const setPositionFilter: ActionCreator<string> = actionCreator<string>('setTeamFilter')
 export function setPositionFilterHandler(state: AppState, position: string): AppState {
-  return {
-    ...state,
-    filters: {
-      ...state.filters,
-      team: toggleItemInSet(state.filters.position, position)
-    }
-  }
+  return filterHandler(state, position, 'position')
 }
