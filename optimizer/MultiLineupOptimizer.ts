@@ -5,11 +5,7 @@ import { SingleLineupOptimizer } from './SingleLineupOptimizer'
 import { OnNewLineupHandler } from './lib/OnNewLineupHandler'
 import { hashLineup } from './lib/hashLineup'
 import { validateLineup } from './lib/validateLineup'
-
-function getObjectValues(obj: Object) {
-  return Object.keys(obj)
-    .map(key => obj[key])
-}
+import { getValues } from './lib/getValues';
 
 function createRandomString(): string {
   const randomNumber = () => String(Math.random())
@@ -24,10 +20,8 @@ export class MultiLineupOptimizer {
   private _salaryCap: number
   private _rosterSpots: number
   private _isValid: IsValidFunction
-  private _isRunning: boolean = false
   private _lineupHashes = new Set<string>()
   private _optimizer: SingleLineupOptimizer
-  private _onNewLineupHandlers: { [handlerId: string]: OnNewLineupHandler } = {}
 
   private _optimals: FantasyLineup[] = []
 
@@ -50,54 +44,20 @@ export class MultiLineupOptimizer {
     )
   }
 
-  public getOptimals = (): FantasyLineup[] => {
-    return this._optimals
-  }
-
-  public subscribe = (onNewLineup: OnNewLineupHandler) => {
-    const handlerId = createRandomString()
-
-    this._onNewLineupHandlers[handlerId] = onNewLineup
-
-    const unsubscribe = () => delete this._onNewLineupHandlers[handlerId]
-
-    return unsubscribe
-  }
-
-  public start = async (n: number): Promise<FantasyLineup[]> => {
-    if (this._isRunning) throw new Error('cannot start twice')
-    return await this._findOptimals(n)
-  }
-
-  public stop = (): void => {
-    if (!this._isRunning) console.warn('Lineup optimizer is already stopped')
-    this._isRunning = false
-  }
-
-  private _findOptimals = async (n: number): Promise<FantasyLineup[]> => {
+  public findOptimals = (n: number): FantasyLineup[] => {
     try {
-      this._findNextLineup()
-      this._emitNewLineup() // don't await
+      this._optimals.push(validateLineup(
+        this._optimizer.findOptimal()
+      ))
     } catch (e) {
       this._logError(e)
-      this._isRunning = false
+      return this._optimals
     }
 
-    if (this._optimals.length === n) this._isRunning = false
-
-    if (!this._isRunning) return this._optimals
-
-    return this._findOptimals(n)
-  }
-
-  private _emitNewLineup = async (): Promise<void> => {
-    const handlers = getObjectValues(this._onNewLineupHandlers)
-    await Promise.all(handlers.map(async handler => handler(this._optimals))).catch(console.error.bind(console))
-  }
-
-  private _findNextLineup = () => {
-    const nextOptimal = this._optimizer.findOptimal()
-    this._optimals.push(validateLineup(nextOptimal))
+    if (this._optimals.length === n) {
+      return this._optimals
+    }
+    return this.findOptimals(n)
   }
 
   private _isUniqueAndValid: IsValidFunction = (lineup: FantasyLineup) => {

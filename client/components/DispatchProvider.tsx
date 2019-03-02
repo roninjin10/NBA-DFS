@@ -14,14 +14,3 @@ export const DispatchProvider: StatelessComponent<DispatchProviderProps> = ({ re
     {children}
   </DispatchContext.Provider>
 )
-
-export async function getReduxDispatch() {
-  let out = await new Promise<ReduxDispatch>(resolve => DispatchContext.Consumer({
-    children: reduxDispatch => {
-      resolve(reduxDispatch)
-      return null
-    }
-  }))
-
-  return out
-}
