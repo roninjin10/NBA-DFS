@@ -64,7 +64,7 @@ export function setTeamFilterHandler(state: AppState, team: string): AppState {
   return filterHandler(state, team, 'team')
 }
 
-export const setPositionFilter: ActionCreator<string> = actionCreator<string>('setTeamFilter')
+export const setPositionFilter: ActionCreator<string> = actionCreator<string>('setPositionFilter')
 export function setPositionFilterHandler(state: AppState, position: string): AppState {
   return filterHandler(state, position, 'position')
 }
