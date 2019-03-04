@@ -1,6 +1,5 @@
 import { Player, Filters } from "../redux/AppState";
 
-
 export type PoolFilter = (pool: Player[], filters: Filters) => Player[]
 
 export type SubFilter = (filters: Filters) => (player: Player) => boolean

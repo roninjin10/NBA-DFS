@@ -3,7 +3,7 @@ import { ReduxDispatch } from './DispatchProvider'
 import * as actions from '../redux/actions'
 
 interface GamesBarProps {
-  games: GameProps[]
+  games: IGame[]
   reduxDispatch: ReduxDispatch
 }
 
@@ -24,9 +24,12 @@ export const GamesBar: StatelessComponent<GamesBarProps> = props => {
   )
 }
 
-export interface GameProps {
+export interface IGame {
   home: string
   away: string
+}
+
+export interface GameProps extends IGame {
   reduxDispatch: ReduxDispatch
 }
 
