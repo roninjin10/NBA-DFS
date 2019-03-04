@@ -1,33 +1,44 @@
-import React from 'react'
+import React, { StatelessComponent } from 'react'
 import { ReduxDispatch } from './DispatchProvider'
-
-export interface GameProps {
-  home: string
-  away: string
-}
+import * as actions from '../redux/actions'
 
 interface GamesBarProps {
   games: GameProps[]
   reduxDispatch: ReduxDispatch
 }
 
-export function GamesBar(props: GamesBarProps) {
-  const games = props.games.map(({ home, away }, i) => {
-    return <Game key={i} home={home} away={away} />
-  })
-
-  return <div className="gamesbar">{games}</div>
-}
-
-const noop = () => { }
-
-function Game(props: GameProps) {
-  const { away, home } = props
+export const GamesBar: StatelessComponent<GamesBarProps> = props => {
+  const games = props.games.map((game, i) => (
+    <Game
+      key={i}
+      home={game.home}
+      away={game.away}
+      reduxDispatch={props.reduxDispatch}
+    />
+  ))
 
   return (
-    <div className="games-bar">
-      <button onClick={noop}>{away}</button>
-      <button onClick={noop}>{'@' + home}</button>
+    <div className="gamesbar">
+      {games}
     </div>
+  )
+}
+
+export interface GameProps {
+  home: string
+  away: string
+  reduxDispatch: ReduxDispatch
+}
+
+function Game(props: GameProps) {
+  const { away, home, reduxDispatch } = props
+
+  const filterTeam = (team: string) => reduxDispatch(actions.setTeamFilter(team))
+
+  return (
+    <React.Fragment>
+      <button onClick={() => filterTeam(away)}>{away}</button>
+      <button onClick={() => filterTeam(home)}>{'@' + home}</button>
+    </React.Fragment>
   )
 }

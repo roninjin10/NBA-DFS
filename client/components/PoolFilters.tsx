@@ -1,15 +1,23 @@
-import React from 'react'
+import React, { StatelessComponent } from 'react'
+import { ReduxDispatch } from './DispatchProvider';
+import * as actions from '../redux/actions'
 
-export interface PoolFilterProps {}
+export interface PoolFilterProps {
+  reduxDispatch: ReduxDispatch
+}
 
-export function PoolFilters(props: PoolFilterProps) {
+
+
+export const PoolFilters: StatelessComponent<PoolFilterProps> = ({ reduxDispatch }) => {
+  const filterPosition = (position: string) => reduxDispatch(actions.setPositionFilter(position))
+
   return (
     <div>
-      <button>PG</button>
-      <button>SG</button>
-      <button>SF</button>
-      <button>PF</button>
-      <button>C</button>
+      <button onClick={() => filterPosition('PG')}>PG</button>
+      <button onClick={() => filterPosition('SG')}>SG</button>
+      <button onClick={() => filterPosition('SF')}>SF</button>
+      <button onClick={() => filterPosition('PF')}>PF</button>
+      <button onClick={() => filterPosition('C')}>C</button>
     </div>
   )
 }

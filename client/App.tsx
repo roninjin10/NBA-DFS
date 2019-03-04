@@ -33,7 +33,7 @@ function _App(props: AppProps) {
           {//          <NavBar reduxDispatch={reduxDispatch} />
           }
           <GamesBar games={games} reduxDispatch={reduxDispatch} />
-          <PoolFilters />
+          <PoolFilters reduxDispatch={reduxDispatch} />
           <PlayerPool playerPool={playerPool} reduxDispatch={reduxDispatch} />
           <EditableLineup lineup={lineup} reduxDispatch={reduxDispatch} />
         </div>
@@ -45,7 +45,10 @@ function _App(props: AppProps) {
 function filterPool(pool: Player[], filters: Filters): Player[] {
   return pool
     .filter(({ team }) => filters.team.size === 0 || filters.team.has(team))
-    .filter(({ position }) => filters.position.size === 0 || filters.position.has(position))
+    .filter(({ position }) => {
+      const [position1, position2 = 'NONE'] = position.split('/')
+      return filters.position.size === 0 || filters.position.has(position1) || filters.position.has(position2)
+    })
 }
 
 function mapStateToProps(state: AppState): StateProps {
