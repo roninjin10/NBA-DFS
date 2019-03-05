@@ -24,35 +24,46 @@ export interface AppProps extends StateProps {
   reduxDispatch: (action: AnyAction) => AnyAction
 }
 
-
-function _App(props: AppProps) {
-  const { playerPool, games, lineup, selectedGames, selectedPositions } = props
-
-  return (
+const _App: StatelessComponent<AppProps> = ({
+  playerPool,
+  games,
+  lineup,
+  selectedGames,
+  selectedPositions
+}) => (
     <DispatchContext.Consumer>
-      {(reduxDispatch) => (
-        <div className="App">
-          {//          <NavBar reduxDispatch={reduxDispatch} />
-          }
-          <GamesBar games={games} reduxDispatch={reduxDispatch} selectedGames={selectedGames} />
-          <PoolFilters reduxDispatch={reduxDispatch} selectedPositions={selectedPositions} />
-          <PlayerPool playerPool={playerPool} reduxDispatch={reduxDispatch} />
-          <EditableLineup lineup={lineup} reduxDispatch={reduxDispatch} />
-        </div>
-      )}
+      {
+        (reduxDispatch) => (
+          <div className="App">
+            {//          <NavBar reduxDispatch={reduxDispatch} />
+            }
+            <GamesBar games={games} reduxDispatch={reduxDispatch} selectedGames={selectedGames} />
+            <PoolFilters reduxDispatch={reduxDispatch} selectedPositions={selectedPositions} />
+            <PlayerPool playerPool={playerPool} reduxDispatch={reduxDispatch} />
+            <EditableLineup lineup={lineup} reduxDispatch={reduxDispatch} />
+          </div>
+        )
+      }
     </DispatchContext.Consumer>
   )
+
+interface MapStateToProps {
+  (state: AppState): StateProps
 }
 
-
-function mapStateToProps(state: AppState): StateProps {
-  const { playerPool, lineup, games, sortBy, isSortByReversed, filters } = state
-
+const mapStateToProps: MapStateToProps = ({
+  playerPool,
+  lineup,
+  games,
+  sortBy,
+  isSortByReversed,
+  filters
+}) => {
   const filteredPool = filterPool(playerPool, filters)
   const sortedFilteredPool = sortPool(sortBy, filteredPool, isSortByReversed)
 
   return {
-    playerPool: sortPool(sortBy, sortedFilteredPool, isSortByReversed),
+    playerPool: sortedFilteredPool,
     games,
     lineup,
     selectedGames: filters.team,

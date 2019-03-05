@@ -18,10 +18,9 @@ export function unregister() {
 
 async function onLoad() {
   const swUrl = `${process.env.NODE_ENV}/service-worker.js`
-  console.log({ swUrl })
 
   const reg: ServiceWorkerRegistration = await window.navigator!.serviceWorker.register(swUrl)
-  console.log({ reg })
+
   reg.onupdatefound = (ev: Event) => {
     if (!reg.installing) return
 

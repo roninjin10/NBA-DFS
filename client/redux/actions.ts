@@ -7,8 +7,12 @@ const actionCreator = actionCreatorFactory('app')
 
 type PlayerId = string
 
-export const addToLineup: ActionCreator<PlayerId> = actionCreator<PlayerId>('addToLineup')
-export function addToLineupHandler(state: AppState, id: PlayerId): AppState {
+interface ActionHandler<T> {
+  (state: AppState, payload: T): AppState
+}
+
+export const addToLineup = actionCreator<PlayerId>('addToLineup')
+export const addToLineupHandler: ActionHandler<PlayerId> = (state, id) => {
   const newPlayer = state.playerPool.find(player => player.id === id)!
 
   const playerPool = state.playerPool.filter(player => player !== newPlayer)
@@ -21,8 +25,8 @@ export function addToLineupHandler(state: AppState, id: PlayerId): AppState {
   }
 }
 
-export const removeFromLineup: ActionCreator<number> = actionCreator<number>('removeFromLineup')
-export function removeFromLineupHandler(state: AppState, playerIndex: number): AppState {
+export const removeFromLineup = actionCreator<number>('removeFromLineup')
+export const removeFromLineupHandler: ActionHandler<number> = (state, playerIndex) => {
   const player = state.lineup[playerIndex]
 
   const playerPool = [...state.playerPool, player]
@@ -36,8 +40,8 @@ export function removeFromLineupHandler(state: AppState, playerIndex: number): A
   }
 }
 
-export const setPlayerSort: ActionCreator<keyof Player> = actionCreator<keyof Player>('setPlayerSort')
-export function setPlayerSortHandler(state: AppState, sortBy: keyof Player): AppState {
+export const setPlayerSort = actionCreator<keyof Player>('setPlayerSort')
+export const setPlayerSortHandler: ActionHandler<keyof Player> = (state, sortBy) => {
   return {
     ...state,
     sortBy,
@@ -45,10 +49,15 @@ export function setPlayerSortHandler(state: AppState, sortBy: keyof Player): App
   }
 }
 
-function filterHandler(state: AppState, team: string, filter: keyof Filters): AppState {
+interface FilterHandlerPayload {
+  item: string
+  filter: keyof Filters
+}
+
+const filterHandler: ActionHandler<FilterHandlerPayload> = (state, { item, filter }) => {
   const oldFilter = state.filters[filter]
 
-  const newFilter = functionalSets.toggleItem(oldFilter, team)
+  const newFilter = functionalSets.toggleItem(oldFilter, item)
 
   return {
     ...state,
@@ -59,12 +68,16 @@ function filterHandler(state: AppState, team: string, filter: keyof Filters): Ap
   }
 }
 
-export const setTeamFilter: ActionCreator<string> = actionCreator<string>('setTeamFilter')
-export function setTeamFilterHandler(state: AppState, team: string): AppState {
-  return filterHandler(state, team, 'team')
-}
+export const setTeamFilter = actionCreator<string>('setTeamFilter')
+export const setTeamFilterHandler: ActionHandler<string> = (state, team) =>
+  filterHandler(state, {
+    item: team,
+    filter: 'team'
+  })
 
-export const setPositionFilter: ActionCreator<string> = actionCreator<string>('setPositionFilter')
-export function setPositionFilterHandler(state: AppState, position: string): AppState {
-  return filterHandler(state, position, 'position')
-}
+export const setPositionFilter = actionCreator<string>('setPositionFilter')
+export const setPositionFilterHandler: ActionHandler<string> = (state, position) =>
+  filterHandler(state, {
+    item: position,
+    filter: 'position'
+  })
