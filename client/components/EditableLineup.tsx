@@ -1,4 +1,4 @@
-import React from 'react'
+import React, { StatelessComponent } from 'react'
 import { PlayerPoolRow } from './PlayerPool'
 import { ReduxDispatch } from './DispatchProvider';
 import * as actions from '../redux/actions'
@@ -30,9 +30,10 @@ function getSalary(lineup: Player[]) {
     .toFixed(0)
 }
 
-export function EditableLineup(props: EditableLineupProps) {
-  const { lineup, reduxDispatch } = props
-
+export const EditableLineup: StatelessComponent<EditableLineupProps> = ({
+  lineup,
+  reduxDispatch
+}) => {
   const points = getPoints(lineup)
   const salary = getSalary(lineup)
 
@@ -48,7 +49,7 @@ export function EditableLineup(props: EditableLineupProps) {
             <th>SALARY</th>
           </tr>
         </thead>
-        <tbody>{renderLineup(lineup, reduxDispatch)}</tbody>
+        <tbody><Lineup lineup={lineup} reduxDispatch={reduxDispatch} /></tbody>
       </table>
       <div>FantasyPoints: {points}</div>
       <div>SalaryUsed: {salary}</div>
@@ -56,10 +57,19 @@ export function EditableLineup(props: EditableLineupProps) {
   )
 }
 
-function renderLineup(lineup: Player[], reduxDispatch: ReduxDispatch) {
-  return lineup.map((player, i) => {
-    const removeFromPool = () => reduxDispatch(actions.removeFromLineup(i))
-
-    return <PlayerPoolRow player={player} key={i} onClick={removeFromPool} />
-  })
+interface LineupProps {
+  lineup: Player[]
+  reduxDispatch: ReduxDispatch
 }
+
+const Lineup: StatelessComponent<LineupProps> = ({ lineup, reduxDispatch }) => (
+  <React.Fragment>
+    {
+      lineup.map((player, i) => {
+        const removeFromPool = () => reduxDispatch(actions.removeFromLineup(i))
+
+        return <PlayerPoolRow player={player} key={i} onClick={removeFromPool} />
+      })
+    }
+  </React.Fragment>
+)

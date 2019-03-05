@@ -13,29 +13,23 @@ export const GamesBar: StatelessComponent<GamesBarProps> = props => {
 
   const onClickHandler = (teamName: string) => () => props.reduxDispatch(actions.setTeamFilter(teamName))
 
-  const _Game = ({ teamName, isHome = false }: { teamName: string, isHome?: boolean }) => (
-    <Game
-      selected={isSelected(teamName)}
-      teamName={teamName}
-      onClick={onClickHandler(teamName)}
-      isHome={isHome}
-      key={teamName}
-    />
-  )
-
-  const games = props.games.map(game => {
-    return (
-      <React.Fragment>
-        <_Game
-          teamName={game.away}
-        />
-        <_Game
-          teamName={game.home}
-          isHome
-        />
-      </React.Fragment>
-    )
-  })
+  const games = props.games.map(({ home, away }) => (
+    <React.Fragment>
+      <Game
+        selected={isSelected(away)}
+        teamName={away}
+        onClick={onClickHandler(away)}
+        key={away}
+      />
+      <Game
+        selected={isSelected(home)}
+        teamName={home}
+        onClick={onClickHandler(home)}
+        key={home}
+        isHome
+      />
+    </React.Fragment>
+  ))
 
   return (
     <div className="gamesbar">
@@ -56,17 +50,21 @@ export interface GameProps {
   onClick: ReduxDispatch
 }
 
-// TODO abstract this to share with pool filters
-function Game(props: GameProps) {
-  const { isHome, selected, teamName, onClick } = props
-
+const Game: StatelessComponent<GameProps> = ({
+  isHome,
+  selected,
+  teamName,
+  onClick
+}) => {
   const className = selected ? 'selected' : ''
 
-  const buttonPrefix = isHome ? '@' : ''
+  const prefix = isHome ? '@' : ''
+
+  const buttonText = `${prefix}${teamName}`
 
   return (
     <button onClick={onClick} className={className}>
-      {`${buttonPrefix}${teamName}`}
+      {buttonText}
     </button>
   )
 }
