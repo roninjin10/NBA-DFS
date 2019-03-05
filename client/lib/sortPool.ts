@@ -1,29 +1,31 @@
 import { Player, HomeAway } from "../redux/AppState";
 
-function maybeAsNumber(x: string | HomeAway): Number | string | HomeAway {
-  const isHomeAway = (x: string | HomeAway) => !['string', 'number'].includes(typeof x)
-
-  if (isHomeAway(x)) {
-    return (x as HomeAway).home
-  }
-
-  if (isNaN(x as any)) {
-    return x
-  }
-
-  return Number(x)
+interface MaybeAsNumber {
+  (field: string): string | number
+  (field: HomeAway): string
 }
-export function sortPool(field: keyof Player, playerPool: Player[], isReversed: boolean): Player[] {
-  const sortStrategy = (playerA: Player, playerB: Player) => {
-    const [a, b] = [playerA, playerB].map(player => player[field])
 
-    const [firstItem, secondItem] = (!isReversed
-      ? [b, a]
-      : [a, b]
-    ).map(maybeAsNumber)
+const maybeAsNumber: MaybeAsNumber = (field: HomeAway | string): any => {
+  if (typeof field === 'object') return field.home
 
-    return firstItem >= secondItem ? 1 : -1
-  }
+  if (isNaN(Number(field))) return field
 
-  return [...playerPool].sort(sortStrategy) as Player[] as Player[]
+  return Number(field)
 }
+
+interface SortPool {
+  (field: keyof Player, playerPool: Player[], isReversed: boolean): Player[]
+}
+
+export const sortPool: SortPool = (field, playerPool, isReversed) =>
+  [...playerPool]
+    .sort((playerA: Player, playerB: Player) => {
+      const [a, b] = [playerA, playerB].map(player => player[field])
+
+      const [firstItem, secondItem] = (!isReversed
+        ? [b, a]
+        : [a, b]
+      ).map(item => maybeAsNumber(item as any))
+
+      return firstItem >= secondItem ? 1 : -1
+    })

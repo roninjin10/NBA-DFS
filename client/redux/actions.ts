@@ -41,32 +41,24 @@ export const removeFromLineupHandler: ActionHandler<number> = (state, playerInde
 }
 
 export const setPlayerSort = actionCreator<keyof Player>('setPlayerSort')
-export const setPlayerSortHandler: ActionHandler<keyof Player> = (state, sortBy) => {
-  return {
-    ...state,
-    sortBy,
-    isSortByReversed: sortBy === state.sortBy && !state.isSortByReversed
-  }
-}
+export const setPlayerSortHandler: ActionHandler<keyof Player> = (state, sortBy) => ({
+  ...state,
+  sortBy,
+  isSortByReversed: sortBy === state.sortBy && !state.isSortByReversed
+})
 
 interface FilterHandlerPayload {
   item: string
   filter: keyof Filters
 }
 
-const filterHandler: ActionHandler<FilterHandlerPayload> = (state, { item, filter }) => {
-  const oldFilter = state.filters[filter]
-
-  const newFilter = functionalSets.toggleItem(oldFilter, item)
-
-  return {
-    ...state,
-    filters: {
-      ...state.filters,
-      [filter]: newFilter
-    }
+const filterHandler: ActionHandler<FilterHandlerPayload> = (state, { item, filter }) => ({
+  ...state,
+  filters: {
+    ...state.filters,
+    [filter]: functionalSets.toggleItem(state.filters[filter], item)
   }
-}
+})
 
 export const setTeamFilter = actionCreator<string>('setTeamFilter')
 export const setTeamFilterHandler: ActionHandler<string> = (state, team) =>

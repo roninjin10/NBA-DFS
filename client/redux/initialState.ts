@@ -4,17 +4,22 @@ import { dummyDataToPlayer } from '../lib/dummyDataToPlayer'
 
 const freeze = Object.freeze.bind(Object) as typeof Object.freeze
 
-function unique<T extends any[]>(arr: T): T {
-  return Array.from(new Set(arr)) as T
+interface Unique {
+  <T extends any[]>(arr: T): T
 }
 
-function getGames(playerPool: Player[]): HomeAway[] {
-  return freeze(unique(
+const unique: Unique = arr => [...new Set(arr)] as typeof arr
+
+interface GetGames {
+  (playerPool: Player[]): HomeAway[]
+}
+
+const getGames: GetGames = playerPool =>
+  freeze(unique(
     playerPool
       .map(player => player.gameInfo)
       .map(info => JSON.stringify(info))
   ).map(jsonString => JSON.parse(jsonString))) as HomeAway[]
-}
 
 const INITIAL_POOL: Player[] = freeze(rawPlayerPool.map(dummyDataToPlayer)) as Player[]
 
