@@ -2,6 +2,7 @@ import React, { StatelessComponent } from 'react'
 import { Player } from '../redux/AppState'
 import { ReduxDispatch } from './DispatchProvider';
 import * as actions from '../redux/actions'
+import { AnyAction } from 'redux';
 
 export interface PoolProps {
   playerPool: Player[]
@@ -11,7 +12,7 @@ export interface PoolProps {
 export const PlayerPool: StatelessComponent<PoolProps> = props => {
   const { playerPool, reduxDispatch } = props
 
-  console.log('newPlayerPool', playerPool)
+  const onClick = (heading: keyof Player) => reduxDispatch(actions.setPlayerSort(heading))
 
   const renderedPool = playerPool.map((player) => {
     const addToPool = () => reduxDispatch(actions.addToLineup(player.id))
@@ -21,7 +22,7 @@ export const PlayerPool: StatelessComponent<PoolProps> = props => {
 
   return (
     <table>
-      <PlayerPoolHeadings reduxDispatch={reduxDispatch} />
+      <PlayerPoolHeadings onClick={onClick} />
       <tbody>
         {renderedPool}
       </tbody>
@@ -30,13 +31,12 @@ export const PlayerPool: StatelessComponent<PoolProps> = props => {
 }
 
 interface PlayerPoolHeadingsProps {
-  reduxDispatch: ReduxDispatch
+  onClick: (heading: keyof Player) => AnyAction
 }
 
-export const PlayerPoolHeadings: StatelessComponent<PlayerPoolHeadingsProps> = ({ reduxDispatch }) => {
-  const onClick = (heading: keyof Player) => reduxDispatch(actions.setPlayerSort(heading))
-
-  return (
+export const PlayerPoolHeadings: StatelessComponent<PlayerPoolHeadingsProps> = ({
+  onClick
+}) => (
     <thead>
       <tr>
         <th onClick={() => onClick('position')}>POS</th>
@@ -47,18 +47,22 @@ export const PlayerPoolHeadings: StatelessComponent<PlayerPoolHeadingsProps> = (
       </tr>
     </thead>
   )
-}
 
 interface PlayerPoolRowProps {
   player: Player
   onClick: Function
 }
 
-export const PlayerPoolRow: StatelessComponent<PlayerPoolRowProps> = props => {
-  const { player, onClick } = props
-  const { name, salary, gameInfo, position, fantasyPoints } = player
-
-  return (
+export const PlayerPoolRow: StatelessComponent<PlayerPoolRowProps> = ({
+  player: {
+    name,
+    salary,
+    gameInfo,
+    position,
+    fantasyPoints
+  },
+  onClick,
+}) => (
     <tr onClick={() => onClick()}>
       <td className="position">{position}</td>
       <td className="nickname">{name}</td>
@@ -67,4 +71,3 @@ export const PlayerPoolRow: StatelessComponent<PlayerPoolRowProps> = props => {
       <td className="salary">{salary}</td>
     </tr>
   )
-}

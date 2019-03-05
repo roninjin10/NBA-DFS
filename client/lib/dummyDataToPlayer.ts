@@ -12,12 +12,20 @@ interface DummyDataPlayer {
   'Game Info': string
 }
 
-function getHomeAway(gameInfo: string): HomeAway {
+interface GetHomeAway {
+  (gameInfo: string): HomeAway
+}
+
+const getHomeAway: GetHomeAway = gameInfo => {
   const [away, home] = gameInfo.split(' ')[0].split('@')
   return { away, home }
 }
 
-export function dummyDataToPlayer(player: DummyDataPlayer): Player {
+interface DummyDataToPlayer {
+  (player: DummyDataPlayer): Player
+}
+
+export const dummyDataToPlayer: DummyDataToPlayer = player => {
   const gameInfo = player['Game Info']
 
   const { home, away } = getHomeAway(gameInfo)

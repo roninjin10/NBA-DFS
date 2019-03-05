@@ -2,9 +2,7 @@ import path from 'path'
 import webpack from 'webpack'
 import UglifyJsPlugin from 'uglifyjs-webpack-plugin'
 import HtmlWebpackPlugin from 'html-webpack-plugin'
-import { spreadIfProd, isProd } from './client/lib/isProd'
-
-const IS_PROD = isProd()
+import { spreadIfProd, IS_PROD } from './client/lib/isProd'
 
 const htmlPlugin = new HtmlWebpackPlugin({
   inject: true,

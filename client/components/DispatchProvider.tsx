@@ -9,8 +9,11 @@ export interface DispatchProviderProps {
 
 export const DispatchContext = createContext((action: AnyAction) => action)
 
-export const DispatchProvider: StatelessComponent<DispatchProviderProps> = ({ reduxDispatch, children }) => (
-  <DispatchContext.Provider value={reduxDispatch}>
-    {children}
-  </DispatchContext.Provider>
-)
+export const DispatchProvider: StatelessComponent<DispatchProviderProps> = ({
+  reduxDispatch,
+  children
+}) => (
+    <DispatchContext.Provider value={reduxDispatch}>
+      {children}
+    </DispatchContext.Provider>
+  )

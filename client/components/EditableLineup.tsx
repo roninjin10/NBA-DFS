@@ -5,39 +5,33 @@ import * as actions from '../redux/actions'
 
 type Player = any
 
+const sum = (a: number, b: number) => a + b
+
+interface AggregateStat {
+  (lineup: Player[]): string
+}
+
+const getPoints: AggregateStat = lineup => lineup
+  .map(({ fantasyPoints }) => fantasyPoints)
+  .map(Number)
+  .reduce(sum, 0)
+  .toFixed(1)
+
+const getSalary: AggregateStat = lineup => lineup
+  .map(({ salary }) => salary)
+  .map(Number)
+  .reduce(sum, 0)
+  .toFixed(0)
+
 export interface EditableLineupProps {
   lineup: Player[]
   reduxDispatch: ReduxDispatch
 }
 
-function sum(a: number, b: number) {
-  return a + b
-}
-
-function getPoints(lineup: Player[]) {
-  return lineup
-    .map(({ fantasyPoints }) => fantasyPoints)
-    .map(Number)
-    .reduce(sum, 0)
-    .toFixed(1)
-}
-
-function getSalary(lineup: Player[]) {
-  return lineup
-    .map(({ salary }) => salary)
-    .map(Number)
-    .reduce(sum, 0)
-    .toFixed(0)
-}
-
 export const EditableLineup: StatelessComponent<EditableLineupProps> = ({
   lineup,
   reduxDispatch
-}) => {
-  const points = getPoints(lineup)
-  const salary = getSalary(lineup)
-
-  return (
+}) => (
     <div>
       <table>
         <thead>
@@ -51,25 +45,27 @@ export const EditableLineup: StatelessComponent<EditableLineupProps> = ({
         </thead>
         <tbody><Lineup lineup={lineup} reduxDispatch={reduxDispatch} /></tbody>
       </table>
-      <div>FantasyPoints: {points}</div>
-      <div>SalaryUsed: {salary}</div>
+      <div>FantasyPoints: {getPoints(lineup)}</div>
+      <div>SalaryUsed: {getSalary(lineup)}</div>
     </div>
   )
-}
 
 interface LineupProps {
   lineup: Player[]
   reduxDispatch: ReduxDispatch
 }
 
-const Lineup: StatelessComponent<LineupProps> = ({ lineup, reduxDispatch }) => (
-  <React.Fragment>
-    {
-      lineup.map((player, i) => {
-        const removeFromPool = () => reduxDispatch(actions.removeFromLineup(i))
+const Lineup: StatelessComponent<LineupProps> = ({
+  lineup,
+  reduxDispatch
+}) => (
+    <React.Fragment>
+      {
+        lineup.map((player, i) => {
+          const removeFromPool = () => reduxDispatch(actions.removeFromLineup(i))
 
-        return <PlayerPoolRow player={player} key={i} onClick={removeFromPool} />
-      })
-    }
-  </React.Fragment>
-)
+          return <PlayerPoolRow player={player} key={i} onClick={removeFromPool} />
+        })
+      }
+    </React.Fragment>
+  )

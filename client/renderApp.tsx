@@ -8,7 +8,7 @@ import { routerMiddleware } from 'connected-react-router'
 import { App } from './App'
 import { reducers } from './redux/reducers'
 import { AppState } from './redux/AppState'
-import { isProd } from './lib/isProd'
+import { IS_PROD } from './lib/isProd'
 import { composeWithDevTools } from 'redux-devtools-extension'
 import { DispatchProvider } from './components/DispatchProvider';
 import { INITIAL_STATE } from './redux/initialState';
@@ -18,7 +18,7 @@ function getMiddleware() {
 
   let middleware = redux.applyMiddleware(routerMiddleware(history))
 
-  if (!isProd()) {
+  if (IS_PROD) {
     middleware = composeWithDevTools(middleware)
   }
 
