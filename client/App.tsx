@@ -16,6 +16,8 @@ export interface StateProps {
   playerPool: Player[]
   games: IGame[]
   lineup: Player[]
+  selectedGames: Set<string>
+  selectedPositions: Set<string>
 }
 
 export interface AppProps extends StateProps {
@@ -24,17 +26,16 @@ export interface AppProps extends StateProps {
 
 
 function _App(props: AppProps) {
-  const { playerPool, games, lineup } = props
+  const { playerPool, games, lineup, selectedGames, selectedPositions } = props
 
-  console.log('rerender')
   return (
     <DispatchContext.Consumer>
       {(reduxDispatch) => (
         <div className="App">
           {//          <NavBar reduxDispatch={reduxDispatch} />
           }
-          <GamesBar games={games} reduxDispatch={reduxDispatch} />
-          <PoolFilters reduxDispatch={reduxDispatch} />
+          <GamesBar games={games} reduxDispatch={reduxDispatch} selectedGames={selectedGames} />
+          <PoolFilters reduxDispatch={reduxDispatch} selectedPositions={selectedPositions} />
           <PlayerPool playerPool={playerPool} reduxDispatch={reduxDispatch} />
           <EditableLineup lineup={lineup} reduxDispatch={reduxDispatch} />
         </div>
@@ -50,7 +51,13 @@ function mapStateToProps(state: AppState): StateProps {
   const filteredPool = filterPool(playerPool, filters)
   const sortedFilteredPool = sortPool(sortBy, filteredPool, isSortByReversed)
 
-  return { playerPool: sortPool(sortBy, sortedFilteredPool, isSortByReversed), games, lineup }
+  return {
+    playerPool: sortPool(sortBy, sortedFilteredPool, isSortByReversed),
+    games,
+    lineup,
+    selectedGames: filters.team,
+    selectedPositions: filters.position,
+  }
 }
 
 export const App = connect(mapStateToProps)(_App)

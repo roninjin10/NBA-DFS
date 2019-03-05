@@ -52,6 +52,11 @@ button {
   background-color: white;
 }
 
+button.selected {
+  background-color: black;
+  color: white;
+}
+
 .add-remove {
   color: black;
   background-color: white;
