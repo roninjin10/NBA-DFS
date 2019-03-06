@@ -15,7 +15,7 @@ import { filterPool } from './lib/filterPool';
 export interface StateProps {
   playerPool: Player[]
   games: IGame[]
-  lineup: Player[]
+  lineup: (Player | null)[]
   selectedGames: Set<string>
   selectedPositions: Set<string>
 }

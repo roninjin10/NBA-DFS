@@ -1,7 +1,9 @@
+import { INBALineup } from "../lib/NBALineup";
+
 export interface AppState {
   readonly filters: Filters
   readonly playerPool: Player[]
-  readonly lineup: Player[]
+  readonly lineup: INBALineup
   readonly sortBy: SortBy
   readonly games: HomeAway[]
   readonly isSortByReversed: boolean
@@ -19,9 +21,9 @@ export interface Player {
   name: string
   id: string
   rosterPosition: string
-  salary: string
+  salary: number
   gameInfo: HomeAway
-  fantasyPoints: string
+  fantasyPoints: number
   team: string
 }
 

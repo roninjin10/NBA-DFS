@@ -1,8 +1,9 @@
 import rawPlayerPool from '../dummyData/pool.json'
 import { Player, Filters, SortBy, AppState, HomeAway } from './AppState';
 import { dummyDataToPlayer } from '../lib/dummyDataToPlayer'
+import { INBALineup } from '../lib/NBALineup';
 
-const freeze = Object.freeze.bind(Object) as typeof Object.freeze
+const freeze = Object.freeze.bind(Object) as <T>(obj: T) => T
 
 interface Unique {
   <T extends any[]>(arr: T): T
@@ -19,11 +20,11 @@ const getGames: GetGames = playerPool =>
     playerPool
       .map(player => player.gameInfo)
       .map(info => JSON.stringify(info))
-  ).map(jsonString => JSON.parse(jsonString))) as HomeAway[]
+  ).map(jsonString => JSON.parse(jsonString)))
 
-const INITIAL_POOL: Player[] = freeze(rawPlayerPool.map(dummyDataToPlayer)) as Player[]
+const INITIAL_POOL: Player[] = freeze(rawPlayerPool.map(dummyDataToPlayer))
 
-const INITIAL_LINEUP: Player[] = freeze([] as Player[]) as Player[]
+const INITIAL_LINEUP = freeze([null, null, null, null, null, null, null, null] as INBALineup)
 
 const INITIAL_FILTERS: Filters = freeze({
   team: new Set(),

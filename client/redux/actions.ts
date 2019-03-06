@@ -2,6 +2,7 @@ import actionCreatorFactory, { ActionCreator } from 'typescript-fsa'
 import { AppState, Player, HomeAway, Filters } from './AppState'
 import * as functionalSets from '../lib/functionalSets'
 import { INITIAL_STATE } from './initialState';
+import { NBALineup, ZeroThroughEight } from '../lib/NBALineup'
 
 const actionCreator = actionCreatorFactory('app')
 
@@ -17,21 +18,33 @@ export const addToLineupHandler: ActionHandler<PlayerId> = (state, id) => {
 
   const playerPool = state.playerPool.filter(player => player !== newPlayer)
 
-  const lineup = [...state.lineup, newPlayer]
+  let newLineup: NBALineup
+  try {
+    newLineup = new NBALineup([...state.lineup, newPlayer])
+  } catch (e) {
+    return state
+  }
+
   return {
     ...state,
     playerPool,
-    lineup,
+    lineup: newLineup.toArray(),
   }
 }
 
-export const removeFromLineup = actionCreator<number>('removeFromLineup')
-export const removeFromLineupHandler: ActionHandler<number> = (state, playerIndex) => {
+export const removeFromLineup = actionCreator<ZeroThroughEight>('removeFromLineup')
+export const removeFromLineupHandler: ActionHandler<ZeroThroughEight> = (state, playerIndex) => {
   const player = state.lineup[playerIndex]
+
+  if (!player) {
+    return state
+  }
 
   const playerPool = [...state.playerPool, player]
 
-  const lineup = state.lineup.filter((_, i) => i !== playerIndex)
+  const lineup = new NBALineup([...state.lineup])
+    .removePlayer(playerIndex as ZeroThroughEight)
+    .toArray()
 
   return {
     ...state,

@@ -2,55 +2,56 @@ import { Player } from "../redux/AppState";
 
 type LineupShape = Set<NBAPosition>[]
 
-type PlayerRoster = (Player | null)[]
-
-const range = (start: number, stop: number): number[] => {
-  const out: number[] = []
-
-  let current = start
-
-  while (current < stop) {
-    out.push(current)
-    current += 1
-  }
-
-  return out
-}
+export type PlayerRoster = (Player | null)[]
 
 const getEmptyLineup = (lineupShape: LineupShape): PlayerRoster => lineupShape.map(() => null)
 
-const currentSalary = (lineup: (Player | null)[]) =>
+const sumField = (field: 'fantasyPoints' | 'salary') => (lineup: (Player | null)[]) =>
   lineup
-    .map(spot => spot === null ? 0 : Number(spot.fantasyPoints))
+    .map(spot => spot === null ? 0 : Number(spot[field]))
     .reduce((total, points) => total + points, 0)
+
+const currentSalary = sumField('salary')
+const currentFantasyPoints = sumField('fantasyPoints')
+
+const getValidPositions = (lineupShape: LineupShape, position: string) =>
+  [...lineupShape].reduce((a, positionShape, i) => {
+    return positionShape.has(position as any)
+      ? [...a, i]
+      : a
+  }, [] as number[])
+
+const getFilledSpots = (lineup: PlayerRoster): number[] =>
+  [...lineup].reduce((a, spot, i) => {
+    return spot
+      ? [...a, i]
+      : a
+  }, [] as number[])
 
 const sportSpecificLineup = (lineupShape: LineupShape, salaryCap: number) => {
   const _addPlayersToLineup = (playersToAdd: Player[], currentLineup = getEmptyLineup(lineupShape)): PlayerRoster | null => {
     const [nextPlayer, ...restOfPlayers] = playersToAdd
 
-    if (!nextPlayer) {
-      return currentLineup
-    }
+    if (!nextPlayer) return currentLineup
+
+    if (currentSalary(currentLineup) + Number(nextPlayer.fantasyPoints) > salaryCap) return null
 
     for (const position of nextPlayer.position.split('/')) {
-      for (const i of range(0, lineupShape.length)) {
-        if (!lineupShape[i].has(position as any)) continue
-        if (currentLineup[i]) continue
-        if (currentSalary(currentLineup) > salaryCap) continue
+      const filledSpots = new Set(getFilledSpots(currentLineup))
+      const validPositions = getValidPositions(lineupShape, position).filter(i => i)
 
+      const availablePositions = validPositions.filter(i => !filledSpots.has(i))
 
-        const luWithPlayer = currentLineup.map((spot, j) => {
-          if (i !== j) return spot
-          return nextPlayer
+      for (const i of availablePositions) {
+        const luWithPlayer = currentLineup.map((currentPlayer, j) => {
+          return (i === j)
+            ? nextPlayer
+            : currentPlayer
         })
 
         const luFilledOut = _addPlayersToLineup(restOfPlayers, luWithPlayer)
 
-        if (!luFilledOut) {
-          continue
-        }
-
-        return luFilledOut
+        if (luFilledOut) return luFilledOut
       }
     }
 
@@ -88,4 +89,47 @@ const nbaDkShape: LineupShape = [
 const FIFTY_THOUSAND = 50000
 const SALARY_CAP_NBA_DK = FIFTY_THOUSAND
 
-export const addPlayersToNbaLineup = sportSpecificLineup(nbaDkShape, SALARY_CAP_NBA_DK)
+const addPlayersToNbaLineup = sportSpecificLineup(nbaDkShape, SALARY_CAP_NBA_DK)
+
+export type INBALineup = [
+  Player | null,
+  Player | null,
+  Player | null,
+  Player | null,
+  Player | null,
+  Player | null,
+  Player | null,
+  Player | null
+]
+
+export type ZeroThroughEight = 0 | 1 | 2 | 3 | 4 | 5 | 6 | 7
+
+export class NBALineup extends Array<(Player | null)> {
+  toArray = () => {
+    return [
+      this[0],
+      this[1],
+      this[2],
+      this[3],
+      this[4],
+      this[5],
+      this[6],
+      this[7],
+    ] as INBALineup
+  }
+
+  constructor(lineup: (Player | null)[] = []) {
+    super(
+      ...addPlayersToNbaLineup(
+        lineup.filter(spot => spot !== null) as Player[]
+      ) as any[]
+    )
+  }
+
+  public readonly addPlayers = (...players: Player[]) => new NBALineup([...this, ...players])
+
+  public readonly removePlayer = (index: ZeroThroughEight) => new NBALineup(this.map((spot, i) => i === index ? null : spot))
+
+  public readonly salary = () => currentSalary(this)
+  public readonly fantasyPoints = () => currentFantasyPoints(this)
+}

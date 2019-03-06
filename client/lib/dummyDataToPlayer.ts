@@ -37,8 +37,8 @@ export const dummyDataToPlayer: DummyDataToPlayer = player => {
     id: player.ID,
     team: player.TeamAbbrev,
     rosterPosition: player['Roster Position'],
-    salary: player.Salary,
+    salary: Number(player.Salary),
     gameInfo: { home, away },
-    fantasyPoints: player.AvgPointsPerGame,
+    fantasyPoints: Number(player.AvgPointsPerGame),
   }
 }
