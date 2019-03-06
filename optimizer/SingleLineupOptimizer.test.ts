@@ -1,6 +1,6 @@
 import { IsValidFunction } from "./lib/IsValidFunction";
-import { FantasyLineup } from "../lib/FantasyLineup";
-import { IPlayer } from "../lib/Player";
+import { FantasyLineup } from "./lib/FantasyLineup";
+import { IPlayer } from "./lib/Player";
 import { SingleLineupOptimizer } from "./SingleLineupOptimizer";
 
 interface TestData {
@@ -24,7 +24,7 @@ describe('SingleLineupOptoimizer', () => {
     }) => {
       const slo = new SingleLineupOptimizer(playerPool, salaryCap, rosterSpots, isValid)
 
-      expect (
+      expect(
         slo.findOptimal()
       ).toEqual(optimalLineup)
     })

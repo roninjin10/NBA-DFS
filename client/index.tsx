@@ -1,5 +1,4 @@
 import './index.scss'
-import * as worker from './serviceWorker'
 import React from 'react'
 import ReactDOM from 'react-dom'
 import { ConnectedApp } from './ConnectedApp';

@@ -1,5 +1,4 @@
-import { IPlayer } from '../../lib/Player'
-
+import { IPlayer } from "./Player";
 
 export const isPlayerInRoster = (player: IPlayer, roster: IPlayer[]): boolean => {
   return roster.some(rosteredPlayer =>

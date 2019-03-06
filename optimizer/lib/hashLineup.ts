@@ -1,9 +1,9 @@
 import { isPlayerInRoster } from './isPlayerInRoster'
-import { IPlayer } from '../../lib/Player'
-import { FantasyLineup } from '../../lib/FantasyLineup'
+import { IPlayer } from './Player';
+import { FantasyLineup } from './FantasyLineup';
 
 
-export function hashLineup(playerPool: IPlayer[], {roster}: FantasyLineup) {
+export function hashLineup(playerPool: IPlayer[], { roster }: FantasyLineup) {
   return hashString(
     playerPool
       .map((poolPlayer) => isPlayerInRoster(poolPlayer, roster))
@@ -19,6 +19,6 @@ export function hashString(str: string): string {
     .map(c => c.charCodeAt(0))
     .reduce((hash: number, charCode: number) =>
       ((hash << 5) - hash) + charCode
-    , 0)
+      , 0)
     .toString()
 }

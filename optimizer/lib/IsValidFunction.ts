@@ -1,3 +1,3 @@
-import { FantasyLineup } from '../../lib/FantasyLineup'
+import { FantasyLineup } from "./FantasyLineup";
 
 export type IsValidFunction = (lineup: FantasyLineup) => boolean

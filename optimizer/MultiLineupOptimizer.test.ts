@@ -29,7 +29,7 @@ describe('MultiLineupOptimizler', () => {
       const slo = new MultiLineupOptimizer(playerPool, salaryCap, rosterSpots, isValid)
 
       expect(
-        await slo.start(optimalLineups.length)
+        await slo.findOptimals(optimalLineups.length)
       ).to.deep.equal(optimalLineups)
     }
   })
