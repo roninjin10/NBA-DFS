@@ -23,7 +23,7 @@ const getValidPositions = (lineupShape: LineupShape, position: string) =>
 
 const getFilledSpots = (lineup: PlayerRoster): number[] =>
   [...lineup].reduce((a, spot, i) => {
-    return spot
+    return spot !== null
       ? [...a, i]
       : a
   }, [] as number[])
@@ -38,7 +38,7 @@ const sportSpecificLineup = (lineupShape: LineupShape, salaryCap: number) => {
 
     for (const position of nextPlayer.position.split('/')) {
       const filledSpots = new Set(getFilledSpots(currentLineup))
-      const validPositions = getValidPositions(lineupShape, position).filter(i => i)
+      const validPositions = getValidPositions(lineupShape, position)
 
       const availablePositions = validPositions.filter(i => !filledSpots.has(i))
 
