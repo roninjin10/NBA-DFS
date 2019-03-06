@@ -1,5 +1,5 @@
 import { randomPlayerPool } from './randomPlayerPool'
-import { IPlayer } from '../../lib/Player'
+import { Player } from './Player';
 
 
 describe('randomPlayerPool', () => {
@@ -9,19 +9,19 @@ describe('randomPlayerPool', () => {
     function isPlayer(player: any) {
       try {
         return !!player.name && !!player.projection && !!player.salary && !!player.team
-      } catch(e) {
+      } catch (e) {
         return false
       }
     }
 
-    function mapToPlayerName(player: IPlayer): string {
+    function mapToPlayerName(player: Player): string {
       expect(isPlayer(player)).toBe(true)
       return player.name
     }
 
 
     expect(new Set(
-        pool.map(mapToPlayerName)
+      pool.map(mapToPlayerName)
     ).size).toBe(30)
   })
 })

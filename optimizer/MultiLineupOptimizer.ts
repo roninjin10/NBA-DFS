@@ -2,18 +2,8 @@ import { FantasyLineup } from './lib/FantasyLineup'
 import { IPlayer } from './lib/Player'
 import { IsValidFunction } from './lib/IsValidFunction'
 import { SingleLineupOptimizer } from './SingleLineupOptimizer'
-import { OnNewLineupHandler } from './lib/OnNewLineupHandler'
 import { hashLineup } from './lib/hashLineup'
 import { validateLineup } from './lib/validateLineup'
-import { getValues } from './lib/getValues';
-
-function createRandomString(): string {
-  const randomNumber = () => String(Math.random())
-
-  return Array(30)
-    .map(randomNumber)
-    .join('BURRR')
-}
 
 export class MultiLineupOptimizer {
   private _playerPool: IPlayer[]

@@ -1,7 +1,7 @@
-import {FantasyLineup} from '../../lib/FantasyLineup'
+import { FantasyLineup } from './FantasyLineup'
 
 export class Memoizer {
-  private memoized: { [s: string]: FantasyLineup} = {}
+  private memoized: { [s: string]: FantasyLineup } = {}
 
   public isMemoized = (playersLeft: number, salaryLeft: number, rosterSpotsLeft: number): boolean => {
     const key = this.createKey(playersLeft, salaryLeft, rosterSpotsLeft)
@@ -9,7 +9,7 @@ export class Memoizer {
   }
 
   public getLineup = (playersLeft: number, salaryLeft: number, rosterSpotsLeft: number): FantasyLineup => {
-    if (!this.isMemoized(playersLeft, salaryLeft, rosterSpotsLeft)){
+    if (!this.isMemoized(playersLeft, salaryLeft, rosterSpotsLeft)) {
       throw new Error(`cannot getLineup with playersLeft salaryLeft and rosterSpotsLeft that aren't memoized`)
     }
     const key = this.createKey(playersLeft, salaryLeft, rosterSpotsLeft)
