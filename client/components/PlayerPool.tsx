@@ -4,8 +4,14 @@ import { ReduxDispatch } from './DispatchProvider';
 import * as actions from '../redux/actions'
 import { AnyAction } from 'redux';
 
+// interface PlayerProperty {
+//   (player: Player): boolean
+// }
+
 export interface PoolProps {
   playerPool: Player[]
+  // isInLineup: PlayerProperty
+  // availableToAdd: PlayerProperty
   reduxDispatch: ReduxDispatch
 }
 
@@ -34,9 +40,8 @@ interface PlayerPoolHeadingsProps {
   onClick: (heading: keyof Player) => AnyAction
 }
 
-export const PlayerPoolHeadings: StatelessComponent<PlayerPoolHeadingsProps> = ({
-  onClick
-}) => (
+export const PlayerPoolHeadings: StatelessComponent<PlayerPoolHeadingsProps> = ({ onClick }) => {
+  return (
     <thead>
       <tr>
         <th onClick={() => onClick('position')}>POS</th>
@@ -47,6 +52,7 @@ export const PlayerPoolHeadings: StatelessComponent<PlayerPoolHeadingsProps> = (
       </tr>
     </thead>
   )
+}
 
 interface PlayerPoolRowProps {
   player: Player
@@ -62,7 +68,8 @@ export const PlayerPoolRow: StatelessComponent<PlayerPoolRowProps> = ({
     fantasyPoints
   },
   onClick,
-}) => (
+}) => {
+  return (
     <tr onClick={() => onClick()}>
       <td className="position">{position}</td>
       <td className="nickname">{name}</td>
@@ -71,3 +78,4 @@ export const PlayerPoolRow: StatelessComponent<PlayerPoolRowProps> = ({
       <td className="salary">{salary}</td>
     </tr>
   )
+}

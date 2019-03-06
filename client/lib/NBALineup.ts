@@ -6,27 +6,32 @@ export type PlayerRoster = (Player | null)[]
 
 const getEmptyLineup = (lineupShape: LineupShape): PlayerRoster => lineupShape.map(() => null)
 
-const sumField = (field: 'fantasyPoints' | 'salary') => (lineup: (Player | null)[]) =>
-  lineup
+const sumField = (field: 'fantasyPoints' | 'salary') => (lineup: (Player | null)[]) => {
+  return lineup
     .map(spot => spot === null ? 0 : Number(spot[field]))
     .reduce((total, points) => total + points, 0)
+
+}
 
 const currentSalary = sumField('salary')
 const currentFantasyPoints = sumField('fantasyPoints')
 
-const getValidPositions = (lineupShape: LineupShape, position: string) =>
-  [...lineupShape].reduce((a, positionShape, i) => {
+const getValidPositions = (lineupShape: LineupShape, position: string) => {
+  return [...lineupShape].reduce((a, positionShape, i) => {
     return positionShape.has(position as any)
       ? [...a, i]
       : a
   }, [] as number[])
 
-const getFilledSpots = (lineup: PlayerRoster): number[] =>
-  [...lineup].reduce((a, spot, i) => {
+}
+
+const getFilledSpots = (lineup: PlayerRoster): number[] => {
+  return [...lineup].reduce((a, spot, i) => {
     return spot !== null
       ? [...a, i]
       : a
   }, [] as number[])
+}
 
 const sportSpecificLineup = (lineupShape: LineupShape, salaryCap: number) => {
   const _addPlayersToLineup = (playersToAdd: Player[], currentLineup = getEmptyLineup(lineupShape)): PlayerRoster | null => {
@@ -126,10 +131,22 @@ export class NBALineup extends Array<(Player | null)> {
     )
   }
 
-  public readonly addPlayers = (...players: Player[]) => new NBALineup([...this, ...players])
+  public readonly addPlayers = (...players: Player[]) => {
+    return new NBALineup([...this, ...players])
+  }
 
-  public readonly removePlayer = (index: ZeroThroughEight) => new NBALineup(this.map((spot, i) => i === index ? null : spot))
+  public readonly removePlayer = (index: ZeroThroughEight) => {
+    return new NBALineup(
+      this.map((spot, i) =>
+        i === index ? null : spot
+      )
+    )
+  }
 
-  public readonly salary = () => currentSalary(this)
-  public readonly fantasyPoints = () => currentFantasyPoints(this)
+  public readonly salary = () => {
+    return currentSalary(this)
+  }
+  public readonly fantasyPoints = () => {
+    return currentFantasyPoints(this)
+  }
 }

@@ -5,8 +5,8 @@ interface NavBarProps {
   reduxDispatch: ReduxDispatch
 }
 
-export const NavBar: StatelessComponent<NavBarProps> = ({
-  reduxDispatch
-}) => (
+export const NavBar: StatelessComponent<NavBarProps> = ({ reduxDispatch }) => {
+  return (
     <div>Nav bar fantasy stacks</div>
   )
+}

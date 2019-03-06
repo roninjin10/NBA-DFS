@@ -17,6 +17,9 @@ export interface PoolFilter {
   (pool: Player[], filters: Filters): Player[]
 }
 
-export const filterPool: PoolFilter = (pool, filters) => pool
-  .filter(filterTeam(filters))
-  .filter(filterPosition(filters))
+export const filterPool: PoolFilter = (pool, filters) => {
+  return pool
+    .filter(filterTeam(filters))
+    .filter(filterPosition(filters))
+}
+

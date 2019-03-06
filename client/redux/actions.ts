@@ -1,7 +1,6 @@
-import actionCreatorFactory, { ActionCreator } from 'typescript-fsa'
-import { AppState, Player, HomeAway, Filters } from './AppState'
+import actionCreatorFactory from 'typescript-fsa'
+import { AppState, Player, Filters } from './AppState'
 import * as functionalSets from '../lib/functionalSets'
-import { INITIAL_STATE } from './initialState';
 import { NBALineup, ZeroThroughEight } from '../lib/NBALineup'
 
 const actionCreator = actionCreatorFactory('app')
@@ -18,27 +17,26 @@ export const addToLineupHandler: ActionHandler<PlayerId> = (state, id) => {
 
   const playerPool = state.playerPool.filter(player => player !== newPlayer)
 
-  let newLineup: NBALineup
   try {
-    newLineup = new NBALineup([...state.lineup, newPlayer])
+    return {
+      ...state,
+      playerPool,
+      lineup: new NBALineup([...state.lineup])
+        .addPlayers(newPlayer)
+        .toArray()
+    }
   } catch (e) {
+    console.error('unable to add player to lineup', e)
     return state
   }
 
-  return {
-    ...state,
-    playerPool,
-    lineup: newLineup.toArray(),
-  }
 }
 
 export const removeFromLineup = actionCreator<ZeroThroughEight>('removeFromLineup')
 export const removeFromLineupHandler: ActionHandler<ZeroThroughEight> = (state, playerIndex) => {
   const player = state.lineup[playerIndex]
 
-  if (!player) {
-    return state
-  }
+  if (!player) return state
 
   const playerPool = [...state.playerPool, player]
 
@@ -54,35 +52,41 @@ export const removeFromLineupHandler: ActionHandler<ZeroThroughEight> = (state, 
 }
 
 export const setPlayerSort = actionCreator<keyof Player>('setPlayerSort')
-export const setPlayerSortHandler: ActionHandler<keyof Player> = (state, sortBy) => ({
-  ...state,
-  sortBy,
-  isSortByReversed: sortBy === state.sortBy && !state.isSortByReversed
-})
+export const setPlayerSortHandler: ActionHandler<keyof Player> = (state, sortBy) => {
+  return ({
+    ...state,
+    sortBy,
+    isSortByReversed: sortBy === state.sortBy && !state.isSortByReversed
+  })
+}
 
 interface FilterHandlerPayload {
   item: string
   filter: keyof Filters
 }
 
-const filterHandler: ActionHandler<FilterHandlerPayload> = (state, { item, filter }) => ({
-  ...state,
-  filters: {
-    ...state.filters,
-    [filter]: functionalSets.toggleItem(state.filters[filter], item)
-  }
-})
+const filterHandler: ActionHandler<FilterHandlerPayload> = (state, { item, filter }) => {
+  return ({
+    ...state,
+    filters: {
+      ...state.filters,
+      [filter]: functionalSets.toggleItem(state.filters[filter], item)
+    }
+  })
+}
 
 export const setTeamFilter = actionCreator<string>('setTeamFilter')
-export const setTeamFilterHandler: ActionHandler<string> = (state, team) =>
-  filterHandler(state, {
+export const setTeamFilterHandler: ActionHandler<string> = (state, team) => {
+  return filterHandler(state, {
     item: team,
     filter: 'team'
   })
+}
 
 export const setPositionFilter = actionCreator<string>('setPositionFilter')
-export const setPositionFilterHandler: ActionHandler<string> = (state, position) =>
-  filterHandler(state, {
+export const setPositionFilterHandler: ActionHandler<string> = (state, position) => {
+  return filterHandler(state, {
     item: position,
     filter: 'position'
   })
+}

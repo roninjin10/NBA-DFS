@@ -12,8 +12,10 @@ export const DispatchContext = createContext((action: AnyAction) => action)
 export const DispatchProvider: StatelessComponent<DispatchProviderProps> = ({
   reduxDispatch,
   children
-}) => (
+}) => {
+  return (
     <DispatchContext.Provider value={reduxDispatch}>
       {children}
     </DispatchContext.Provider>
   )
+}

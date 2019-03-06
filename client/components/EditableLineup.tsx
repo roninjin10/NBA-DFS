@@ -13,17 +13,21 @@ interface AggregateStat {
 
 const onlyPlayers = (players: (Player | null)[]) => players.filter(player => player) as Player[]
 
-const getPoints: AggregateStat = lineup => onlyPlayers(lineup)
-  .map(({ fantasyPoints }) => fantasyPoints)
-  .map(Number)
-  .reduce(sum, 0)
-  .toFixed(1)
+const getPoints: AggregateStat = lineup => {
+  return onlyPlayers(lineup)
+    .map(({ fantasyPoints }) => fantasyPoints)
+    .map(Number)
+    .reduce(sum, 0)
+    .toFixed(1)
+}
 
-const getSalary: AggregateStat = lineup => onlyPlayers(lineup)
-  .map(({ salary }) => salary)
-  .map(Number)
-  .reduce(sum, 0)
-  .toFixed(0)
+const getSalary: AggregateStat = lineup => {
+  return onlyPlayers(lineup)
+    .map(({ salary }) => salary)
+    .map(Number)
+    .reduce(sum, 0)
+    .toFixed(0)
+}
 
 export interface EditableLineupProps {
   lineup: (Player | null)[]
@@ -33,7 +37,8 @@ export interface EditableLineupProps {
 export const EditableLineup: StatelessComponent<EditableLineupProps> = ({
   lineup,
   reduxDispatch
-}) => (
+}) => {
+  return (
     <div>
       <table>
         <thead>
@@ -51,23 +56,26 @@ export const EditableLineup: StatelessComponent<EditableLineupProps> = ({
       <div>SalaryUsed: {getSalary(lineup)}</div>
     </div>
   )
+}
 
 interface LineupProps {
   lineup: (Player | null)[]
   reduxDispatch: ReduxDispatch
 }
 
-const NullPlayer = (position: string): Player => ({
-  position: position,
-  namePlusId: '',
-  name: '',
-  id: '',
-  rosterPosition: '',
-  salary: 0,
-  gameInfo: { home: '', away: '' },
-  fantasyPoints: 0,
-  team: '',
-})
+const NullPlayer = (position: string): Player => {
+  return ({
+    position: position,
+    namePlusId: '',
+    name: '',
+    id: '',
+    rosterPosition: '',
+    salary: 0,
+    gameInfo: { home: '', away: '' },
+    fantasyPoints: 0,
+    team: '',
+  })
+}
 
 const positions = [
   'PG',
@@ -83,7 +91,8 @@ const positions = [
 const Lineup: StatelessComponent<LineupProps> = ({
   lineup,
   reduxDispatch
-}) => (
+}) => {
+  return (
     <React.Fragment>
       {
         lineup
@@ -96,3 +105,4 @@ const Lineup: StatelessComponent<LineupProps> = ({
       }
     </React.Fragment>
   )
+}

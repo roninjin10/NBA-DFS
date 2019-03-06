@@ -30,7 +30,8 @@ const _App: StatelessComponent<AppProps> = ({
   lineup,
   selectedGames,
   selectedPositions
-}) => (
+}) => {
+  return (
     <DispatchContext.Consumer>
       {
         (reduxDispatch) => (
@@ -46,6 +47,7 @@ const _App: StatelessComponent<AppProps> = ({
       }
     </DispatchContext.Consumer>
   )
+}
 
 interface MapStateToProps {
   (state: AppState): StateProps
