@@ -7,6 +7,7 @@ body {
   grid-gap: 1rem;
   grid-template-columns: 1fr 1fr;
   padding: 1fr;
+  background-color: #2F2E30;
 }
 
 a:link {
@@ -125,9 +126,31 @@ li {
   grid-column-end: 2;
 }
 
-.games-bar-container {
+.GamesBar-container {
   grid-column-start: 1;
   grid-column-end: 3;
+}
+
+.GamesBar-container > ul {
+  display: flex;
+  flex-flow: nowrap;
+}
+
+.GamesBar-container > ul > li {
+  margin-left: .3rem;
+  margin-right: .3rem;
+  background-color: #4A4A4B;
+  color: white;
+  font-size: .7rem;
+  width: 3.4rem;
+  border-radius: .1rem;
+  padding: .4rem;
+  display: flex;
+  flex-direction: column;
+}
+
+.GamesBar-container > ul > li > div {
+  margin: .1rem;
 }
 
 .filtered {

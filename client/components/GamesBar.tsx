@@ -14,26 +14,21 @@ export const GamesBar: StatelessComponent<GamesBarProps> = props => {
   const onClickHandler = (teamName: string) => () => props.reduxDispatch(actions.setTeamFilter(teamName))
 
   const games = props.games.map(({ home, away }) => (
-    <React.Fragment>
-      <Game
-        selected={isSelected(away)}
-        teamName={away}
-        onClick={onClickHandler(away)}
-        key={away}
-      />
-      <Game
-        selected={isSelected(home)}
-        teamName={home}
-        onClick={onClickHandler(home)}
-        key={home}
-        isHome
-      />
-    </React.Fragment>
+    <Game
+      key={home + away}
+      isHomeSelected={isSelected(home)}
+      isAwaySelected={isSelected(away)}
+      homeTeam={home}
+      awayTeam={away}
+      onClickHandler={onClickHandler}
+    />
   ))
 
   return (
-    <div className="games-bar-container">
-      {games}
+    <div className="GamesBar-container">
+      <ul>
+        {games}
+      </ul>
     </div>
   )
 }
@@ -44,27 +39,29 @@ export interface IGame {
 }
 
 export interface GameProps {
-  isHome?: boolean
-  selected: boolean
-  teamName: string
-  onClick: ReduxDispatch
+  isHomeSelected: boolean
+  isAwaySelected: boolean
+  homeTeam: string
+  awayTeam: string
+  onClickHandler: (teamName: string) => () => void
 }
 
 const Game: StatelessComponent<GameProps> = ({
-  isHome,
-  selected,
-  teamName,
-  onClick
+  isHomeSelected,
+  isAwaySelected,
+  homeTeam,
+  awayTeam,
+  onClickHandler,
 }) => {
-  const className = selected ? 'selected' : ''
+  const getClassName = (selected: boolean) => selected ? 'selected' : ''
 
-  const prefix = isHome ? '@' : ''
-
-  const buttonText = `${prefix}${teamName}`
+  const homeClass = getClassName(isHomeSelected)
+  const awayClass = getClassName(isAwaySelected)
 
   return (
-    <button onClick={onClick} className={className}>
-      {buttonText}
-    </button>
+    <li className="GamesBar-tile">
+      <div onClick={onClickHandler(awayTeam)} className={awayClass}>{awayTeam}</div>
+      <div onClick={onClickHandler(homeTeam)} className={homeClass}>{`@${homeTeam}`}</div>
+    </li>
   )
 }
