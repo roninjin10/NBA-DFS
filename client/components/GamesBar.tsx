@@ -32,7 +32,7 @@ export const GamesBar: StatelessComponent<GamesBarProps> = props => {
   ))
 
   return (
-    <div className="gamesbar">
+    <div className="games-bar-container">
       {games}
     </div>
   )

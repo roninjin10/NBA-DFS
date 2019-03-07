@@ -15,7 +15,7 @@ export const PoolFilters: StatelessComponent<PoolFilterProps> = ({ reduxDispatch
   const getClassName = (position: string) => selectedPositions.has(position) ? 'selected' : ''
 
   return (
-    <div>
+    <div className="pool-filters">
       <button className={getClassName('PG')} onClick={() => filterPosition('PG')}>PG</button>
       <button className={getClassName('SG')} onClick={() => filterPosition('SG')}>SG</button>
       <button className={getClassName('SF')} onClick={() => filterPosition('SF')}>SF</button>

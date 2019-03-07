@@ -39,7 +39,7 @@ export const EditableLineup: StatelessComponent<EditableLineupProps> = ({
   reduxDispatch
 }) => {
   return (
-    <div>
+    <div className="editable-lineup">
       <table>
         <thead>
           <tr>

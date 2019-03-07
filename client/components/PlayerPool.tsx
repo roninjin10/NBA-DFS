@@ -27,7 +27,7 @@ export const PlayerPool: StatelessComponent<PoolProps> = props => {
   })
 
   return (
-    <table>
+    <table className="player-pool">
       <PlayerPoolHeadings onClick={onClick} />
       <tbody>
         {renderedPool}

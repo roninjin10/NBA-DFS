@@ -4,6 +4,7 @@ body {
 
 .App {
   display: grid;
+  grid-gap: 1rem;
   grid-template-columns: 1fr 1fr;
   padding: 1fr;
 }
@@ -114,8 +115,19 @@ li {
   width: 60px;
 }
 
-.games-bar {
-  display: inline;
+.pool-filters {
+  grid-column-start: 1;
+  grid-column-end: 2;
+}
+
+.player-pool {
+  grid-column-start: 1;
+  grid-column-end: 2;
+}
+
+.games-bar-container {
+  grid-column-start: 1;
+  grid-column-end: 3;
 }
 
 .filtered {
