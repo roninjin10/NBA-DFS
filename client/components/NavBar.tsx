@@ -1,11 +1,11 @@
-import React, { StatelessComponent } from 'react'
-import { ReduxDispatch } from './DispatchProvider';
+import React, { FunctionComponent } from 'react'
+import { ReduxDispatch } from '../lib/types';
 
 interface NavBarProps {
   reduxDispatch: ReduxDispatch
 }
 
-export const NavBar: StatelessComponent<NavBarProps> = ({ reduxDispatch }) => {
+export const NavBar: FunctionComponent<NavBarProps> = ({ reduxDispatch }) => {
   return (
     <div>Nav bar fantasy stacks</div>
   )

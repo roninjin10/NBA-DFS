@@ -1,13 +1,24 @@
-import React, { StatelessComponent } from 'react'
+import React, { FunctionComponent } from 'react'
+import { AppState } from '../redux/AppState';
+import * as actions from '../redux/actions'
+import classNames from 'classnames'
+import { MapDispatchToProps, MapStateToProps } from '../lib/wrappedRedux';
+import { connect } from 'react-redux';
 
-export interface PositionFiltersProps {
+const POSITIONS = ['PG', 'SG', 'SF', 'PF', 'C']
+
+interface StateProps {
   getClassName: (position: string) => string
-  onClickHandler: (position: string) => () => void
   positions: string[]
 }
 
+interface DispatchProps {
+  onClickHandler: (position: string) => () => void
+}
 
-export const PositionFilters: StatelessComponent<PositionFiltersProps> = ({ getClassName, onClickHandler, positions }) => {
+type AllProps = StateProps & DispatchProps
+
+const _PositionFilters: FunctionComponent<AllProps> = ({ getClassName, onClickHandler, positions }) => {
   const createButton = (position: string) => (
     <button
       className={getClassName(position)}
@@ -20,3 +31,27 @@ export const PositionFilters: StatelessComponent<PositionFiltersProps> = ({ getC
 
   return <div className="pool-filters">{buttons}</div>
 }
+
+const mapStateToProps: MapStateToProps<StateProps> = ({
+  playerPool,
+  lineup,
+  games,
+  sortBy,
+  isSortByReversed,
+  filters,
+}) => {
+  const getClassName: StateProps['getClassName'] = () => classNames({ selected: false })
+
+
+  return {
+    positions: POSITIONS,
+    getClassName,
+  }
+}
+
+const mapDispatchToProps: MapDispatchToProps<DispatchProps> = dispatch => {
+  const onClickHandler: DispatchProps['onClickHandler'] = (position: string) => () => dispatch(actions.togglePositionFilter(position))
+  return { onClickHandler }
+}
+
+export const PositionFilters = connect(mapStateToProps, mapDispatchToProps)(_PositionFilters)

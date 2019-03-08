@@ -1,9 +1,9 @@
-import React, { StatelessComponent } from 'react'
+import React, { FunctionComponent } from 'react'
 import { PlayerPoolRow } from './PlayerPool'
-import { ReduxDispatch } from './DispatchProvider';
 import * as actions from '../redux/actions'
 import { Player } from '../redux/AppState';
 import { ZeroThroughEight } from '../lib/NBALineup';
+import { ReduxDispatch } from '../lib/types';
 
 const sum = (a: number, b: number) => a + b
 
@@ -34,7 +34,7 @@ export interface EditableLineupProps {
   reduxDispatch: ReduxDispatch
 }
 
-export const EditableLineup: StatelessComponent<EditableLineupProps> = ({
+export const EditableLineup: FunctionComponent<EditableLineupProps> = ({
   lineup,
   reduxDispatch
 }) => {
@@ -89,7 +89,7 @@ const positions = [
   'UTIL',
 ]
 
-const Lineup: StatelessComponent<LineupProps> = ({
+const Lineup: FunctionComponent<LineupProps> = ({
   lineup,
   reduxDispatch
 }) => {

@@ -1,4 +1,4 @@
-import React, { StatelessComponent } from 'react'
+import React, { FunctionComponent } from 'react'
 
 export interface IGame {
   home: string,
@@ -19,7 +19,7 @@ interface GameCellProps {
   getClassName: (team: string) => string
 }
 
-const GameCell: StatelessComponent<GameCellProps> = props => {
+const GameCell: FunctionComponent<GameCellProps> = props => {
   const { toggleTeamSelect, getClassName, home, away } = props
 
   return (
@@ -36,7 +36,7 @@ interface AllGamesPickerProps {
   toggleAllGames: () => void
 }
 
-const AllGamesPicker: StatelessComponent<AllGamesPickerProps> = props => {
+const AllGamesPicker: FunctionComponent<AllGamesPickerProps> = props => {
   const { toggleAllGames, gameCount } = props
 
   return (
@@ -46,7 +46,7 @@ const AllGamesPicker: StatelessComponent<AllGamesPickerProps> = props => {
   )
 }
 
-export const GamePicker: StatelessComponent<GamePickerProps> = ({
+export const GamePicker: FunctionComponent<GamePickerProps> = ({
   games,
   toggleTeamFilter,
   toggleAllGames,

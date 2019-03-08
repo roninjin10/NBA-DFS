@@ -1,8 +1,8 @@
-import React, { StatelessComponent } from 'react'
+import React, { FunctionComponent } from 'react'
 import { Player } from '../redux/AppState'
-import { ReduxDispatch } from './DispatchProvider';
 import * as actions from '../redux/actions'
 import { AnyAction } from 'redux';
+import { ReduxDispatch } from '../lib/types'
 
 // interface PlayerProperty {
 //   (player: Player): boolean
@@ -15,7 +15,7 @@ export interface PoolProps {
   reduxDispatch: ReduxDispatch
 }
 
-export const PlayerPool: StatelessComponent<PoolProps> = props => {
+export const PlayerPool: FunctionComponent<PoolProps> = props => {
   const { playerPool, reduxDispatch } = props
 
   const onClick = (heading: keyof Player) => reduxDispatch(actions.setPlayerSort(heading))
@@ -42,7 +42,7 @@ interface PlayerPoolHeadingsProps {
   onClick: (heading: keyof Player) => AnyAction
 }
 
-export const PlayerPoolHeadings: StatelessComponent<PlayerPoolHeadingsProps> = ({ onClick }) => {
+export const PlayerPoolHeadings: FunctionComponent<PlayerPoolHeadingsProps> = ({ onClick }) => {
   return (
     <thead>
       <tr>
@@ -62,7 +62,7 @@ interface PlayerPoolRowProps {
   onClick: Function
 }
 
-export const PlayerPoolRow: StatelessComponent<PlayerPoolRowProps> = ({
+export const PlayerPoolRow: FunctionComponent<PlayerPoolRowProps> = ({
   player: {
     name,
     salary,

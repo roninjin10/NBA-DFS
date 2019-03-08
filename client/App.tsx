@@ -1,22 +1,17 @@
-import React, { StatelessComponent, Fragment } from 'react'
-// import { AnyAction } from 'redux'
-import { connect } from 'react-redux'
-import { AppState, Player, Filters } from './redux/AppState'
-// import { PoolFilters } from './components/PoolFilters'
-// import { PlayerPool } from './components/PlayerPool'
+import React, { FunctionComponent } from 'react'
+import { AppState, Player } from './redux/AppState'
 import './App.scss'
-// import { EditableLineup } from './components/EditableLineup'
-import { ReduxDispatch } from './components/DispatchProvider';
 import { sortPool } from './lib/sortPool';
 import { filterPool } from './lib/filterPool';
-// import { NavBar } from './components/NavBar';
 import * as actions from './redux/actions'
 import classNames from 'classnames'
 import { GamePickerProps, GamePicker, IGame } from './components/GamePicker';
-import { PositionFilters, PositionFiltersProps } from './components/PositionFilters';
+import { PositionFilters } from './components/PositionFilters';
+import { ReduxDispatch } from './lib/types';
+import { connect } from 'react-redux';
 
-const Optimizer: StatelessComponent = props => {
-  const Children: StatelessComponent = () => (
+const Optimizer: FunctionComponent = props => {
+  const Children: FunctionComponent = () => (
     <div>
       {props.children}
     </div>
@@ -29,8 +24,8 @@ const Optimizer: StatelessComponent = props => {
   )
 }
 
-const LineupEditor: StatelessComponent = props => {
-  const Children: StatelessComponent = () => (
+const LineupEditor: FunctionComponent = props => {
+  const Children: FunctionComponent = () => (
     <div>
       {props.children}
     </div>
@@ -45,7 +40,7 @@ const LineupEditor: StatelessComponent = props => {
 
 interface SearchProps { }
 
-const Search: StatelessComponent<SearchProps> = () => {
+const Search: FunctionComponent<SearchProps> = () => {
   return (
     <div className="search">
       <input type="text" />
@@ -71,10 +66,10 @@ export interface StateProps {
 }
 
 export interface AppProps extends StateProps {
-  reduxDispatch: ReduxDispatch
+  dispatch: ReduxDispatch
 }
 
-const PlayerPicker: StatelessComponent = props => {
+const PlayerPicker: FunctionComponent = props => {
   return (
     <div className="GamePicker">
       {props.children}
@@ -83,21 +78,15 @@ const PlayerPicker: StatelessComponent = props => {
 }
 
 
-const _App: StatelessComponent<AppProps> = props => {
+const _App: FunctionComponent<AppProps> = props => {
   // TODO connect components seperately
-  const { reduxDispatch, playerPool, games, lineup, selectedGames, selectedPositions } = props
+  const { dispatch, playerPool, games, lineup, selectedGames, selectedPositions } = props
 
   const getTeamClassName: GamePickerProps["getClassName"] = team => classNames({ selected: selectedGames.has(team) })
 
-  const getPositionClassName: PositionFiltersProps["getClassName"] = (position: string) => '' // TODO
+  const toggleTeamFilter: GamePickerProps["toggleTeamFilter"] = team => dispatch(actions.toggleTeamFilter(team))
 
-  const toggleTeamFilter: GamePickerProps["toggleTeamFilter"] = team => reduxDispatch(actions.toggleTeamFilter(team))
-
-  const toggleAllGames: GamePickerProps["toggleAllGames"] = () => reduxDispatch(actions.toggleAllGames())
-
-  const togglePositionFilter = (position: string) => () => reduxDispatch(actions.togglePositionFilter(position))
-
-  const positions = ['PG', 'SG', 'SF', 'PF', 'C']
+  const toggleAllGames: GamePickerProps["toggleAllGames"] = () => dispatch(actions.toggleAllGames())
 
   return (
     <div className="App">
@@ -111,11 +100,7 @@ const _App: StatelessComponent<AppProps> = props => {
         />
         <PlayerPicker>
           <Search />
-          <PositionFilters
-            getClassName={getPositionClassName}
-            positions={positions}
-            onClickHandler={togglePositionFilter}
-          />
+          <PositionFilters />
           <PlayerPickerGrid />
         </PlayerPicker>
         <LineupEditor>
@@ -151,63 +136,4 @@ const mapStateToProps: MapStateToProps = ({
   }
 }
 
-export const App = connect(mapStateToProps)(_App)
-
-/*
-
-
-export interface AppProps extends StateProps {
-  reduxDispatch: (action: AnyAction) => AnyAction
-}
-const _App: StatelessComponent<AppProps> = ({
-            playerPool,
-            games,
-            lineup,
-            selectedGames,
-            selectedPositions
-}) => {
-  return (
-    <DispatchContext.Consumer>
-              {
-                (reduxDispatch) => (
-                  <div className="App">
-                    {//          <NavBar reduxDispatch={reduxDispatch} />
-                    }
-                    <GamesBar games={games} reduxDispatch={reduxDispatch} selectedGames={selectedGames} />
-                    <PoolFilters reduxDispatch={reduxDispatch} selectedPositions={selectedPositions} />
-                    <PlayerPool playerPool={playerPool} reduxDispatch={reduxDispatch} />
-                    <EditableLineup lineup={lineup} reduxDispatch={reduxDispatch} />
-                  </div>
-                )
-              }
-            </DispatchContext.Consumer>
-            )
-          }
-
-interface MapStateToProps {
-              (state: AppState): StateProps
-}
-
-            const mapStateToProps: MapStateToProps = ({
-              playerPool,
-            lineup,
-            games,
-            sortBy,
-            isSortByReversed,
-            filters
-}) => {
-  const filteredPool = filterPool(playerPool, filters)
-            const sortedFilteredPool = sortPool(sortBy, filteredPool, isSortByReversed)
-
-  return {
-              playerPool: sortedFilteredPool,
-            games,
-            lineup,
-            selectedGames: filters.team,
-            selectedPositions: filters.position,
-          }
-        }
-
-        export const App = connect(mapStateToProps)(_App)
-
-*/
+export const App = connect(mapStateToProps, dispatch => ({ dispatch }))(_App)

@@ -5,15 +5,8 @@ import { ConnectedApp } from './ConnectedApp';
 
 const MOUNT_POINT_ID = 'root'
 
-function start() {
-  const mountElement = document.getElementById(MOUNT_POINT_ID)
+const mountElement = document.getElementById(MOUNT_POINT_ID)
 
-  if (!mountElement) return console.error('Id of mount point not found', { mountPointId: MOUNT_POINT_ID })
+ReactDOM.render(<ConnectedApp />, mountElement)
 
-  ReactDOM.render(<ConnectedApp />, mountElement)
-
-  // TODO make this works
-  // worker.register()
-}
-
-start()
+// worker.register()
