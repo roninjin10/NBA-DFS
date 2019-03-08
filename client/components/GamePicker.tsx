@@ -7,30 +7,66 @@ export interface IGame {
 
 export interface GamePickerProps {
   games: IGame[]
-  toggleTeamSelect: (team: string) => void
-  toggleAllGames: () => void
-  getTeamClassName: (team: string) => string
+  toggleTeamFilter: GameCellProps['toggleTeamSelect']
+  toggleAllGames: AllGamesPickerProps['toggleAllGames']
+  getClassName: GameCellProps['getClassName']
 }
 
-export const GamePicker: StatelessComponent<GamePickerProps> = props => {
-  const { games, toggleTeamSelect, toggleAllGames, getTeamClassName } = props
+interface GameCellProps {
+  home: string
+  away: string
+  toggleTeamSelect: (team: string) => void
+  getClassName: (team: string) => string
+}
 
-  const allGamesPicker = (
+const GameCell: StatelessComponent<GameCellProps> = props => {
+  const { toggleTeamSelect, getClassName, home, away } = props
+
+  return (
+    <li>
+      <div onClick={() => toggleTeamSelect(away)} className={getClassName(away)}>{away}</div>
+      <div onClick={() => toggleTeamSelect(home)} className={getClassName(home)}>{'@' + home}</div>
+    </li>
+
+  )
+}
+
+interface AllGamesPickerProps {
+  gameCount: number
+  toggleAllGames: () => void
+}
+
+const AllGamesPicker: StatelessComponent<AllGamesPickerProps> = props => {
+  const { toggleAllGames, gameCount } = props
+
+  return (
     <li onClick={toggleAllGames} >
-      <div>{`All Games (${games.length})`}</div>
+      <div>{`All Games (${gameCount})`}</div>
     </li>
   )
+}
 
+export const GamePicker: StatelessComponent<GamePickerProps> = ({
+  games,
+  toggleTeamFilter,
+  toggleAllGames,
+  getClassName
+}) => {
   const gameCells = games.map(({ home, away }) => (
-    <li>
-      <div onClick={() => toggleTeamSelect(away)} className={getTeamClassName(away)}>{away}</div>
-      <div onClick={() => toggleTeamSelect(home)} className={getTeamClassName(home)}>{'@' + home}</div>
-    </li>)
-  )
+    <GameCell
+      home={home}
+      away={away}
+      toggleTeamSelect={toggleTeamFilter}
+      getClassName={getClassName}
+    />
+  ))
 
   return (
     <ul className="GamePicker">
-      {allGamesPicker}
+      <AllGamesPicker
+        gameCount={games.length}
+        toggleAllGames={toggleAllGames}
+      />
       {gameCells}
     </ul>
   )

@@ -7,5 +7,6 @@ export const reducers: ReducerBuilder<AppState, AppState> = reducerWithInitialSt
   .case(actions.removeFromLineup, actions.removeFromLineupHandler)
   .case(actions.addToLineup, actions.addToLineupHandler)
   .case(actions.setPlayerSort, actions.setPlayerSortHandler)
-  .case(actions.setTeamFilter, actions.setTeamFilterHandler)
-  .case(actions.setPositionFilter, actions.setPositionFilterHandler)
+  .case(actions.toggleTeamFilter, actions.toggleTeamFilterHandler)
+  .case(actions.togglePositionFilter, actions.togglePositionFilterHandler)
+  .case(actions.toggleAllGames, actions.toggleAllGamesHandler)

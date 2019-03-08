@@ -60,12 +60,12 @@ export const setPlayerSortHandler: ActionHandler<keyof Player> = (state, sortBy)
   }
 }
 
-interface FilterHandlerPayload {
+interface ToggleFilterHandlerPayload {
   item: string
   filter: keyof Filters
 }
 
-const filterHandler: ActionHandler<FilterHandlerPayload> = (state, { item, filter }) => {
+const toggleFilterHandler: ActionHandler<ToggleFilterHandlerPayload> = (state, { item, filter }) => {
   return {
     ...state,
     filters: {
@@ -75,9 +75,9 @@ const filterHandler: ActionHandler<FilterHandlerPayload> = (state, { item, filte
   }
 }
 
-export const setTeamFilter = actionCreator<string>('setTeamFilter')
-export const setTeamFilterHandler: ActionHandler<string> = (state, team) => {
-  return filterHandler(state, {
+export const toggleTeamFilter = actionCreator<string>('toggleTeamFilter')
+export const toggleTeamFilterHandler: ActionHandler<string> = (state, team) => {
+  return toggleFilterHandler(state, {
     item: team,
     filter: 'team'
   })
@@ -96,9 +96,9 @@ export const toggleAllGamesHandler: ActionHandler<undefined> = (state) => {
   }
 }
 
-export const setPositionFilter = actionCreator<string>('setPositionFilter')
-export const setPositionFilterHandler: ActionHandler<string> = (state, position) => {
-  return filterHandler(state, {
+export const togglePositionFilter = actionCreator<string>('togglePositionFilter')
+export const togglePositionFilterHandler: ActionHandler<string> = (state, position) => {
+  return toggleFilterHandler(state, {
     item: position,
     filter: 'position'
   })

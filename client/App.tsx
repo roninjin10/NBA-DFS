@@ -1,8 +1,7 @@
-import React, { StatelessComponent } from 'react'
+import React, { StatelessComponent, Fragment } from 'react'
 // import { AnyAction } from 'redux'
 import { connect } from 'react-redux'
 import { AppState, Player, Filters } from './redux/AppState'
-import { /*GamesBar, GameProps, */IGame } from './components/GamesBar'
 // import { PoolFilters } from './components/PoolFilters'
 // import { PlayerPool } from './components/PlayerPool'
 import './App.scss'
@@ -13,23 +12,10 @@ import { filterPool } from './lib/filterPool';
 // import { NavBar } from './components/NavBar';
 import * as actions from './redux/actions'
 import classNames from 'classnames'
-import { GamePickerProps, GamePicker } from './components/GamePicker';
+import { GamePickerProps, GamePicker, IGame } from './components/GamePicker';
+import { PositionFilters, PositionFiltersProps } from './components/PositionFilters';
 
 const Optimizer: StatelessComponent = props => {
-  const Children: StatelessComponent = () => (
-    <div>
-      {props.children}
-    </div>
-  )
-
-  return (
-    <div>
-      <Children />
-    </div>
-  )
-}
-
-const PlayerPicker: StatelessComponent = props => {
   const Children: StatelessComponent = () => (
     <div>
       {props.children}
@@ -57,11 +43,20 @@ const LineupEditor: StatelessComponent = props => {
   )
 }
 
+interface SearchProps { }
 
+const Search: StatelessComponent<SearchProps> = () => {
+  return (
+    <div className="search">
+      <input type="text" />
+    </div>
+  )
+}
 
-const Search = () => <React.Fragment></React.Fragment>
 const Heading = () => <React.Fragment></React.Fragment>
-const PositionFilters = () => <React.Fragment></React.Fragment>
+
+
+
 const Lineup = () => <React.Fragment></React.Fragment>
 const PlayerPickerGrid = () => <React.Fragment></React.Fragment>
 const LineupButtons = () => <React.Fragment></React.Fragment>
@@ -79,16 +74,30 @@ export interface AppProps extends StateProps {
   reduxDispatch: ReduxDispatch
 }
 
-const fragment = (jsxElements: JSX.Element[]) => <React.Fragment>{jsxElements}</React.Fragment>
+const PlayerPicker: StatelessComponent = props => {
+  return (
+    <div className="GamePicker">
+      {props.children}
+    </div>
+  )
+}
+
 
 const _App: StatelessComponent<AppProps> = props => {
+  // TODO connect components seperately
   const { reduxDispatch, playerPool, games, lineup, selectedGames, selectedPositions } = props
 
-  const getTeamClassName: GamePickerProps["getTeamClassName"] = team => classNames({ selected: selectedGames.has(team) })
+  const getTeamClassName: GamePickerProps["getClassName"] = team => classNames({ selected: selectedGames.has(team) })
 
-  const toggleTeamSelect: GamePickerProps["toggleTeamSelect"] = team => reduxDispatch(actions.setTeamFilter(team))
+  const getPositionClassName: PositionFiltersProps["getClassName"] = (position: string) => '' // TODO
+
+  const toggleTeamFilter: GamePickerProps["toggleTeamFilter"] = team => reduxDispatch(actions.toggleTeamFilter(team))
 
   const toggleAllGames: GamePickerProps["toggleAllGames"] = () => reduxDispatch(actions.toggleAllGames())
+
+  const togglePositionFilter = (position: string) => () => reduxDispatch(actions.togglePositionFilter(position))
+
+  const positions = ['PG', 'SG', 'SF', 'PF', 'C']
 
   return (
     <div className="App">
@@ -96,13 +105,17 @@ const _App: StatelessComponent<AppProps> = props => {
       <Optimizer>
         <GamePicker
           games={games}
-          toggleTeamSelect={toggleTeamSelect}
+          toggleTeamFilter={toggleTeamFilter}
           toggleAllGames={toggleAllGames}
-          getTeamClassName={getTeamClassName}
+          getClassName={getTeamClassName}
         />
         <PlayerPicker>
           <Search />
-          <PositionFilters />
+          <PositionFilters
+            getClassName={getPositionClassName}
+            positions={positions}
+            onClickHandler={togglePositionFilter}
+          />
           <PlayerPickerGrid />
         </PlayerPicker>
         <LineupEditor>
