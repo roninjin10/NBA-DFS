@@ -72,16 +72,23 @@ export const PlayerPoolRow: StatelessComponent<PlayerPoolRowProps> = ({
   },
   onClick,
 }) => {
-  const value = (1000 * fantasyPoints / salary).toFixed(1)
+  const value = 1000 * fantasyPoints / salary
+  const displayedValue = isNaN(value)
+    ? ''
+    : value.toFixed(1)
+
+  const displayedGameInfo = gameInfo.home !== ''
+    ? `${gameInfo.away}@${gameInfo.home}`
+    : ''
 
   return (
     <tr onClick={() => onClick()}>
-      <td className="game">{`${gameInfo.away}@${gameInfo.home}`}</td>
+      <td className="game">{displayedGameInfo}</td>
       <td className="position">{position}</td>
       <td className="nickname">{name}</td>
-      <td className="salary">{salary}</td>
-      <td className="fantasy-points">{fantasyPoints}</td>
-      <td className="value">{value}</td>
+      <td className="salary">{salary || ''}</td>
+      <td className="fantasy-points">{fantasyPoints || ''}</td>
+      <td className="value">{displayedValue}</td>
     </tr>
   )
 }

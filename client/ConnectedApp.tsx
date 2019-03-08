@@ -5,7 +5,6 @@ import { BrowserRouter as Router } from 'react-router-dom'
 import { App } from './App'
 import { reducers } from './redux/reducers'
 import { AppState } from './redux/AppState'
-import { DispatchProvider } from './components/DispatchProvider';
 import { INITIAL_STATE } from './redux/initialState';
 import { getMiddleware } from './redux/getMiddleware';
 
@@ -19,9 +18,7 @@ export const ConnectedApp: StatelessComponent = () => {
   return (
     <Provider store={store}>
       <Router>
-        <DispatchProvider reduxDispatch={reduxDispatch}>
-          <App reduxDispatch={reduxDispatch} />
-        </DispatchProvider>
+        <App reduxDispatch={reduxDispatch} />
       </Router>
     </Provider>
   )
