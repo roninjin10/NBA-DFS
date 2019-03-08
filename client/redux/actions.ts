@@ -53,11 +53,11 @@ export const removeFromLineupHandler: ActionHandler<ZeroThroughEight> = (state, 
 
 export const setPlayerSort = actionCreator<keyof Player>('setPlayerSort')
 export const setPlayerSortHandler: ActionHandler<keyof Player> = (state, sortBy) => {
-  return ({
+  return {
     ...state,
     sortBy,
     isSortByReversed: sortBy === state.sortBy && !state.isSortByReversed
-  })
+  }
 }
 
 interface FilterHandlerPayload {
@@ -66,13 +66,13 @@ interface FilterHandlerPayload {
 }
 
 const filterHandler: ActionHandler<FilterHandlerPayload> = (state, { item, filter }) => {
-  return ({
+  return {
     ...state,
     filters: {
       ...state.filters,
       [filter]: functionalSets.toggleItem(state.filters[filter], item)
     }
-  })
+  }
 }
 
 export const setTeamFilter = actionCreator<string>('setTeamFilter')
@@ -81,6 +81,19 @@ export const setTeamFilterHandler: ActionHandler<string> = (state, team) => {
     item: team,
     filter: 'team'
   })
+}
+
+const allTeams = (games: AppState['games']) => games.reduce((a, { home, away }) => [...a, home, away], [] as string[])
+
+export const toggleAllGames = actionCreator<undefined>('toggleAllGames')
+export const toggleAllGamesHandler: ActionHandler<undefined> = (state) => {
+  return {
+    ...state,
+    filters: {
+      ...state.filters,
+      team: state.filters.team.size ? new Set() : new Set(allTeams(state.games))
+    }
+  }
 }
 
 export const setPositionFilter = actionCreator<string>('setPositionFilter')

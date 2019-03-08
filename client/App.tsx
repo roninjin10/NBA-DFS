@@ -88,11 +88,18 @@ const _App: StatelessComponent<AppProps> = props => {
 
   const toggleTeamSelect: GamePickerProps["toggleTeamSelect"] = team => reduxDispatch(actions.setTeamFilter(team))
 
+  const toggleAllGames: GamePickerProps["toggleAllGames"] = () => reduxDispatch(actions.toggleAllGames())
+
   return (
     <div className="App">
       <Heading />
       <Optimizer>
-        <GamePicker games={games} toggleTeamSelect={toggleTeamSelect} getTeamClassName={getTeamClassName} />
+        <GamePicker
+          games={games}
+          toggleTeamSelect={toggleTeamSelect}
+          toggleAllGames={toggleAllGames}
+          getTeamClassName={getTeamClassName}
+        />
         <PlayerPicker>
           <Search />
           <PositionFilters />
