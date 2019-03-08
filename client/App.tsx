@@ -11,23 +11,12 @@ import { ReduxDispatch } from './components/DispatchProvider';
 import { sortPool } from './lib/sortPool';
 import { filterPool } from './lib/filterPool';
 // import { NavBar } from './components/NavBar';
+import * as actions from './redux/actions'
+import classNames from 'classnames'
+import { GamePickerProps, GamePicker } from './components/GamePicker';
 
 const Optimizer: StatelessComponent = props => {
-  const Children: StatelessComponent = props => (
-    <div>
-      {props.children}
-    </div>
-  )
-
-  return (
-    <div>
-      <Children />
-    </div>
-  )
-}
-
-const GamePicker: StatelessComponent = props => {
-  const Children: StatelessComponent = props => (
+  const Children: StatelessComponent = () => (
     <div>
       {props.children}
     </div>
@@ -41,7 +30,7 @@ const GamePicker: StatelessComponent = props => {
 }
 
 const PlayerPicker: StatelessComponent = props => {
-  const Children: StatelessComponent = props => (
+  const Children: StatelessComponent = () => (
     <div>
       {props.children}
     </div>
@@ -55,7 +44,7 @@ const PlayerPicker: StatelessComponent = props => {
 }
 
 const LineupEditor: StatelessComponent = props => {
-  const Children: StatelessComponent = props => (
+  const Children: StatelessComponent = () => (
     <div>
       {props.children}
     </div>
@@ -68,15 +57,10 @@ const LineupEditor: StatelessComponent = props => {
   )
 }
 
-const AllGames = () => <React.Fragment></React.Fragment>
 
-interface GameProps {
-  game: IGame
-}
-
-const Game: StatelessComponent<GameProps> = ({ game }) => <React.Fragment></React.Fragment>
 
 const Search = () => <React.Fragment></React.Fragment>
+const Heading = () => <React.Fragment></React.Fragment>
 const PositionFilters = () => <React.Fragment></React.Fragment>
 const Lineup = () => <React.Fragment></React.Fragment>
 const PlayerPickerGrid = () => <React.Fragment></React.Fragment>
@@ -95,17 +79,20 @@ export interface AppProps extends StateProps {
   reduxDispatch: ReduxDispatch
 }
 
+const fragment = (jsxElements: JSX.Element[]) => <React.Fragment>{jsxElements}</React.Fragment>
+
 const _App: StatelessComponent<AppProps> = props => {
-  const { playerPool, games, lineup, selectedGames, selectedPositions } = props
+  const { reduxDispatch, playerPool, games, lineup, selectedGames, selectedPositions } = props
+
+  const getTeamClassName: GamePickerProps["getTeamClassName"] = team => classNames({ selected: selectedGames.has(team) })
+
+  const toggleTeamSelect: GamePickerProps["toggleTeamSelect"] = team => reduxDispatch(actions.setTeamFilter(team))
 
   return (
     <div className="App">
-      {/* <Heading />*/}
+      <Heading />
       <Optimizer>
-        <GamePicker>
-          <AllGames />
-          {games.map(game => <Game game={game} />)}
-        </GamePicker>
+        <GamePicker games={games} toggleTeamSelect={toggleTeamSelect} getTeamClassName={getTeamClassName} />
         <PlayerPicker>
           <Search />
           <PositionFilters />

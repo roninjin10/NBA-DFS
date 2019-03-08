@@ -11,6 +11,7 @@
     "nuke": "yarn cache clean && rm -r node_modules/"
   },
   "dependencies": {
+    "@types/classnames": "^2.2.7",
     "axios": "^0.18.0",
     "classnames": "^2.2.6",
     "connected-react-router": "^6.1.0",

@@ -128,17 +128,14 @@ li {
   grid-column-end: 2;
 }
 
-.GamesBar-container {
+.GamePicker {
   grid-column-start: 1;
   grid-column-end: 3;
-}
-
-.GamesBar-container > ul {
   display: flex;
   flex-flow: nowrap;
 }
 
-.GamesBar-container > ul > li {
+.GamePicker > li {
   margin-left: .3rem;
   margin-right: .3rem;
   border: 2px solid #6FC3DF;
@@ -152,7 +149,7 @@ li {
 }
 
 
-.GamesBar-container > ul > li > div {
+.GamePicker > li > div {
   margin: .1rem;
 }
 
