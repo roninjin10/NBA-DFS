@@ -36,6 +36,8 @@ export const PlayerPool: StatelessComponent<PoolProps> = props => {
   )
 }
 
+const noop = () => { }
+
 interface PlayerPoolHeadingsProps {
   onClick: (heading: keyof Player) => AnyAction
 }
@@ -44,11 +46,12 @@ export const PlayerPoolHeadings: StatelessComponent<PlayerPoolHeadingsProps> = (
   return (
     <thead>
       <tr>
+        <th onClick={() => onClick('gameInfo')}>GAME</th>
         <th onClick={() => onClick('position')}>POS</th>
         <th onClick={() => onClick('name')}>PLAYER</th>
-        <th onClick={() => onClick('gameInfo')}>GAME</th>
-        <th onClick={() => onClick('fantasyPoints')}>POINTS</th>
         <th onClick={() => onClick('salary')}>SALARY</th>
+        <th onClick={() => onClick('fantasyPoints')}>POINTS</th>
+        <th onClick={noop}>VALUE</th>
       </tr>
     </thead>
   )
@@ -69,13 +72,16 @@ export const PlayerPoolRow: StatelessComponent<PlayerPoolRowProps> = ({
   },
   onClick,
 }) => {
+  const value = (1000 * fantasyPoints / salary).toFixed(1)
+
   return (
     <tr onClick={() => onClick()}>
+      <td className="game">{`${gameInfo.away}@${gameInfo.home}`}</td>
       <td className="position">{position}</td>
       <td className="nickname">{name}</td>
-      <td className="game">{`${gameInfo.away}@${gameInfo.home}`}</td>
-      <td className="fantasy-points">{fantasyPoints}</td>
       <td className="salary">{salary}</td>
+      <td className="fantasy-points">{fantasyPoints}</td>
+      <td className="value">{value}</td>
     </tr>
   )
 }

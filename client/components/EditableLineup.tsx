@@ -39,15 +39,16 @@ export const EditableLineup: StatelessComponent<EditableLineupProps> = ({
   reduxDispatch
 }) => {
   return (
-    <div className="editable-lineup">
-      <table>
+    <div>
+      <table className="EditableLineup-container">
         <thead>
           <tr>
+            <th>GAME</th>
             <th>POS</th>
             <th>PLAYER</th>
-            <th>GAME</th>
-            <th>POINTS</th>
             <th>SALARY</th>
+            <th>PROJECTION</th>
+            <th>VALUE</th>
           </tr>
         </thead>
         <tbody><Lineup lineup={lineup} reduxDispatch={reduxDispatch} /></tbody>
