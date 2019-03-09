@@ -5,9 +5,9 @@ import { sortPool } from './lib/sortPool';
 import { filterPool } from './lib/filterPool';
 import * as actions from './redux/actions'
 import classNames from 'classnames'
-import { GamePickerProps, GamePicker, IGame } from './components/GamePicker';
+import { GamePickerProps, GamePicker } from './components/GamePicker';
 import { PositionFilters } from './components/PositionFilters';
-import { ReduxDispatch, Player } from './lib/types';
+import { ReduxDispatch, Player, HomeAway } from './lib/types';
 import { connect } from 'react-redux';
 
 const Optimizer: FunctionComponent = props => {
@@ -59,7 +59,7 @@ const LineupButtons = () => <React.Fragment></React.Fragment>
 
 export interface StateProps {
   playerPool: Player[]
-  games: IGame[]
+  games: HomeAway[]
   lineup: (Player | null)[]
   selectedGames: Set<string>
   selectedPositions: Set<string>
@@ -92,12 +92,7 @@ const _App: FunctionComponent<AppProps> = props => {
     <div className="App">
       <Heading />
       <Optimizer>
-        <GamePicker
-          games={games}
-          toggleTeamFilter={toggleTeamFilter}
-          toggleAllGames={toggleAllGames}
-          getClassName={getTeamClassName}
-        />
+        <GamePicker />
         <PlayerPicker>
           <Search />
           <PositionFilters />
