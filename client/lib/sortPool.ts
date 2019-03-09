@@ -1,4 +1,4 @@
-import { HomeAway, Player } from "./types";
+import { HomeAway, Player } from './types'
 
 interface MaybeAsNumber {
   (field: string): string | number
@@ -18,14 +18,12 @@ interface SortPool {
 }
 
 export const sortPool: SortPool = (field, playerPool, isReversed) =>
-  [...playerPool]
-    .sort((playerA: Player, playerB: Player) => {
-      const [a, b] = [playerA, playerB].map(player => player[field])
+  [...playerPool].sort((playerA: Player, playerB: Player) => {
+    const [a, b] = [playerA, playerB].map(player => player[field])
 
-      const [firstItem, secondItem] = (!isReversed
-        ? [b, a]
-        : [a, b]
-      ).map(item => maybeAsNumber(item as any))
+    const [firstItem, secondItem] = (!isReversed ? [b, a] : [a, b]).map(item =>
+      maybeAsNumber(item as any)
+    )
 
-      return firstItem >= secondItem ? 1 : -1
-    })
+    return firstItem >= secondItem ? 1 : -1
+  })

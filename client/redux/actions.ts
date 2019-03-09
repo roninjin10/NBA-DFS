@@ -2,7 +2,7 @@ import actionCreatorFactory from 'typescript-fsa'
 import { AppState, Filters } from './AppState'
 import * as functionalSets from '../lib/functionalSets'
 import { NBALineup } from '../lib/NBALineup'
-import { ZeroThroughEight, Player } from '../lib/types';
+import { ZeroThroughEight, Player } from '../lib/types'
 
 const actionCreator = actionCreatorFactory('app')
 
@@ -22,15 +22,12 @@ export const addToLineupHandler: ActionHandler<PlayerId> = (state, id) => {
     return {
       ...state,
       playerPool,
-      lineup: new NBALineup([...state.lineup])
-        .addPlayers(newPlayer)
-        .toArray()
+      lineup: new NBALineup([...state.lineup]).addPlayers(newPlayer).toArray(),
     }
   } catch (e) {
     console.error('unable to add player to lineup', e)
     return state
   }
-
 }
 
 export const removeFromLineup = actionCreator<ZeroThroughEight>('removeFromLineup')
@@ -57,7 +54,7 @@ export const setPlayerSortHandler: ActionHandler<keyof Player> = (state, sortBy)
   return {
     ...state,
     sortBy,
-    isSortByReversed: sortBy === state.sortBy && !state.isSortByReversed
+    isSortByReversed: sortBy === state.sortBy && !state.isSortByReversed,
   }
 }
 
@@ -66,13 +63,16 @@ interface ToggleFilterHandlerPayload {
   filter: keyof Filters
 }
 
-const toggleFilterHandler: ActionHandler<ToggleFilterHandlerPayload> = (state, { item, filter }) => {
+const toggleFilterHandler: ActionHandler<ToggleFilterHandlerPayload> = (
+  state,
+  { item, filter }
+) => {
   return {
     ...state,
     filters: {
       ...state.filters,
-      [filter]: functionalSets.toggleItem(state.filters[filter], item)
-    }
+      [filter]: functionalSets.toggleItem(state.filters[filter], item),
+    },
   }
 }
 
@@ -80,20 +80,21 @@ export const toggleTeamFilter = actionCreator<string>('toggleTeamFilter')
 export const toggleTeamFilterHandler: ActionHandler<string> = (state, team) => {
   return toggleFilterHandler(state, {
     item: team,
-    filter: 'team'
+    filter: 'team',
   })
 }
 
-const allTeams = (games: AppState['games']) => games.reduce((a, { home, away }) => [...a, home, away], [] as string[])
+const allTeams = (games: AppState['games']) =>
+  games.reduce((a, { home, away }) => [...a, home, away], [] as string[])
 
 export const toggleAllGames = actionCreator<undefined>('toggleAllGames')
-export const toggleAllGamesHandler: ActionHandler<undefined> = (state) => {
+export const toggleAllGamesHandler: ActionHandler<undefined> = state => {
   return {
     ...state,
     filters: {
       ...state.filters,
-      team: state.filters.team.size ? new Set() : new Set(allTeams(state.games))
-    }
+      team: state.filters.team.size ? new Set() : new Set(allTeams(state.games)),
+    },
   }
 }
 
@@ -101,6 +102,6 @@ export const togglePositionFilter = actionCreator<string>('togglePositionFilter'
 export const togglePositionFilterHandler: ActionHandler<string> = (state, position) => {
   return toggleFilterHandler(state, {
     item: position,
-    filter: 'position'
+    filter: 'position',
   })
 }

@@ -1,4 +1,4 @@
-import { Player, INBALineup, HomeAway } from "../lib/types";
+import { Player, INBALineup, HomeAway } from '../lib/types'
 
 export interface AppState {
   readonly filters: Filters
@@ -12,8 +12,6 @@ export interface AppState {
 
 export type Team = Set<string>
 export type Position = Set<string>
-
-
 
 export interface Filters {
   team: Team

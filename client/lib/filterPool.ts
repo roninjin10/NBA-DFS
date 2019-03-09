@@ -1,5 +1,5 @@
-import { Filters } from "../redux/AppState";
-import { Player } from "./types";
+import { Filters } from '../redux/AppState'
+import { Player } from './types'
 
 export type SubFilter = (filters: Filters) => (player: Player) => boolean
 
@@ -19,8 +19,5 @@ export interface PoolFilter {
 }
 
 export const filterPool: PoolFilter = (pool, filters) => {
-  return pool
-    .filter(filterTeam(filters))
-    .filter(filterPosition(filters))
+  return pool.filter(filterTeam(filters)).filter(filterPosition(filters))
 }
-

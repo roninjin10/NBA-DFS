@@ -1,10 +1,9 @@
-import React, { FunctionComponent } from "react";
+import React, { FunctionComponent } from 'react'
 
-interface SearchProps { }
+interface SearchProps {}
 
-export const Search: FunctionComponent<SearchProps> = () =>
-  (
-    <div className="search">
-      <input type="text" />
-    </div>
-  )
+export const Search: FunctionComponent<SearchProps> = () => (
+  <div className="search">
+    <input type="text" />
+  </div>
+)

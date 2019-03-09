@@ -1,8 +1,8 @@
 import React, { FunctionComponent } from 'react'
 import * as actions from '../redux/actions'
 import classNames from 'classnames'
-import { connect } from 'react-redux';
-import { MapStateToProps, MapDispatchToProps } from '../lib/types';
+import { connect } from 'react-redux'
+import { MapStateToProps, MapDispatchToProps } from '../lib/types'
 
 const POSITIONS = ['PG', 'SG', 'SF', 'PF', 'C']
 
@@ -17,13 +17,13 @@ interface DispatchProps {
 
 type AllProps = StateProps & DispatchProps
 
-const _PositionFilters: FunctionComponent<AllProps> = ({ getClassName, onClickHandler, positions }) => {
+const _PositionFilters: FunctionComponent<AllProps> = ({
+  getClassName,
+  onClickHandler,
+  positions,
+}) => {
   const createButton = (position: string) => (
-    <button
-      className={getClassName(position)}
-      onClick={onClickHandler(position)}
-      key={position}
-    >
+    <button className={getClassName(position)} onClick={onClickHandler(position)} key={position}>
       {position}
     </button>
   )
@@ -43,7 +43,6 @@ const mapStateToProps: MapStateToProps<StateProps> = ({
 }) => {
   const getClassName: StateProps['getClassName'] = () => classNames({ selected: false })
 
-
   return {
     positions: POSITIONS,
     getClassName,
@@ -51,8 +50,12 @@ const mapStateToProps: MapStateToProps<StateProps> = ({
 }
 
 const mapDispatchToProps: MapDispatchToProps<DispatchProps> = dispatch => {
-  const onClickHandler: DispatchProps['onClickHandler'] = (position: string) => () => dispatch(actions.togglePositionFilter(position))
+  const onClickHandler: DispatchProps['onClickHandler'] = (position: string) => () =>
+    dispatch(actions.togglePositionFilter(position))
   return { onClickHandler }
 }
 
-export const PositionFilters = connect(mapStateToProps, mapDispatchToProps)(_PositionFilters)
+export const PositionFilters = connect(
+  mapStateToProps,
+  mapDispatchToProps
+)(_PositionFilters)

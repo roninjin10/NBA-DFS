@@ -11,7 +11,5 @@ export const addToSet: SetFunction = (set, item) => {
 }
 
 export const toggleItem: SetFunction = (set, item) => {
-  return set.has(item)
-    ? removeFromSet(set, item)
-    : addToSet(set, item)
+  return set.has(item) ? removeFromSet(set, item) : addToSet(set, item)
 }

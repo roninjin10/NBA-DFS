@@ -1,3 +1,3 @@
 import React from 'react'
 
-export const LineupButtons = () => <React.Fragment></React.Fragment>
+export const LineupButtons = () => <React.Fragment />

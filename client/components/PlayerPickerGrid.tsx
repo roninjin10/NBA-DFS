@@ -1,8 +1,8 @@
 import React, { FunctionComponent } from 'react'
 import * as actions from '../redux/actions'
-import { AnyAction } from 'redux';
+import { AnyAction } from 'redux'
 import { Player, MapStateToProps, MapDispatchToProps } from '../lib/types'
-import { connect } from 'react-redux';
+import { connect } from 'react-redux'
 
 interface StateProps {
   playerPool: Player[]
@@ -20,23 +20,19 @@ type PlayerPickerGridProps = StateProps & DispatchProps
 const _PlayerPickerGrid: FunctionComponent<PlayerPickerGridProps> = props => {
   const { playerPool, addToPool, onClick } = props
 
-
-  const renderedPool = playerPool.map((player) => {
-
+  const renderedPool = playerPool.map(player => {
     return <PlayerPoolRow player={player} onClick={addToPool} key={player.id} />
   })
 
   return (
     <table className="player-pool">
       <PlayerPoolHeadings onClick={onClick} />
-      <tbody>
-        {renderedPool}
-      </tbody>
+      <tbody>{renderedPool}</tbody>
     </table>
   )
 }
 
-const noop = () => { }
+const noop = () => {}
 
 interface PlayerPoolHeadingsProps {
   onClick: (heading: keyof Player) => AnyAction
@@ -63,23 +59,13 @@ interface PlayerPoolRowProps {
 }
 
 export const PlayerPoolRow: FunctionComponent<PlayerPoolRowProps> = ({
-  player: {
-    name,
-    salary,
-    gameInfo,
-    position,
-    fantasyPoints
-  },
+  player: { name, salary, gameInfo, position, fantasyPoints },
   onClick,
 }) => {
-  const value = 1000 * fantasyPoints / salary
-  const displayedValue = isNaN(value)
-    ? ''
-    : value.toFixed(1)
+  const value = (1000 * fantasyPoints) / salary
+  const displayedValue = isNaN(value) ? '' : value.toFixed(1)
 
-  const displayedGameInfo = gameInfo.home !== ''
-    ? `${gameInfo.away}@${gameInfo.home}`
-    : ''
+  const displayedGameInfo = gameInfo.home !== '' ? `${gameInfo.away}@${gameInfo.home}` : ''
 
   return (
     <tr onClick={() => onClick()}>
@@ -94,7 +80,8 @@ export const PlayerPoolRow: FunctionComponent<PlayerPoolRowProps> = ({
 }
 
 const mapStateToProps: MapStateToProps<StateProps> = state => {
-  const isInLineup = (playerId: string) => state.lineup.filter(spot => spot && spot.id === playerId).length > 0
+  const isInLineup = (playerId: string) =>
+    state.lineup.filter(spot => spot && spot.id === playerId).length > 0
   const availableToAdd = () => true
 
   return { playerPool: state.playerPool, availableToAdd, isInLineup }
@@ -107,4 +94,7 @@ export const mapDispatchToProps: MapDispatchToProps<DispatchProps> = dispatch =>
   }
 }
 
-export const PlayerPickerGrid = connect(mapStateToProps, mapDispatchToProps)(_PlayerPickerGrid)
+export const PlayerPickerGrid = connect(
+  mapStateToProps,
+  mapDispatchToProps
+)(_PlayerPickerGrid)

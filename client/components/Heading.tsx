@@ -1,3 +1,3 @@
 import React from 'react'
 
-export const Heading = () => <React.Fragment></React.Fragment>
+export const Heading = () => <React.Fragment />

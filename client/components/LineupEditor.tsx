@@ -1,10 +1,7 @@
-import React, { FunctionComponent } from "react";
+import React, { FunctionComponent } from 'react'
 
-export const LineupEditor: FunctionComponent = props =>
-  (
-    <div>
-      <div>
-        {props.children}
-      </div>
-    </div>
-  )
+export const LineupEditor: FunctionComponent = props => (
+  <div>
+    <div>{props.children}</div>
+  </div>
+)

@@ -1,6 +1,6 @@
 import React, { FunctionComponent } from 'react'
-import { HomeAway, MapStateToProps, MapDispatchToProps } from '../lib/types';
-import { connect } from 'react-redux';
+import { HomeAway, MapStateToProps, MapDispatchToProps } from '../lib/types'
+import { connect } from 'react-redux'
 import classNames from 'classnames'
 import * as actions from '../redux/actions'
 
@@ -20,7 +20,7 @@ const _GamePicker: FunctionComponent<GamePickerProps> = ({
   games,
   toggleTeamFilter,
   toggleAllGames,
-  getClassName
+  getClassName,
 }) => {
   const gameCells = games.map(({ home, away }) => (
     <GameCell
@@ -34,10 +34,7 @@ const _GamePicker: FunctionComponent<GamePickerProps> = ({
 
   return (
     <ul className="GamePicker">
-      <AllGamesPicker
-        gameCount={games.length}
-        toggleAllGames={toggleAllGames}
-      />
+      <AllGamesPicker gameCount={games.length} toggleAllGames={toggleAllGames} />
       {gameCells}
     </ul>
   )
@@ -55,10 +52,13 @@ const GameCell: FunctionComponent<GameCellProps> = props => {
 
   return (
     <li>
-      <div onClick={() => toggleTeamSelect(away)} className={getClassName(away)}>{away}</div>
-      <div onClick={() => toggleTeamSelect(home)} className={getClassName(home)}>{'@' + home}</div>
+      <div onClick={() => toggleTeamSelect(away)} className={getClassName(away)}>
+        {away}
+      </div>
+      <div onClick={() => toggleTeamSelect(home)} className={getClassName(home)}>
+        {'@' + home}
+      </div>
     </li>
-
   )
 }
 
@@ -71,14 +71,15 @@ const AllGamesPicker: FunctionComponent<AllGamesPickerProps> = props => {
   const { toggleAllGames, gameCount } = props
 
   return (
-    <li onClick={toggleAllGames} >
+    <li onClick={toggleAllGames}>
       <div>{`All Games (${gameCount})`}</div>
     </li>
   )
 }
 
 const mapStateToProps: MapStateToProps<StateProps> = state => {
-  const getTeamClassName: StateProps['getClassName'] = team => classNames({ selected: state.filters.team.has(team) })
+  const getTeamClassName: StateProps['getClassName'] = team =>
+    classNames({ selected: state.filters.team.has(team) })
 
   return {
     games: state.games,
@@ -93,4 +94,7 @@ const mapDispatchToProps: MapDispatchToProps<DispatchProps> = dispatch => {
   }
 }
 
-export const GamePicker = connect(mapStateToProps, mapDispatchToProps)(_GamePicker)
+export const GamePicker = connect(
+  mapStateToProps,
+  mapDispatchToProps
+)(_GamePicker)
