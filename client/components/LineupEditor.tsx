@@ -1,15 +1,10 @@
 import React, { FunctionComponent } from "react";
 
-export const LineupEditor: FunctionComponent = props => {
-  const Children: FunctionComponent = () => (
+export const LineupEditor: FunctionComponent = props =>
+  (
     <div>
-      {props.children}
+      <div>
+        {props.children}
+      </div>
     </div>
   )
-
-  return (
-    <div>
-      <Children />
-    </div>
-  )
-}
