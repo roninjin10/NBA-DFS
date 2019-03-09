@@ -11,8 +11,8 @@ import { PlayerPickerGrid } from './components/PlayerPickerGrid';
 import { Lineup } from './components/Lineup';
 import { LineupButtons } from './components/LineupButtons';
 
-export const App: FunctionComponent<{}> = () => {
-  return (
+export const App = () =>
+  (
     <div className="App">
       <Heading />
       <Optimizer>
@@ -29,4 +29,3 @@ export const App: FunctionComponent<{}> = () => {
       </Optimizer>
     </div>
   )
-}
