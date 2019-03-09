@@ -1,5 +1,5 @@
 import React, { FunctionComponent } from 'react'
-import { AppState, Player } from './redux/AppState'
+import { AppState } from './redux/AppState'
 import './App.scss'
 import { sortPool } from './lib/sortPool';
 import { filterPool } from './lib/filterPool';
@@ -7,7 +7,7 @@ import * as actions from './redux/actions'
 import classNames from 'classnames'
 import { GamePickerProps, GamePicker, IGame } from './components/GamePicker';
 import { PositionFilters } from './components/PositionFilters';
-import { ReduxDispatch } from './lib/types';
+import { ReduxDispatch, Player } from './lib/types';
 import { connect } from 'react-redux';
 
 const Optimizer: FunctionComponent = props => {

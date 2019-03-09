@@ -1,9 +1,7 @@
 import React, { FunctionComponent } from 'react'
 import { PlayerPoolRow } from './PlayerPool'
 import * as actions from '../redux/actions'
-import { Player } from '../redux/AppState';
-import { ZeroThroughEight } from '../lib/NBALineup';
-import { ReduxDispatch } from '../lib/types';
+import { ReduxDispatch, Player, ZeroThroughEight } from '../lib/types';
 
 const sum = (a: number, b: number) => a + b
 

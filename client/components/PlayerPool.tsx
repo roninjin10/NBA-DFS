@@ -1,8 +1,7 @@
 import React, { FunctionComponent } from 'react'
-import { Player } from '../redux/AppState'
 import * as actions from '../redux/actions'
 import { AnyAction } from 'redux';
-import { ReduxDispatch } from '../lib/types'
+import { ReduxDispatch, Player } from '../lib/types'
 
 // interface PlayerProperty {
 //   (player: Player): boolean

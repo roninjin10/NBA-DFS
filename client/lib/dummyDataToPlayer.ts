@@ -1,4 +1,4 @@
-import { HomeAway, Player } from "../redux/AppState";
+import { HomeAway, Player } from "./types";
 
 interface DummyDataPlayer {
   AvgPointsPerGame: string

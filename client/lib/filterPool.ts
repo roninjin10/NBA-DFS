@@ -1,4 +1,5 @@
-import { Player, Filters } from "../redux/AppState";
+import { Filters } from "../redux/AppState";
+import { Player } from "./types";
 
 export type SubFilter = (filters: Filters) => (player: Player) => boolean
 

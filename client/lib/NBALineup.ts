@@ -1,4 +1,4 @@
-import { Player } from "../redux/AppState";
+import { INBALineup, ZeroThroughEight, Player } from "./types";
 
 type LineupShape = Set<NBAPosition>[]
 
@@ -96,18 +96,6 @@ const SALARY_CAP_NBA_DK = FIFTY_THOUSAND
 
 const addPlayersToNbaLineup = sportSpecificLineup(nbaDkShape, SALARY_CAP_NBA_DK)
 
-export type INBALineup = [
-  Player | null,
-  Player | null,
-  Player | null,
-  Player | null,
-  Player | null,
-  Player | null,
-  Player | null,
-  Player | null
-]
-
-export type ZeroThroughEight = 0 | 1 | 2 | 3 | 4 | 5 | 6 | 7
 
 export class NBALineup extends Array<(Player | null)> {
   toArray = () => {

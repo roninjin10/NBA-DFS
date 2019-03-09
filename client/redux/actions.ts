@@ -1,7 +1,8 @@
 import actionCreatorFactory from 'typescript-fsa'
-import { AppState, Player, Filters } from './AppState'
+import { AppState, Filters } from './AppState'
 import * as functionalSets from '../lib/functionalSets'
-import { NBALineup, ZeroThroughEight } from '../lib/NBALineup'
+import { NBALineup } from '../lib/NBALineup'
+import { ZeroThroughEight, Player } from '../lib/types';
 
 const actionCreator = actionCreatorFactory('app')
 

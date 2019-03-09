@@ -1,9 +1,8 @@
 import React, { FunctionComponent } from 'react'
-import { AppState } from '../redux/AppState';
 import * as actions from '../redux/actions'
 import classNames from 'classnames'
-import { MapDispatchToProps, MapStateToProps } from '../lib/wrappedRedux';
 import { connect } from 'react-redux';
+import { MapStateToProps, MapDispatchToProps } from '../lib/types';
 
 const POSITIONS = ['PG', 'SG', 'SF', 'PF', 'C']
 

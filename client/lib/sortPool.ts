@@ -1,4 +1,4 @@
-import { Player, HomeAway } from "../redux/AppState";
+import { HomeAway, Player } from "./types";
 
 interface MaybeAsNumber {
   (field: string): string | number

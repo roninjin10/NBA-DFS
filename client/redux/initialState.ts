@@ -1,7 +1,7 @@
 import rawPlayerPool from '../dummyData/pool.json'
-import { Player, Filters, SortBy, AppState, HomeAway } from './AppState';
+import { Filters, SortBy, AppState } from './AppState';
 import { dummyDataToPlayer } from '../lib/dummyDataToPlayer'
-import { INBALineup } from '../lib/NBALineup';
+import { Player, HomeAway, INBALineup } from '../lib/types';
 
 const freeze = Object.freeze.bind(Object) as <T>(obj: T) => T
 
