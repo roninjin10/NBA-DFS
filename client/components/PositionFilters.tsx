@@ -21,7 +21,9 @@ const _PositionFilters: FunctionComponent<AllProps> = ({ getClassName, onClickHa
   const createButton = (position: string) => (
     <button
       className={getClassName(position)}
-      onClick={onClickHandler(position)}>
+      onClick={onClickHandler(position)}
+      key={position}
+    >
       {position}
     </button>
   )

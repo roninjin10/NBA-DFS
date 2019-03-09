@@ -28,6 +28,7 @@ const _GamePicker: FunctionComponent<GamePickerProps> = ({
       away={away}
       toggleTeamSelect={toggleTeamFilter}
       getClassName={getClassName}
+      key={home}
     />
   ))
 
