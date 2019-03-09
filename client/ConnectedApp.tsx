@@ -4,12 +4,11 @@ import { BrowserRouter as Router } from 'react-router-dom'
 import { App } from './App'
 import { wrappedCreateStore } from './redux/createStore';
 
-export const ConnectedApp: FunctionComponent = () => {
-  return (
+export const ConnectedApp = () =>
+  (
     <Provider store={wrappedCreateStore()}>
       <Router>
         <App />
       </Router>
     </Provider>
   )
-}
