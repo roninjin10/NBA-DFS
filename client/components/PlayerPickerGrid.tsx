@@ -3,6 +3,7 @@ import * as actions from '../redux/actions'
 import { AnyAction } from 'redux'
 import { Player, MapStateToProps, MapDispatchToProps } from '../lib/types'
 import { connect } from 'react-redux'
+import { filterPool } from '../lib/filterPool'
 
 interface StateProps {
   playerPool: Player[]
@@ -76,10 +77,9 @@ export const PlayerPickerRow: FunctionComponent<PlayerPickerRowProps> = ({
 }
 
 const mapStateToProps: MapStateToProps<StateProps> = state => ({
-  playerPool: state.playerPool,
+  playerPool: filterPool(state.playerPool, state.filters),
   availableToAdd: () => true,
-  isInLineup: (playerId: string) =>
-    state.lineup.filter(spot => spot && spot.id === playerId).length > 0,
+  isInLineup: (playerId: string) => state.lineup.filter(spot => spot && spot.id === playerId).length > 0,
 })
 
 export const mapDispatchToProps: MapDispatchToProps<DispatchProps> = dispatch => ({
@@ -87,7 +87,4 @@ export const mapDispatchToProps: MapDispatchToProps<DispatchProps> = dispatch =>
   addToPool: playerId => () => dispatch(actions.addToLineup(playerId)),
 })
 
-export const PlayerPickerGrid = connect(
-  mapStateToProps,
-  mapDispatchToProps
-)(_PlayerPickerGrid)
+export const PlayerPickerGrid = connect(mapStateToProps, mapDispatchToProps)(_PlayerPickerGrid)
