@@ -4,7 +4,7 @@ export interface AppState {
   readonly games: HomeAway[]
   readonly playerPool: Player[]
   readonly lineup: INBALineup
-  readonly pickerSearch: string
+  readonly playerSearch: string
   readonly filters: Filters
   readonly sortBy: SortBy
   readonly isSortByReversed: boolean

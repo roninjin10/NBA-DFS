@@ -101,5 +101,5 @@ export const togglePositionFilterHandler: ActionHandler<string> = (state, positi
 export const setPickerSearch = actionCreator<string>('setPickerSearch')
 export const setPickerSearchHandler: ActionHandler<string> = (state, searchString) => ({
   ...state,
-  pickerSearch: searchString,
+  playerSearch: searchString,
 })

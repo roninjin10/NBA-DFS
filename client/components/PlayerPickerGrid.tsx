@@ -77,7 +77,7 @@ export const PlayerPickerRow: FunctionComponent<PlayerPickerRowProps> = ({
 }
 
 const mapStateToProps: MapStateToProps<StateProps> = state => ({
-  playerPool: filterPool(state.playerPool, state.filters),
+  playerPool: filterPool(state.playerPool, state.filters, state.playerSearch),
   availableToAdd: () => true,
   isInLineup: (playerId: string) => state.lineup.filter(spot => spot && spot.id === playerId).length > 0,
 })

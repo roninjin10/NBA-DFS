@@ -16,6 +16,6 @@ const _PlayerPickerSearch: FunctionComponent<PlayerPickerSearchProps> = ({ value
 
 const mapDispatchToProps: MapDispatchToProps<DispatchProps> = dispatch => ({ onChange: e => dispatch(actions.setPickerSearch(e.target.value)) })
 
-const mapStateToProps: MapStateToProps<StateProps> = state => ({ value: state.pickerSearch })
+const mapStateToProps: MapStateToProps<StateProps> = state => ({ value: state.playerSearch })
 
 export const PlayerPickerSearch = connect(mapStateToProps, mapDispatchToProps)(_PlayerPickerSearch)
