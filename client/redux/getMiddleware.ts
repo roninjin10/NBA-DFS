@@ -7,5 +7,5 @@ import { applyMiddleware } from 'redux'
 export const getMiddleware = () => {
   const middleware = applyMiddleware(routerMiddleware(createBrowserHistory()))
 
-  return IS_PROD ? composeWithDevTools(middleware) : middleware
+  return IS_PROD ? middleware : composeWithDevTools(middleware)
 }
