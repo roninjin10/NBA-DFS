@@ -139,12 +139,25 @@ li {
   grid-column-end: 2;
 }
 
+.PlayerPicker {
+  display: flex;
+  flex-direction: column;
+}
+
+.Optimizer {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+}
+
 .GamePicker {
   grid-column-start: 1;
   grid-column-end: 3;
   display: flex;
-  flex-direction: column;
   flex-flow: nowrap;
+}
+
+.Lineup {
+  grid-column-start: 2;
 }
 
 .GamePicker > li {

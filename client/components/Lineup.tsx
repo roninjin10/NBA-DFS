@@ -57,8 +57,8 @@ interface DispatchProps {
 type LineupProps = StateProps & DispatchProps
 
 const _Lineup: StatelessComponent<LineupProps> = ({ lineup, removeFromLineup }) => (
-  <div>
-    <table className="EditableLineup-container">
+  <div className="Lineup">
+    <table className="EditableLineup-container"> {/*TODO change this class name*/}
       <thead>
         <tr>
           <th>GAME</th>
