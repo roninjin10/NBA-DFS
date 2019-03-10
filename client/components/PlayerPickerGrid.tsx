@@ -76,10 +76,19 @@ export const PlayerPickerRow: FunctionComponent<PlayerPickerRowProps> = ({
   )
 }
 
-const mapStateToProps: MapStateToProps<StateProps> = state => ({
-  playerPool: filterPool(state.playerPool, state.filters, state.playerSearch),
-  availableToAdd: () => true,
-  isInLineup: (playerId: string) => state.lineup.filter(spot => spot && spot.id === playerId).length > 0,
+
+const getMapStateToProps: () => MapStateToProps<StateProps> = (() => {
+  let _filterPool: ReturnType<typeof filterPool>
+
+  return state => {
+    _filterPool = _filterPool || filterPool(state.playerPool)
+
+    return {
+      playerPool: _filterPool(state.filters, state.playerSearch),
+      availableToAdd: () => true,
+      isInLineup: (playerId: string) => state.lineup.filter(spot => spot && spot.id === playerId).length > 0,
+    }
+  }
 })
 
 export const mapDispatchToProps: MapDispatchToProps<DispatchProps> = dispatch => ({
@@ -87,4 +96,4 @@ export const mapDispatchToProps: MapDispatchToProps<DispatchProps> = dispatch =>
   addToPool: playerId => () => dispatch(actions.addToLineup(playerId)),
 })
 
-export const PlayerPickerGrid = connect(mapStateToProps, mapDispatchToProps)(_PlayerPickerGrid)
+export const PlayerPickerGrid = connect(getMapStateToProps(), mapDispatchToProps)(_PlayerPickerGrid)

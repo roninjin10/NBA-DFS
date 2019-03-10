@@ -1,8 +1,9 @@
 import { Filters } from '../redux/AppState'
 import { Player } from './types'
+import { AutoComplete } from './Autocomplete';
 
 export type FilterWithFilters = (filters: Filters) => (player: Player) => boolean
-export type FilterByString = (searchString: string) => (player: Player) => boolean
+export type FilterByString = (playerFinder: AutoComplete<Player>) => (searchString: string) => Player[]
 
 const filterTeam: FilterWithFilters = filters => player =>
   filters.team.size === 0 || filters.team.has(player.team)
@@ -15,17 +16,14 @@ const filterPosition: FilterWithFilters = filters => player => {
   return positionFilter.size === 0 || positionFilter.has(position1) || positionFilter.has(position2)
 }
 
-// TODO use a trie to do this
-const stringIncludes = (str: string, subStr: string) => str.toLowerCase().includes(subStr.toLowerCase())
+export type PoolFilter = (pool: Player[]) => (filters: Filters, searchString: string) => Player[]
 
-const filterSearchString: FilterByString = searchString => ({ name }) => searchString === '' || stringIncludes(name, searchString.toLowerCase())
+const poolAsObject = (pool: Player[]): { [playerName in string]: Player } => pool.reduce((a, player) => ({ ...a, [player.name]: player }), {})
 
-export interface PoolFilter {
-  (pool: Player[], filters: Filters, searchString: string): Player[]
-}
+export const filterPool: PoolFilter = (pool) => {
+  const playerFinder = new AutoComplete(poolAsObject(pool))
 
-export const filterPool: PoolFilter = (pool, filters, searchString) =>
-  pool
+  return (filters, searchString) => playerFinder.autoComplete(searchString)
     .filter(filterTeam(filters))
     .filter(filterPosition(filters))
-    .filter(filterSearchString(searchString))
+}

@@ -1,52 +1,57 @@
-type TrieChildren = { [key in string]: Trie | undefined }
+import { ObjectWithValues } from "./types";
 
-const values = (obj: Object) => Object.keys(obj).map(key => obj[key])
+type TrieChildren<T> = { [key in string]: Trie<T> }
 
-export class Trie {
-  private _children: TrieChildren = {}
-  get children() { return values(this._children) }
+export class Trie<T> {
+  private readonly _children: TrieChildren<T> = {}
+  private _item: T | null = null
 
-  private _word: string | null = null
-  get word() { return this._word }
+  get children(): Trie<T>[] {
+    return Object.values(this._children)
+  }
 
-  public findNode = (word: string): Trie | null => {
-    let currentTrie: Trie | null = this
-    let letters = word.split('').reverse()
+  get item(): T | null {
+    return this._item
+  }
 
-    while (currentTrie && letters.length) {
-      const nextLetter = letters.pop()
-      currentTrie = currentTrie.children[nextLetter]
+  public findNode = (word: string): Trie<T> | null => {
+    const letterStack = word.split('').reverse()
+
+    let currentTrie: Trie<T> | null = this
+
+    while (currentTrie && letterStack.length) {
+      currentTrie = currentTrie._children[letterStack.pop() as string]
     }
 
     return currentTrie
   }
 
-  public traverse = (cb: (node: Trie) => void) => {
+  public traverse = (cb: (node: Trie<T>) => void) => {
     cb(this)
     this.children.forEach(child => child.traverse(cb))
   }
 
-  public addWords = (words: string[]) => words.forEach(word => this._addWord(word, word))
+  public addItems = (items: ObjectWithValues<T>) => Object.keys(items).forEach(word => this._addItem(items[word], word))
 
-  public findAllWords = (): string[] => {
-    const allWords: string[] = []
+  public findAllValues = (): T[] => {
+    const allValues: T[] = []
 
-    this.traverse(({ word }) => word && allWords.push(word))
+    this.traverse(({ item }) => item && allValues.push(item))
 
-    return allWords
+    return allValues
   }
 
-  private _addWord = (word: string, wholeWord: string) => {
+  private _addItem = (item: T, word: string) => {
     if (word === '') {
-      this.word === wholeWord
+      this._item === item
       return
     }
 
     const nextLetter = word[0]
     const restOfWord = word.slice(1)
 
-    this.children[nextLetter] = this.children[nextLetter] || new Trie()
+    this._children[nextLetter] = this._children[nextLetter] || new Trie<T>()
 
-    this.children[nextLetter]!._addWord(restOfWord, wholeWord)
+    this._children[nextLetter]!._addItem(item, restOfWord)
   }
 }

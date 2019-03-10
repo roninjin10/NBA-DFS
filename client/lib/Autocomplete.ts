@@ -1,9 +1,12 @@
 import { Trie } from "./Trie";
+import { ObjectWithValues } from "./types";
 
-export class AutoComplete {
-  private readonly trie = new Trie()
+export class AutoComplete<T> {
+  private readonly trie = new Trie<T>()
 
-  public addWords = (wordList: string[]) => this.trie.addWords(wordList)
+  constructor(items: ObjectWithValues<T>) {
+    this.trie.addItems(items)
+  }
 
   public autoComplete = (prefix: string) => {
     if (prefix.length === 0) {
@@ -16,6 +19,6 @@ export class AutoComplete {
       return []
     }
 
-    return prefixNode.findAllWords()
+    return prefixNode.findAllValues()
   }
 }
