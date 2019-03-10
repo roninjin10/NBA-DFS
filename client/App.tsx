@@ -5,12 +5,12 @@ import { PositionFilters } from './components/PositionFilters'
 import { PlayerPicker } from './components/PlayerPicker'
 import { Optimizer } from './components/Optimizer'
 import { LineupEditor } from './components/LineupEditor'
-import { Search } from './components/Search'
 import { Heading } from './components/Heading'
 import { PlayerPickerGrid } from './components/PlayerPickerGrid'
 import { Lineup } from './components/Lineup'
 import { LineupButtons } from './components/LineupButtons'
 import { Layout } from './components/Layout'
+import { PlayerPickerSearch } from './components/PlayerPickerSearch';
 
 export const App = () => (
   <Layout>
@@ -18,7 +18,7 @@ export const App = () => (
     <Optimizer>
       <GamePicker />
       <PlayerPicker>
-        <Search />
+        <PlayerPickerSearch />
         <PositionFilters />
         <PlayerPickerGrid />
       </PlayerPicker>

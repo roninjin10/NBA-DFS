@@ -1,11 +1,12 @@
 import { Player, INBALineup, HomeAway } from '../lib/types'
 
 export interface AppState {
-  readonly filters: Filters
+  readonly games: HomeAway[]
   readonly playerPool: Player[]
   readonly lineup: INBALineup
+  readonly pickerSearch: string
+  readonly filters: Filters
   readonly sortBy: SortBy
-  readonly games: HomeAway[]
   readonly isSortByReversed: boolean
   readonly initialPool: Player[]
 }

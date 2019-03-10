@@ -10,3 +10,4 @@ export const reducers: ReducerBuilder<AppState, AppState> = reducerWithInitialSt
   .case(actions.toggleTeamFilter, actions.toggleTeamFilterHandler)
   .case(actions.togglePositionFilter, actions.togglePositionFilterHandler)
   .case(actions.toggleAllGames, actions.toggleAllGamesHandler)
+  .case(actions.setPickerSearch, actions.setPickerSearchHandler)

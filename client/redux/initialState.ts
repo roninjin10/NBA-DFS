@@ -43,4 +43,5 @@ export const INITIAL_STATE: AppState = freeze({
   filters: INITIAL_FILTERS,
   sortBy: INITIAL_SORT_BY,
   games: INITIAL_GAMES,
+  pickerSearch: '',
 })
