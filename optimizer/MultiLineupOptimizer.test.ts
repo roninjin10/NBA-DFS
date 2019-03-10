@@ -2,7 +2,6 @@ import { IsValidFunction } from "./lib/IsValidFunction";
 import { FantasyLineup } from "./lib/FantasyLineup";
 import { IPlayer } from "./lib/Player";
 import { MultiLineupOptimizer } from "./MultiLineupOptimizer";
-import { expect } from 'chai'
 
 interface TestData {
   playerPool: IPlayer[]
@@ -30,7 +29,7 @@ describe('MultiLineupOptimizler', () => {
 
       expect(
         await slo.findOptimals(optimalLineups.length)
-      ).to.deep.equal(optimalLineups)
+      ).toEqual(optimalLineups)
     }
   })
 })
