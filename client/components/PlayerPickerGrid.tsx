@@ -17,41 +17,37 @@ interface DispatchProps {
 
 type PlayerPickerGridProps = StateProps & DispatchProps
 
-const _PlayerPickerGrid: FunctionComponent<PlayerPickerGridProps> = props => {
-  const { playerPool, addToPool, onClick } = props
-
-  const renderedPool = playerPool.map(player => {
-    return <PlayerPoolRow player={player} onClick={addToPool} key={player.id} />
-  })
-
-  return (
-    <table className="player-pool">
-      <PlayerPoolHeadings onClick={onClick} />
-      <tbody>{renderedPool}</tbody>
-    </table>
-  )
-}
-
-const noop = () => {}
+const _PlayerPickerGrid: FunctionComponent<PlayerPickerGridProps> = ({
+  playerPool,
+  addToPool,
+  onClick,
+}) => (
+  <table className="player-pool">
+    <PlayerPoolHeadings onClick={onClick} />
+    <tbody>
+      {playerPool.map(player => (
+        <PlayerPoolRow player={player} onClick={addToPool} key={player.id} />
+      ))}
+    </tbody>
+  </table>
+)
 
 interface PlayerPoolHeadingsProps {
   onClick: (heading: keyof Player) => AnyAction
 }
 
-export const PlayerPoolHeadings: FunctionComponent<PlayerPoolHeadingsProps> = ({ onClick }) => {
-  return (
-    <thead>
-      <tr>
-        <th onClick={() => onClick('gameInfo')}>GAME</th>
-        <th onClick={() => onClick('position')}>POS</th>
-        <th onClick={() => onClick('name')}>PLAYER</th>
-        <th onClick={() => onClick('salary')}>SALARY</th>
-        <th onClick={() => onClick('fantasyPoints')}>POINTS</th>
-        <th onClick={noop}>VALUE</th>
-      </tr>
-    </thead>
-  )
-}
+export const PlayerPoolHeadings: FunctionComponent<PlayerPoolHeadingsProps> = ({ onClick }) => (
+  <thead>
+    <tr>
+      <th onClick={() => onClick('gameInfo')}>GAME</th>
+      <th onClick={() => onClick('position')}>POS</th>
+      <th onClick={() => onClick('name')}>PLAYER</th>
+      <th onClick={() => onClick('salary')}>SALARY</th>
+      <th onClick={() => onClick('fantasyPoints')}>POINTS</th>
+      <th onClick={() => {}}>VALUE</th>
+    </tr>
+  </thead>
+)
 
 interface PlayerPoolRowProps {
   player: Player
@@ -79,20 +75,17 @@ export const PlayerPoolRow: FunctionComponent<PlayerPoolRowProps> = ({
   )
 }
 
-const mapStateToProps: MapStateToProps<StateProps> = state => {
-  const isInLineup = (playerId: string) =>
-    state.lineup.filter(spot => spot && spot.id === playerId).length > 0
-  const availableToAdd = () => true
+const mapStateToProps: MapStateToProps<StateProps> = state => ({
+  playerPool: state.playerPool,
+  availableToAdd: () => true,
+  isInLineup: (playerId: string) =>
+    state.lineup.filter(spot => spot && spot.id === playerId).length > 0,
+})
 
-  return { playerPool: state.playerPool, availableToAdd, isInLineup }
-}
-
-export const mapDispatchToProps: MapDispatchToProps<DispatchProps> = dispatch => {
-  return {
-    onClick: heading => dispatch(actions.setPlayerSort(heading)),
-    addToPool: playerId => () => dispatch(actions.addToLineup(playerId)),
-  }
-}
+export const mapDispatchToProps: MapDispatchToProps<DispatchProps> = dispatch => ({
+  onClick: heading => dispatch(actions.setPlayerSort(heading)),
+  addToPool: playerId => () => dispatch(actions.addToLineup(playerId)),
+})
 
 export const PlayerPickerGrid = connect(
   mapStateToProps,

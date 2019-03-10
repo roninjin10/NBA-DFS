@@ -5,6 +5,4 @@ interface NavBarProps {
   reduxDispatch: ReduxDispatch
 }
 
-export const NavBar: FunctionComponent<NavBarProps> = ({ reduxDispatch }) => {
-  return <div>Nav bar fantasy stacks</div>
-}
+export const NavBar: FunctionComponent<NavBarProps> = () => <div>Nav bar fantasy stacks</div>

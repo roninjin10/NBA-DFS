@@ -25,20 +25,14 @@ interface DummyDataToPlayer {
   (player: DummyDataPlayer): Player
 }
 
-export const dummyDataToPlayer: DummyDataToPlayer = player => {
-  const gameInfo = player['Game Info']
-
-  const { home, away } = getHomeAway(gameInfo)
-
-  return {
-    position: player.Position,
-    namePlusId: player['Name + ID'],
-    name: player.Name,
-    id: player.ID,
-    team: player.TeamAbbrev,
-    rosterPosition: player['Roster Position'],
-    salary: Number(player.Salary),
-    gameInfo: { home, away },
-    fantasyPoints: Number(player.AvgPointsPerGame),
-  }
-}
+export const dummyDataToPlayer: DummyDataToPlayer = player => ({
+  position: player.Position,
+  namePlusId: player['Name + ID'],
+  name: player.Name,
+  id: player.ID,
+  team: player.TeamAbbrev,
+  rosterPosition: player['Roster Position'],
+  salary: Number(player.Salary),
+  gameInfo: getHomeAway(player['Game Info']),
+  fantasyPoints: Number(player.AvgPointsPerGame),
+})

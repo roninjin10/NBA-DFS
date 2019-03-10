@@ -3,8 +3,7 @@ import { Player } from './types'
 
 export type SubFilter = (filters: Filters) => (player: Player) => boolean
 
-const filterTeam: SubFilter = filters => player =>
-  filters.team.size === 0 || filters.team.has(player.team)
+const filterTeam: SubFilter = filters => player => filters.team.size === 0 || filters.team.has(player.team)
 
 const filterPosition: SubFilter = filters => player => {
   const positionFilter = filters.position
@@ -18,6 +17,6 @@ export interface PoolFilter {
   (pool: Player[], filters: Filters): Player[]
 }
 
-export const filterPool: PoolFilter = (pool, filters) => {
-  return pool.filter(filterTeam(filters)).filter(filterPosition(filters))
-}
+export const filterPool: PoolFilter = (pool, filters) => pool
+  .filter(filterTeam(filters))
+  .filter(filterPosition(filters))

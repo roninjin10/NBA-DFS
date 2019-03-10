@@ -40,20 +40,14 @@ const mapStateToProps: MapStateToProps<StateProps> = ({
   sortBy,
   isSortByReversed,
   filters,
-}) => {
-  const getClassName: StateProps['getClassName'] = () => classNames({ selected: false })
+}) => ({
+  positions: POSITIONS,
+  getClassName: () => classNames({ selected: false }),
+})
 
-  return {
-    positions: POSITIONS,
-    getClassName,
-  }
-}
-
-const mapDispatchToProps: MapDispatchToProps<DispatchProps> = dispatch => {
-  const onClickHandler: DispatchProps['onClickHandler'] = (position: string) => () =>
-    dispatch(actions.togglePositionFilter(position))
-  return { onClickHandler }
-}
+const mapDispatchToProps: MapDispatchToProps<DispatchProps> = dispatch => ({
+  onClickHandler: (position: string) => () => dispatch(actions.togglePositionFilter(position)),
+})
 
 export const PositionFilters = connect(
   mapStateToProps,

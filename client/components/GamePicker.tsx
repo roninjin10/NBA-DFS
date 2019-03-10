@@ -21,24 +21,20 @@ const _GamePicker: FunctionComponent<GamePickerProps> = ({
   toggleTeamFilter,
   toggleAllGames,
   getClassName,
-}) => {
-  const gameCells = games.map(({ home, away }) => (
-    <GameCell
-      home={home}
-      away={away}
-      toggleTeamSelect={toggleTeamFilter}
-      getClassName={getClassName}
-      key={home}
-    />
-  ))
-
-  return (
-    <ul className="GamePicker">
-      <AllGamesPicker gameCount={games.length} toggleAllGames={toggleAllGames} />
-      {gameCells}
-    </ul>
-  )
-}
+}) => (
+  <ul className="GamePicker">
+    <AllGamesPicker gameCount={games.length} toggleAllGames={toggleAllGames} />
+    {games.map(({ home, away }) => (
+      <GameCell
+        home={home}
+        away={away}
+        toggleTeamSelect={toggleTeamFilter}
+        getClassName={getClassName}
+        key={home}
+      />
+    ))}
+  </ul>
+)
 
 interface GameCellProps {
   home: string
@@ -47,52 +43,42 @@ interface GameCellProps {
   getClassName: (team: string) => string
 }
 
-const GameCell: FunctionComponent<GameCellProps> = props => {
-  const { toggleTeamSelect, getClassName, home, away } = props
-
-  return (
-    <li>
-      <div onClick={() => toggleTeamSelect(away)} className={getClassName(away)}>
-        {away}
-      </div>
-      <div onClick={() => toggleTeamSelect(home)} className={getClassName(home)}>
-        {'@' + home}
-      </div>
-    </li>
-  )
-}
+const GameCell: FunctionComponent<GameCellProps> = ({
+  toggleTeamSelect,
+  getClassName,
+  home,
+  away,
+}) => (
+  <li>
+    <div onClick={() => toggleTeamSelect(away)} className={getClassName(away)}>
+      {away}
+    </div>
+    <div onClick={() => toggleTeamSelect(home)} className={getClassName(home)}>
+      {'@' + home}
+    </div>
+  </li>
+)
 
 interface AllGamesPickerProps {
   gameCount: number
   toggleAllGames: () => void
 }
 
-const AllGamesPicker: FunctionComponent<AllGamesPickerProps> = props => {
-  const { toggleAllGames, gameCount } = props
+const AllGamesPicker: FunctionComponent<AllGamesPickerProps> = ({ toggleAllGames, gameCount }) => (
+  <li onClick={toggleAllGames}>
+    <div>{`All Games (${gameCount})`}</div>
+  </li>
+)
 
-  return (
-    <li onClick={toggleAllGames}>
-      <div>{`All Games (${gameCount})`}</div>
-    </li>
-  )
-}
+const mapStateToProps: MapStateToProps<StateProps> = ({ games, filters }) => ({
+  games: games,
+  getClassName: team => classNames({ selected: filters.team.has(team) }),
+})
 
-const mapStateToProps: MapStateToProps<StateProps> = state => {
-  const getTeamClassName: StateProps['getClassName'] = team =>
-    classNames({ selected: state.filters.team.has(team) })
-
-  return {
-    games: state.games,
-    getClassName: getTeamClassName,
-  }
-}
-
-const mapDispatchToProps: MapDispatchToProps<DispatchProps> = dispatch => {
-  return {
-    toggleAllGames: () => dispatch(actions.toggleAllGames()),
-    toggleTeamFilter: team => dispatch(actions.toggleTeamFilter(team)),
-  }
-}
+const mapDispatchToProps: MapDispatchToProps<DispatchProps> = dispatch => ({
+  toggleAllGames: () => dispatch(actions.toggleAllGames()),
+  toggleTeamFilter: team => dispatch(actions.toggleTeamFilter(team)),
+})
 
 export const GamePicker = connect(
   mapStateToProps,
