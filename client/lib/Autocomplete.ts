@@ -9,16 +9,13 @@ export class AutoComplete<T> {
   }
 
   public autoComplete = (prefix: string) => {
-    if (prefix.length === 0) {
-      throw new Error('Prefix cannot be empty!')
-    }
-
     const prefixNode = this.trie.findNode(prefix)
 
     if (!prefixNode) {
       return []
     }
 
-    return prefixNode.findAllValues()
+    const out = prefixNode.findAllValues()
+    return out
   }
 }

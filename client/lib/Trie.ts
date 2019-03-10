@@ -36,14 +36,14 @@ export class Trie<T> {
   public findAllValues = (): T[] => {
     const allValues: T[] = []
 
-    this.traverse(({ item }) => item && allValues.push(item))
+    this.traverse(node => node.item && allValues.push(node.item))
 
     return allValues
   }
 
   private _addItem = (item: T, word: string) => {
     if (word === '') {
-      this._item === item
+      this._item = item
       return
     }
 

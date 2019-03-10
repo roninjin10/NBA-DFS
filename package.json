@@ -13,9 +13,6 @@
     "nuke": "yarn cache clean && rm -r node_modules/"
   },
   "dependencies": {
-    "@types/classnames": "^2.2.7",
-    "@types/react-test-renderer": "^16.8.1",
-    "axios": "^0.18.0",
     "classnames": "^2.2.6",
     "connected-react-router": "^6.1.0",
     "express": "^4.16.4",
@@ -35,6 +32,8 @@
     "typescript-fsa-reducers": "^1.1.0"
   },
   "devDependencies": {
+    "@types/classnames": "^2.2.7",
+    "@types/react-test-renderer": "^16.8.1",
     "@types/express": "^4.16.0",
     "@types/express-graphql": "^0.6.2",
     "@types/graphql": "^14.0.4",

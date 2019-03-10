@@ -82,11 +82,10 @@ const getMapStateToProps: () => MapStateToProps<StateProps> = (() => {
 
   return state => {
     _filterPool = _filterPool || filterPool(state.playerPool)
-
     return {
       playerPool: _filterPool(state.filters, state.playerSearch),
       availableToAdd: () => true,
-      isInLineup: (playerId: string) => state.lineup.filter(spot => spot && spot.id === playerId).length > 0,
+      isInLineup: playerId => !!state.lineup.find(rosterSpot => !!rosterSpot && rosterSpot.id === playerId),
     }
   }
 })

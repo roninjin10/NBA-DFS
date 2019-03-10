@@ -23,7 +23,8 @@ const poolAsObject = (pool: Player[]): { [playerName in string]: Player } => poo
 export const filterPool: PoolFilter = (pool) => {
   const playerFinder = new AutoComplete(poolAsObject(pool))
 
-  return (filters, searchString) => playerFinder.autoComplete(searchString)
-    .filter(filterTeam(filters))
-    .filter(filterPosition(filters))
+  return (filters, searchString) =>
+    playerFinder.autoComplete(searchString)
+      .filter(filterTeam(filters))
+      .filter(filterPosition(filters))
 }
