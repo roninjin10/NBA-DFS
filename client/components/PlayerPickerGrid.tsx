@@ -26,7 +26,7 @@ const _PlayerPickerGrid: FunctionComponent<PlayerPickerGridProps> = ({
     <PlayerPoolHeadings onClick={onClick} />
     <tbody>
       {playerPool.map(player => (
-        <PlayerPoolRow player={player} onClick={addToPool} key={player.id} />
+        <PlayerPoolRow player={player} onClick={addToPool(player.id)} key={player.id} />
       ))}
     </tbody>
   </table>
@@ -51,7 +51,7 @@ export const PlayerPoolHeadings: FunctionComponent<PlayerPoolHeadingsProps> = ({
 
 interface PlayerPoolRowProps {
   player: Player
-  onClick: Function
+  onClick: () => void
 }
 
 export const PlayerPoolRow: FunctionComponent<PlayerPoolRowProps> = ({
@@ -64,7 +64,7 @@ export const PlayerPoolRow: FunctionComponent<PlayerPoolRowProps> = ({
   const displayedGameInfo = gameInfo.home !== '' ? `${gameInfo.away}@${gameInfo.home}` : ''
 
   return (
-    <tr onClick={() => onClick()}>
+    <tr onClick={onClick}>
       <td className="game">{displayedGameInfo}</td>
       <td className="position">{position}</td>
       <td className="nickname">{name}</td>

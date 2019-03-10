@@ -73,12 +73,14 @@ const toggleFilterHandler: ActionHandler<ToggleFilterHandlerPayload> = (
 })
 
 export const toggleTeamFilter = actionCreator<string>('toggleTeamFilter')
-export const toggleTeamFilterHandler: ActionHandler<string> = (state, team) => toggleFilterHandler(state, {
-  item: team,
-  filter: 'team',
-})
+export const toggleTeamFilterHandler: ActionHandler<string> = (state, team) =>
+  toggleFilterHandler(state, {
+    item: team,
+    filter: 'team',
+  })
 
-const allTeams = (games: AppState['games']) => games.reduce((a, { home, away }) => [...a, home, away], [] as string[])
+const allTeams = (games: AppState['games']) =>
+  games.reduce((a, { home, away }) => [...a, home, away], [] as string[])
 
 export const toggleAllGames = actionCreator<undefined>('toggleAllGames')
 export const toggleAllGamesHandler: ActionHandler<undefined> = state => ({
@@ -90,7 +92,8 @@ export const toggleAllGamesHandler: ActionHandler<undefined> = state => ({
 })
 
 export const togglePositionFilter = actionCreator<string>('togglePositionFilter')
-export const togglePositionFilterHandler: ActionHandler<string> = (state, position) => toggleFilterHandler(state, {
-  item: position,
-  filter: 'position',
-})
+export const togglePositionFilterHandler: ActionHandler<string> = (state, position) =>
+  toggleFilterHandler(state, {
+    item: position,
+    filter: 'position',
+  })

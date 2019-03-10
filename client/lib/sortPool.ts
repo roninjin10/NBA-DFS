@@ -17,8 +17,8 @@ interface SortPool {
   (field: keyof Player, playerPool: Player[], isReversed: boolean): Player[]
 }
 
-export const sortPool: SortPool = (field, playerPool, isReversed) => [...playerPool]
-  .sort((playerA: Player, playerB: Player) => {
+export const sortPool: SortPool = (field, playerPool, isReversed) =>
+  [...playerPool].sort((playerA: Player, playerB: Player) => {
     const [a, b] = [playerA, playerB].map(player => player[field])
 
     const [firstItem, secondItem] = (!isReversed ? [b, a] : [a, b]).map(item =>

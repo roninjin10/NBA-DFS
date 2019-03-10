@@ -21,17 +21,15 @@ const _PositionFilters: FunctionComponent<AllProps> = ({
   getClassName,
   onClickHandler,
   positions,
-}) => {
-  const createButton = (position: string) => (
-    <button className={getClassName(position)} onClick={onClickHandler(position)} key={position}>
-      {position}
-    </button>
-  )
-
-  const buttons = positions.map(createButton)
-
-  return <div className="pool-filters">{buttons}</div>
-}
+}) => (
+  <div className="pool-filters">
+    {positions.map(position => (
+      <button className={getClassName(position)} onClick={onClickHandler(position)} key={position}>
+        {position}
+      </button>
+    ))}
+  </div>
+)
 
 const mapStateToProps: MapStateToProps<StateProps> = ({
   playerPool,
@@ -46,7 +44,7 @@ const mapStateToProps: MapStateToProps<StateProps> = ({
 })
 
 const mapDispatchToProps: MapDispatchToProps<DispatchProps> = dispatch => ({
-  onClickHandler: (position: string) => () => dispatch(actions.togglePositionFilter(position)),
+  onClickHandler: position => () => dispatch(actions.togglePositionFilter(position)),
 })
 
 export const PositionFilters = connect(

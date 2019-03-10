@@ -15,16 +15,16 @@ const sumField = (field: 'fantasyPoints' | 'salary') => (lineup: (Player | null)
 const currentSalary = sumField('salary')
 const currentFantasyPoints = sumField('fantasyPoints')
 
-const getValidPositions = (lineupShape: LineupShape, position: string) => [...lineupShape]
-  .reduce(
+const getValidPositions = (lineupShape: LineupShape, position: string) =>
+  [...lineupShape].reduce(
     (a, positionShape, i) => {
       return positionShape.has(position as any) ? [...a, i] : a
     },
     [] as number[]
   )
 
-const getFilledSpots = (lineup: PlayerRoster): number[] => [...lineup]
-  .reduce(
+const getFilledSpots = (lineup: PlayerRoster): number[] =>
+  [...lineup].reduce(
     (a, spot, i) => {
       return spot !== null ? [...a, i] : a
     },
@@ -99,7 +99,8 @@ const SALARY_CAP_NBA_DK = FIFTY_THOUSAND
 const addPlayersToNbaLineup = sportSpecificLineup(nbaDkShape, SALARY_CAP_NBA_DK)
 
 export class NBALineup extends Array<Player | null> {
-  toArray = () => [this[0], this[1], this[2], this[3], this[4], this[5], this[6], this[7]] as INBALineup
+  toArray = () =>
+    [this[0], this[1], this[2], this[3], this[4], this[5], this[6], this[7]] as INBALineup
 
   constructor(lineup: (Player | null)[] = []) {
     super(...(addPlayersToNbaLineup(lineup.filter(spot => spot !== null) as Player[]) as any[]))
@@ -107,7 +108,8 @@ export class NBALineup extends Array<Player | null> {
 
   public readonly addPlayers = (...players: Player[]) => new NBALineup([...this, ...players])
 
-  public readonly removePlayer = (index: ZeroThroughEight) => new NBALineup(this.map((spot, i) => (i === index ? null : spot)))
+  public readonly removePlayer = (index: ZeroThroughEight) =>
+    new NBALineup(this.map((spot, i) => (i === index ? null : spot)))
 
   public readonly salary = () => currentSalary(this)
   public readonly fantasyPoints = () => currentFantasyPoints(this)

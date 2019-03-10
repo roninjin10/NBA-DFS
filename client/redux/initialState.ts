@@ -15,11 +15,12 @@ interface GetGames {
   (playerPool: Player[]): HomeAway[]
 }
 
-const getGames: GetGames = playerPool => freeze(
-  unique(playerPool.map(player => player.gameInfo).map(info => JSON.stringify(info))).map(
-    jsonString => JSON.parse(jsonString)
+const getGames: GetGames = playerPool =>
+  freeze(
+    unique(playerPool.map(player => player.gameInfo).map(info => JSON.stringify(info))).map(
+      jsonString => JSON.parse(jsonString)
+    )
   )
-)
 
 const INITIAL_POOL: Player[] = freeze(rawPlayerPool.map(dummyDataToPlayer))
 
