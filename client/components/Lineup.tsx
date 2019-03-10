@@ -1,8 +1,8 @@
 import React, { StatelessComponent } from 'react'
 import * as actions from '../redux/actions'
-import { PlayerPoolRow } from './PlayerPickerGrid'
 import { ZeroThroughEight, Player, MapStateToProps, MapDispatchToProps } from '../lib/types'
 import { connect } from 'react-redux'
+import { PlayerPickerRow } from './PlayerPickerGrid';
 
 interface AggregateStat {
   (lineup: (Player | null)[]): string
@@ -71,7 +71,7 @@ const _Lineup: StatelessComponent<LineupProps> = ({ lineup, removeFromLineup }) 
       </thead>
       <tbody>
         {lineup.map((player, i) => (
-          <PlayerPoolRow
+          <PlayerPickerRow
             player={player || makeNullPlayer(positions[i])}
             key={i}
             onClick={removeFromLineup(validateZeroThroughEight(i))}

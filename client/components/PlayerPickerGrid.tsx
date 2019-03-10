@@ -11,7 +11,7 @@ interface StateProps {
 }
 
 interface DispatchProps {
-  onClick: PlayerPoolHeadingsProps['onClick']
+  onClick: PlayerPickerHeadingsProps['onClick']
   addToPool: (playerId: string) => () => void
 }
 
@@ -22,21 +22,21 @@ const _PlayerPickerGrid: FunctionComponent<PlayerPickerGridProps> = ({
   addToPool,
   onClick,
 }) => (
-  <table className="player-pool">
-    <PlayerPoolHeadings onClick={onClick} />
-    <tbody>
-      {playerPool.map(player => (
-        <PlayerPoolRow player={player} onClick={addToPool(player.id)} key={player.id} />
-      ))}
-    </tbody>
-  </table>
-)
+    <table className="player-pool">
+      <PlayerPickerHeadings onClick={onClick} />
+      <tbody>
+        {playerPool.map(player => (
+          <PlayerPickerRow player={player} onClick={addToPool(player.id)} key={player.id} />
+        ))}
+      </tbody>
+    </table>
+  )
 
-interface PlayerPoolHeadingsProps {
+interface PlayerPickerHeadingsProps {
   onClick: (heading: keyof Player) => AnyAction
 }
 
-export const PlayerPoolHeadings: FunctionComponent<PlayerPoolHeadingsProps> = ({ onClick }) => (
+export const PlayerPickerHeadings: FunctionComponent<PlayerPickerHeadingsProps> = ({ onClick }) => (
   <thead>
     <tr>
       <th onClick={() => onClick('gameInfo')}>GAME</th>
@@ -44,17 +44,17 @@ export const PlayerPoolHeadings: FunctionComponent<PlayerPoolHeadingsProps> = ({
       <th onClick={() => onClick('name')}>PLAYER</th>
       <th onClick={() => onClick('salary')}>SALARY</th>
       <th onClick={() => onClick('fantasyPoints')}>POINTS</th>
-      <th onClick={() => {}}>VALUE</th>
+      <th onClick={() => { }}>VALUE</th>
     </tr>
   </thead>
 )
 
-interface PlayerPoolRowProps {
+interface PlayerPickerRowProps {
   player: Player
   onClick: () => void
 }
 
-export const PlayerPoolRow: FunctionComponent<PlayerPoolRowProps> = ({
+export const PlayerPickerRow: FunctionComponent<PlayerPickerRowProps> = ({
   player: { name, salary, gameInfo, position, fantasyPoints },
   onClick,
 }) => {
