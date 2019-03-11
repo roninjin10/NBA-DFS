@@ -15,7 +15,10 @@ export class Trie<T> {
   }
 
   public findNode = (word: string): Trie<T> | null => {
-    const letterStack = word.split('').reverse()
+    const letterStack = word
+      .toLowerCase()
+      .split('')
+      .reverse()
 
     let currentTrie: Trie<T> | null = this
 
@@ -42,13 +45,15 @@ export class Trie<T> {
   }
 
   private _addItem = (item: T, word: string) => {
-    if (word === '') {
+    const _word = word.toLowerCase()
+
+    if (_word === '') {
       this._item = item
       return
     }
 
-    const nextLetter = word[0]
-    const restOfWord = word.slice(1)
+    const nextLetter = _word[0]
+    const restOfWord = _word.slice(1)
 
     this._children[nextLetter] = this._children[nextLetter] || new Trie<T>()
 
