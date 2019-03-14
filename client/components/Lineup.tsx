@@ -2,7 +2,7 @@ import React, { StatelessComponent } from 'react'
 import * as actions from '../redux/actions'
 import { ZeroThroughEight, Player, MapStateToProps, MapDispatchToProps } from '../lib/types'
 import { connect } from 'react-redux'
-import { PlayerPickerRow } from './PlayerPickerGrid';
+import { PlayerPickerRow } from './PlayerPickerGrid'
 
 interface AggregateStat {
   (lineup: (Player | null)[]): string

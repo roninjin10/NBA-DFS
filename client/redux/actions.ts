@@ -4,6 +4,7 @@ import * as functionalSets from '../lib/functionalSets'
 import { NBALineup } from '../lib/NBALineup'
 import { ZeroThroughEight, Player } from '../lib/types'
 
+// can pass in an isError function here
 const actionCreator = actionCreatorFactory('app')
 
 type PlayerId = string
@@ -103,3 +104,6 @@ export const setPickerSearchHandler: ActionHandler<string> = (state, searchStrin
   ...state,
   playerSearch: searchString,
 })
+
+export const updateState = actionCreator<AppState>('__updateState__')
+export const updateStateHandler: ActionHandler<AppState> = (_, newState) => newState

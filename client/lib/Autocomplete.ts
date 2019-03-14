@@ -1,5 +1,5 @@
-import { Trie } from "./Trie";
-import { ObjectWithValues } from "./types";
+import { Trie } from './Trie'
+import { ObjectWithValues } from './types'
 
 export class AutoComplete<T> {
   private readonly trie = new Trie<T>()

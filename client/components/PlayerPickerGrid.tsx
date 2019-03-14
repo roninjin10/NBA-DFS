@@ -23,15 +23,15 @@ const _PlayerPickerGrid: FunctionComponent<PlayerPickerGridProps> = ({
   addToPool,
   onClick,
 }) => (
-    <table className="player-pool">
-      <PlayerPickerHeadings onClick={onClick} />
-      <tbody>
-        {playerPool.map(player => (
-          <PlayerPickerRow player={player} onClick={addToPool(player.id)} key={player.id} />
-        ))}
-      </tbody>
-    </table>
-  )
+  <table className="player-pool">
+    <PlayerPickerHeadings onClick={onClick} />
+    <tbody>
+      {playerPool.map(player => (
+        <PlayerPickerRow player={player} onClick={addToPool(player.id)} key={player.id} />
+      ))}
+    </tbody>
+  </table>
+)
 
 interface PlayerPickerHeadingsProps {
   onClick: (heading: keyof Player) => AnyAction
@@ -45,7 +45,7 @@ export const PlayerPickerHeadings: FunctionComponent<PlayerPickerHeadingsProps> 
       <th onClick={() => onClick('name')}>PLAYER</th>
       <th onClick={() => onClick('salary')}>SALARY</th>
       <th onClick={() => onClick('fantasyPoints')}>POINTS</th>
-      <th onClick={() => { }}>VALUE</th>
+      <th onClick={() => {}}>VALUE</th>
     </tr>
   </thead>
 )
@@ -76,8 +76,7 @@ export const PlayerPickerRow: FunctionComponent<PlayerPickerRowProps> = ({
   )
 }
 
-
-const getMapStateToProps: () => MapStateToProps<StateProps> = (() => {
+const getMapStateToProps: () => MapStateToProps<StateProps> = () => {
   let _filterPool: ReturnType<typeof filterPool>
 
   return state => {
@@ -85,14 +84,18 @@ const getMapStateToProps: () => MapStateToProps<StateProps> = (() => {
     return {
       playerPool: _filterPool(state.filters, state.playerSearch),
       availableToAdd: () => true,
-      isInLineup: playerId => !!state.lineup.find(rosterSpot => !!rosterSpot && rosterSpot.id === playerId),
+      isInLineup: playerId =>
+        !!state.lineup.find(rosterSpot => !!rosterSpot && rosterSpot.id === playerId),
     }
   }
-})
+}
 
 export const mapDispatchToProps: MapDispatchToProps<DispatchProps> = dispatch => ({
   onClick: heading => dispatch(actions.setPlayerSort(heading)),
   addToPool: playerId => () => dispatch(actions.addToLineup(playerId)),
 })
 
-export const PlayerPickerGrid = connect(getMapStateToProps(), mapDispatchToProps)(_PlayerPickerGrid)
+export const PlayerPickerGrid = connect(
+  getMapStateToProps(),
+  mapDispatchToProps
+)(_PlayerPickerGrid)

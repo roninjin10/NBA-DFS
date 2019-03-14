@@ -1,4 +1,4 @@
-import { ObjectWithValues } from "./types";
+import { ObjectWithValues } from './types'
 
 type TrieChildren<T> = { [key in string]: Trie<T> }
 
@@ -34,7 +34,8 @@ export class Trie<T> {
     this.children.forEach(child => child.traverse(cb))
   }
 
-  public addItems = (items: ObjectWithValues<T>) => Object.keys(items).forEach(word => this._addItem(items[word], word))
+  public addItems = (items: ObjectWithValues<T>) =>
+    Object.keys(items).forEach(word => this._addItem(items[word], word))
 
   public findAllValues = (): T[] => {
     const allValues: T[] = []

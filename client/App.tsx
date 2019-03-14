@@ -10,7 +10,7 @@ import { PlayerPickerGrid } from './components/PlayerPickerGrid'
 import { Lineup } from './components/Lineup'
 import { LineupButtons } from './components/LineupButtons'
 import { Layout } from './components/Layout'
-import { PlayerPickerSearch } from './components/PlayerPickerSearch';
+import { PlayerPickerSearch } from './components/PlayerPickerSearch'
 
 export const App = () => (
   <Layout>

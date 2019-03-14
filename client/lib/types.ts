@@ -1,10 +1,12 @@
 import { AnyAction } from 'typescript-fsa'
-import { AppState } from '../redux/AppState'
 import { Dispatch } from 'redux'
+import { AppState } from '../redux/AppState'
 
 export type ObjectWithValues<T> = { [key in string]: T }
 
 export type ReduxDispatch = (anyAction: AnyAction) => AnyAction
+
+export type Args<F extends Function> = F extends (...args: infer A) => any ? A : never
 
 export type SecondArg<F extends Function> = F extends (
   firstArg: any,
