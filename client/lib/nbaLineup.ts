@@ -4,7 +4,7 @@ type LineupShape = Set<NBAPosition>[]
 
 export type PlayerRoster = (Player | null)[]
 
-const getEmptyLineup = (lineupShape: LineupShape): PlayerRoster => lineupShape.map(() => null)
+const buildEmptyLinep = (lineupShape: LineupShape): PlayerRoster => lineupShape.map(() => null)
 
 const sumField = (field: 'fantasyPoints' | 'salary') => (lineup: (Player | null)[]) => {
   return lineup
@@ -12,8 +12,8 @@ const sumField = (field: 'fantasyPoints' | 'salary') => (lineup: (Player | null)
     .reduce((total, points) => total + points, 0)
 }
 
-const currentSalary = sumField('salary')
-const currentFantasyPoints = sumField('fantasyPoints')
+export const getTotalSalary = sumField('salary')
+export const getTotalFantasyPoints = sumField('fantasyPoints')
 
 const getValidPositions = (lineupShape: LineupShape, position: string) =>
   [...lineupShape].reduce(
@@ -34,13 +34,13 @@ const getFilledSpots = (lineup: PlayerRoster): number[] =>
 const sportSpecificLineup = (lineupShape: LineupShape, salaryCap: number) => {
   const _addPlayersToLineup = (
     playersToAdd: Player[],
-    currentLineup = getEmptyLineup(lineupShape)
+    currentLineup = buildEmptyLinep(lineupShape)
   ): PlayerRoster | null => {
     const [nextPlayer, ...restOfPlayers] = playersToAdd
 
     if (!nextPlayer) return currentLineup
 
-    if (currentSalary(currentLineup) + Number(nextPlayer.fantasyPoints) > salaryCap) return null
+    if (getTotalSalary(currentLineup) + Number(nextPlayer.fantasyPoints) > salaryCap) return null
 
     for (const position of nextPlayer.position.split('/')) {
       const filledSpots = new Set(getFilledSpots(currentLineup))
@@ -64,7 +64,7 @@ const sportSpecificLineup = (lineupShape: LineupShape, salaryCap: number) => {
 
   const addPlayersToLineup = (
     playersToAdd: Player[],
-    currentLineup = getEmptyLineup(lineupShape)
+    currentLineup = buildEmptyLinep(lineupShape)
   ): PlayerRoster => {
     const out = _addPlayersToLineup(playersToAdd, currentLineup)
     if (!out) throw new Error('Cannot add players to roster')
@@ -96,21 +96,10 @@ const nbaDkShape: LineupShape = [
 const FIFTY_THOUSAND = 50000
 const SALARY_CAP_NBA_DK = FIFTY_THOUSAND
 
-const addPlayersToNbaLineup = sportSpecificLineup(nbaDkShape, SALARY_CAP_NBA_DK)
+export const addPlayersToNbaLineup = (players: (Player | null)[]) => sportSpecificLineup(nbaDkShape, SALARY_CAP_NBA_DK)(players.filter(player => player))
 
-export class NBALineup extends Array<Player | null> {
-  toArray = () =>
-    [this[0], this[1], this[2], this[3], this[4], this[5], this[6], this[7]] as INBALineup
+export const defaultNbaLineup: INBALineup = [null, null, null, null, null, null, null, null]
 
-  constructor(lineup: (Player | null)[] = []) {
-    super(...(addPlayersToNbaLineup(lineup.filter(spot => spot !== null) as Player[]) as any[]))
-  }
+export const addPlayers = (lineup: INBALineup, ...players: Player[]) => addPlayersToNbaLineup([...lineup, ...players])
 
-  public readonly addPlayers = (...players: Player[]) => new NBALineup([...this, ...players])
-
-  public readonly removePlayer = (index: ZeroThroughEight) =>
-    new NBALineup(this.map((spot, i) => (i === index ? null : spot)))
-
-  public readonly salary = () => currentSalary(this)
-  public readonly fantasyPoints = () => currentFantasyPoints(this)
-}
+export const removePlayer = (lineup: INBALineup, index: ZeroThroughEight) => lineup.map((spot, i) => (i === index ? null : spot)) as INBALineup

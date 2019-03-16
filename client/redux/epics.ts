@@ -9,12 +9,11 @@ interface Message<T> {
   payload: T
 }
 
-class Epics {
-  private readonly messageWorker = messageWorker(new MessageChannel())
+const messageWorker = messageWorker(new MessageChannel())
 
-  dispatchToProxyStore: Epic = action$ =>
-    action$.pipe(mergeMap(action => this.messageWorker(action)))
-}
+const dispatchToProxyStore: Epic = action$ => action$.pipe(
+  mergeMap(action => this.messageWorker(action))
+)
 
 const epics = new Epics()
 
