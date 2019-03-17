@@ -34,34 +34,18 @@ const _listenToWorker: ListenToWorker = cb =>
 
 export const listenToWorker = checkForWorker(_listenToWorker)
 
-class WrappedReduxStore {
-  dispatch: ReturnType<typeof wrappedCreateStore>['dispatch']
-  getState: ReturnType<typeof wrappedCreateStore>['getState']
-  replaceReducer: ReturnType<typeof wrappedCreateStore>['replaceReducer']
-  subscribe: ReturnType<typeof wrappedCreateStore>['subscribe']
+export const createWorkerStore = (self: ServiceWorker) => {
+  const store = wrappedCreateStore()
 
-  constructor() {
-    const { dispatch, getState, replaceReducer, subscribe } = wrappedCreateStore()
+  const onMessage: EventListenerOrEventListenerObject = ({ data, ports }: MessageEvent) => {
+    store.dispatch(data)
 
-    this.dispatch = dispatch
-    this.getState = getState
-    this.replaceReducer = replaceReducer
-    this.subscribe = subscribe
-  }
-}
-
-export class WorkerStore extends Store {
-  constructor(self: ServiceWorker) {
-    super()
-
-    self.addEventListener('message', this._onMessage)
+    ports[0].postMessage(store.getState())
   }
 
-  private _onMessage: EventListenerOrEventListenerObject = (e: MessageEvent) => {
-    this.dispatch(e.data)
+  self.addEventListener('message', onMessage)
 
-    e.ports[0].postMessage(this._store.getState())
-  }
+  return store
 }
 
 export const listenForProxyStore = (self: ServiceWorker, store: Store<AppState>): void => {
