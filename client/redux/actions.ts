@@ -1,7 +1,7 @@
 import actionCreatorFactory from 'typescript-fsa'
 import { AppState, Filters } from './AppState'
 import * as functionalSets from '../lib/functionalSets'
-import { NBALineup } from '../lib/NBALineup'
+import { addPlayersToNbaLineup, removePlayer } from '../lib/nbaLineup'
 import { ZeroThroughEight, Player } from '../lib/types'
 
 // can pass in an isError function here
@@ -23,7 +23,7 @@ export const addToLineupHandler: ActionHandler<PlayerId> = (state, id) => {
     return {
       ...state,
       playerPool,
-      lineup: new NBALineup([...state.lineup]).addPlayers(newPlayer).toArray(),
+      lineup: addPlayersToNbaLineup(...state.lineup, newPlayer),
     }
   } catch (e) {
     console.error('unable to add player to lineup', e)
@@ -39,9 +39,10 @@ export const removeFromLineupHandler: ActionHandler<ZeroThroughEight> = (state, 
 
   const playerPool = [...state.playerPool, player]
 
-  const lineup = new NBALineup([...state.lineup])
-    .removePlayer(playerIndex as ZeroThroughEight)
-    .toArray()
+  const lineup = removePlayer(
+    addPlayersToNbaLineup(...state.lineup),
+    playerIndex as ZeroThroughEight
+  )
 
   return {
     ...state,

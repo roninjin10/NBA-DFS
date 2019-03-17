@@ -1,10 +1,10 @@
 import { Filters } from '../redux/AppState'
 import { Player } from './types'
-import { AutoComplete } from './Autocomplete'
+import { buildAutoCompleter } from './buildAutoCompleter'
 
 export type FilterWithFilters = (filters: Filters) => (player: Player) => boolean
 export type FilterByString = (
-  playerFinder: AutoComplete<Player>
+  playerFinder: ReturnType<typeof buildAutoCompleter>
 ) => (searchString: string) => Player[]
 
 const filterTeam: FilterWithFilters = filters => player =>
@@ -24,11 +24,10 @@ const poolAsObject = (pool: Player[]): { [playerName in string]: Player } =>
   pool.reduce((a, player) => ({ ...a, [player.name]: player }), {})
 
 export const filterPool: PoolFilter = pool => {
-  const playerFinder = new AutoComplete(poolAsObject(pool))
+  const playerFinder = buildAutoCompleter(poolAsObject(pool))
 
   return (filters, searchString) =>
-    playerFinder
-      .autoComplete(searchString)
+    playerFinder(searchString)
       .filter(filterTeam(filters))
       .filter(filterPosition(filters))
 }

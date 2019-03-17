@@ -1,5 +1,5 @@
-import { wrappedCreateStore } from './redux/createStore'
-import { createStore } from 'redux'
+import { createWorkerStore } from './redux/store'
+import { createStore, Store } from 'redux'
 import { AppState } from './redux/AppState'
 
 interface CheckForWorker {
@@ -21,7 +21,7 @@ export const messageWorker = checkForWorker(
     new Promise((resolve, reject) => {
       outPort.onmessage = ({ data }) => (!data.error ? resolve(data) : reject(data.error))
 
-      navigator.serviceWorker.controller.postMessage(message, [inPort])
+      navigator.serviceWorker!.controller!.postMessage(message, [inPort])
     })
 )
 
@@ -34,22 +34,10 @@ const _listenToWorker: ListenToWorker = cb =>
 
 export const listenToWorker = checkForWorker(_listenToWorker)
 
-export const createWorkerStore = (self: ServiceWorker) => {
-  const store = wrappedCreateStore()
-
-  const onMessage: EventListenerOrEventListenerObject = ({ data, ports }: MessageEvent) => {
-    store.dispatch(data)
-
-    ports[0].postMessage(store.getState())
-  }
-
-  self.addEventListener('message', onMessage)
-
-  return store
-}
+type WTF = any
 
 export const listenForProxyStore = (self: ServiceWorker, store: Store<AppState>): void => {
-  self.addEventListener('message', ({ data, ports: [port] }: MessageEvent) => {
+  self.addEventListener('message', ({ data, ports: [port] }: WTF) => {
     store.dispatch(data)
 
     port.postMessage(store.getState())

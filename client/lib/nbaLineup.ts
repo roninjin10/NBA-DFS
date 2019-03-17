@@ -1,4 +1,5 @@
 import { INBALineup, ZeroThroughEight, Player } from './types'
+import { AppState } from '../redux/AppState'
 
 type LineupShape = Set<NBAPosition>[]
 
@@ -96,10 +97,15 @@ const nbaDkShape: LineupShape = [
 const FIFTY_THOUSAND = 50000
 const SALARY_CAP_NBA_DK = FIFTY_THOUSAND
 
-export const addPlayersToNbaLineup = (players: (Player | null)[]) => sportSpecificLineup(nbaDkShape, SALARY_CAP_NBA_DK)(players.filter(player => player))
+export const addPlayersToNbaLineup = (...players: (Player | null)[]) =>
+  sportSpecificLineup(nbaDkShape, SALARY_CAP_NBA_DK)(players.filter(
+    player => player
+  ) as Player[]) as INBALineup
 
 export const defaultNbaLineup: INBALineup = [null, null, null, null, null, null, null, null]
 
-export const addPlayers = (lineup: INBALineup, ...players: Player[]) => addPlayersToNbaLineup([...lineup, ...players])
+export const addPlayers = (lineup: INBALineup, ...players: Player[]) =>
+  addPlayersToNbaLineup(...lineup, ...players)
 
-export const removePlayer = (lineup: INBALineup, index: ZeroThroughEight) => lineup.map((spot, i) => (i === index ? null : spot)) as INBALineup
+export const removePlayer = (lineup: INBALineup, index: ZeroThroughEight) =>
+  lineup.map((spot, i) => (i === index ? null : spot)) as INBALineup
