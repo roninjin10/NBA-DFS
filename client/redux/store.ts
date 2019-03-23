@@ -14,19 +14,26 @@ import { AppState } from './AppState'
 const getProxyMiddleware = () => {
   const epicMiddleware = createEpicMiddleware()
 
-  epicMiddleware.run(proxyEpics)
+  const run = () => epicMiddleware.run(proxyEpics)
 
-  return applyMiddleware(routerMiddleware(createBrowserHistory()), epicMiddleware)
+  const middleware = applyMiddleware(routerMiddleware(createBrowserHistory()), epicMiddleware)
+
+  return { middleware, run }
 }
 
 const getWorkerMiddleware = () => {
   const epicMiddleware = createEpicMiddleware()
 
-  epicMiddleware.run(workerEpics)
+  const run = () => epicMiddleware.run(workerEpics)
 
   const middleware = applyMiddleware(epicMiddleware)
 
-  return IS_PROD ? middleware : composeWithDevTools(middleware)
+  const maybeComposedMiddleware = IS_PROD ? middleware : composeWithDevTools(middleware)
+
+  return {
+    middleware: maybeComposedMiddleware,
+    run,
+  }
 }
 
 const connectWorkerToProxy = (worker: ServiceWorker) => (store: Store<AppState>) => {
@@ -55,8 +62,18 @@ const connectProxyToWorker = (navigator: Navigator) => (store: Store<AppState>) 
   return store
 }
 
-export const createWorkerStore = (worker: ServiceWorker) =>
-  connectWorkerToProxy(worker)(createStore(workerReducers, INITIAL_STATE, getWorkerMiddleware()))
+export const createWorkerStore = (worker: ServiceWorker) => {
+  const { middleware, run } = getWorkerMiddleware()
+  const store = connectWorkerToProxy(worker)(createStore(workerReducers, INITIAL_STATE, middleware))
+  run()
+  return store
+}
 
-export const createProxyStore = (navigator: Navigator) =>
-  connectProxyToWorker(navigator)(createStore(proxyReducers, INITIAL_STATE, getProxyMiddleware()))
+export const createProxyStore = (navigator: Navigator) => {
+  const { middleware, run } = getProxyMiddleware()
+  const store = connectProxyToWorker(navigator)(
+    createStore(proxyReducers, INITIAL_STATE, middleware)
+  )
+  run()
+  return store
+}
