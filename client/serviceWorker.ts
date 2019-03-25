@@ -1,12 +1,10 @@
-import { createWorkerStore } from './redux/store'
 import { createStore, Store } from 'redux'
 import { AppState } from './redux/AppState'
+import { createWorkerStore } from './redux/store'
 
-interface CheckForWorker {
-  <TArgs extends any[], TReturn>(cb: (...args: TArgs) => TReturn): (
-    ...args: TArgs
-  ) => TReturn | null
-}
+type CheckForWorker = <TArgs extends any[], TReturn>(
+  cb: (...args: TArgs) => TReturn
+) => (...args: TArgs) => TReturn | null
 
 const checkForWorker: CheckForWorker = cb => (...args) => {
   if (!navigator.serviceWorker) {
@@ -19,15 +17,14 @@ const checkForWorker: CheckForWorker = cb => (...args) => {
 export const messageWorker = checkForWorker(
   ({ port1: outPort, port2: inPort }: MessageChannel) => <T>(message: T) =>
     new Promise((resolve, reject) => {
+      // tslint:disable-next-line
       outPort.onmessage = ({ data }) => (!data.error ? resolve(data) : reject(data.error))
 
       navigator.serviceWorker!.controller!.postMessage(message, [inPort])
     })
 )
 
-interface ListenToWorker {
-  (cb: (t: MessageEvent) => void): void
-}
+type ListenToWorker = (cb: (t: MessageEvent) => void) => void
 
 const _listenToWorker: ListenToWorker = cb =>
   navigator.serviceWorker.addEventListener('message', cb)

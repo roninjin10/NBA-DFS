@@ -1,0 +1,25 @@
+{
+  "extends": [
+    "tslint:recommended", 
+    "tslint-react", 
+    "tslint-immutable", 
+    "tslint-plugin-prettier", 
+    "tslint-config-prettier"
+  ],
+  "rules": {
+    "no-var-keyword": true,
+    "no-parameter-reassignment": true,
+    "readonly-keyword": true,
+    "readonly-array": false,
+    "no-let": true,
+    "no-object-mutation": true,
+    "no-delete": true,
+    "no-default-export": true,
+    "prefer-for-of": true,
+    "only-arrow-functions": [true],
+    "jsx-no-multiline-js": true,
+    "jsx-no-string-ref": true,
+    "no-method-signature": true,
+    "prettier": true
+  }
+}

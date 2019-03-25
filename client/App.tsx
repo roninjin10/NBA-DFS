@@ -1,10 +1,10 @@
-import './App.scss'
 import React from 'react'
+import './App.scss'
 import { GamePicker } from './components/GamePicker'
-import { PlayerPicker } from './components/PlayerPicker'
-import { Optimizer } from './components/Optimizer'
-import { LineupEditor } from './components/LineupEditor'
 import { Heading } from './components/Heading'
+import { LineupEditor } from './components/LineupEditor'
+import { Optimizer } from './components/Optimizer'
+import { PlayerPicker } from './components/PlayerPicker'
 
 import { Layout } from './components/Layout'
 

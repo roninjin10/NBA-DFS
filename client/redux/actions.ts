@@ -1,17 +1,15 @@
 import actionCreatorFactory from 'typescript-fsa'
-import { AppState, Filters } from './AppState'
 import * as functionalSets from '../lib/functionalSets'
 import { addPlayersToNbaLineup, removePlayer } from '../lib/nbaLineup'
-import { ZeroThroughEight, Player } from '../lib/types'
+import { Player, ZeroThroughEight } from '../lib/types'
+import { AppState, Filters } from './AppState'
 
 // can pass in an isError function here
 const actionCreator = actionCreatorFactory('app')
 
 type PlayerId = string
 
-interface ActionHandler<T> {
-  (state: AppState, payload: T): AppState
-}
+type ActionHandler<T> = (state: AppState, payload: T) => AppState
 
 export const addToLineup = actionCreator<PlayerId>('addToLineup')
 export const addToLineupHandler: ActionHandler<PlayerId> = (state, id) => {
@@ -35,9 +33,9 @@ export const removeFromLineup = actionCreator<ZeroThroughEight>('removeFromLineu
 export const removeFromLineupHandler: ActionHandler<ZeroThroughEight> = (state, playerIndex) => {
   const player = state.lineup[playerIndex]
 
-  if (!player) return state
+  if (!player) { return state }
 
-  const playerPool = [...state.playerPool, player]
+  const playerPool: ReadonlyArray<any> = [...state.playerPool, player]
 
   const lineup = removePlayer(
     addPlayersToNbaLineup(...state.lineup),
@@ -59,8 +57,8 @@ export const setPlayerSortHandler: ActionHandler<keyof Player> = (state, sortBy)
 })
 
 interface ToggleFilterHandlerPayload {
-  item: string
-  filter: keyof Filters
+  readonly item: string
+  readonly filter: keyof Filters
 }
 
 const toggleFilterHandler: ActionHandler<ToggleFilterHandlerPayload> = (
@@ -82,7 +80,7 @@ export const toggleTeamFilterHandler: ActionHandler<string> = (state, team) =>
   })
 
 const allTeams = (games: AppState['games']) =>
-  games.reduce((a, { home, away }) => [...a, home, away], [] as string[])
+  games.reduce((a, { home, away }) => [...a, home, away], [] as ReadonlyArray<string>)
 
 export const toggleAllGames = actionCreator<undefined>('toggleAllGames')
 export const toggleAllGamesHandler: ActionHandler<undefined> = state => ({
