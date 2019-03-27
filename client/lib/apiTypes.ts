@@ -1,54 +1,48 @@
-const steps = []
-const endpoints = []
-
-steps[0] = 'Projection data is sent from backend'
-
-endpoints[0] = '/api/v0/nba/projections/team'
-endpoints[1] = '/api/v0/nba/projections/players'
-
-export interface Team {
-  id: number
-  name: string
-  teamAbbrev: string
+const steps = ['Projection data is sent from backend', 'site data is uploaded from user']
+const endpoints = [
+  '/api/v0/nba/projections/team',
+  '/api/v0/nba/projections/players',
+  '/api/v0/nba/slate/:date/:site',
+]
+export interface ITeam {
+  readonly id: number
+  readonly name: string
+  readonly teamAbbrev: string
 }
 
-export interface TeamWithProjection extends Team {
-  lastupdated: string
-  opponentAbbrev: string
-  starttime: string
-  projection: {
-    pace: number
-    teamScore: number
-    opponentScore: number
-    overtimeRate?: number
-    blowoutRate?: number
+export interface ITeamWithProjection extends ITeam {
+  readonly lastupdated: string
+  readonly opponentAbbrev: string
+  readonly starttime: string
+  readonly projection: {
+    readonly pace: number
+    readonly teamScore: number
+    readonly opponentScore: number
+    readonly overtimeRate?: number
+    readonly blowoutRate?: number
   }
 }
 
-export interface Player {
-  id: number
-  name: string
-  teamAbbrev: string
+export interface IPlayer {
+  readonly id: number
+  readonly name: string
+  readonly teamAbbrev: string
 }
 
-export interface PlayerWithProjection extends Player {
-  projection: {
-    points: number
-    rebounds: number
-    assists: number
-    turnovers: number
-    threes: number
-    fouls: number
-    minutes: number
-    usage: number
-    assistRate: number
-    reboundRate: number
+export interface IPlayerWithProjection extends IPlayer {
+  readonly projection: {
+    readonly points: number
+    readonly rebounds: number
+    readonly assists: number
+    readonly turnovers: number
+    readonly threes: number
+    readonly fouls: number
+    readonly minutes: number
+    readonly usage: number
+    readonly assistRate: number
+    readonly reboundRate: number
   }
 }
-
-steps[1] = 'site data is uploaded from user'
-
-endpoints[2] = '/api/v0/nba/slate/:date/:site'
 
 export enum SlateType {
   LATESWAP = 'LATESWAP',
@@ -71,21 +65,21 @@ export enum NBADraftKingsPosition {
   UTIL = 'UTIL',
 }
 
-export interface DraftKingsPlayer {
-  id: number
-  name: string
-  position: NBADraftKingsPosition[]
-  salary: number
-  startTime: string
-  team: string
-  opponent: string
+export interface IDraftKingsPlayer {
+  readonly id: number
+  readonly name: string
+  readonly position: NBADraftKingsPosition[]
+  readonly salary: number
+  readonly startTime: string
+  readonly team: string
+  readonly opponent: string
 }
 
-export interface SiteSlate {
-  lastupdated: string
-  site: FantasySite
-  startTime: string
-  type: SlateType
-  salaryCap: number
-  playerPool: DraftKingsPlayer[]
+export interface ISiteSlate {
+  readonly lastupdated: string
+  readonly site: FantasySite
+  readonly startTime: string
+  readonly type: SlateType
+  readonly salaryCap: number
+  readonly playerPool: IDraftKingsPlayer[]
 }

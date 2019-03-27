@@ -1,15 +1,15 @@
-import { createStore, Store } from 'redux'
-import { workerReducers, proxyReducers } from '../redux/reducers'
-import { INITIAL_STATE } from '../redux/initialState'
-import { createBrowserHistory } from 'history'
 import { routerMiddleware } from 'connected-react-router'
-import { IS_PROD } from '../lib/isProd'
-import { composeWithDevTools } from 'redux-devtools-extension'
+import { createBrowserHistory } from 'history'
+import { createStore, Store } from 'redux'
 import { applyMiddleware } from 'redux'
+import { composeWithDevTools } from 'redux-devtools-extension'
 import { createEpicMiddleware } from 'redux-observable'
-import { proxyEpics, workerEpics } from './epics'
+import { IS_PROD } from '../lib/isProd'
+import { INITIAL_STATE } from '../redux/initialState'
+import { proxyReducers, workerReducers } from '../redux/reducers'
 import * as actions from './actions'
 import { AppState } from './AppState'
+import { proxyEpics, workerEpics } from './epics'
 
 const getProxyMiddleware = () => {
   const epicMiddleware = createEpicMiddleware()
@@ -37,7 +37,7 @@ const getWorkerMiddleware = () => {
 }
 
 const connectWorkerToProxy = (worker: ServiceWorker) => (store: Store<AppState>) => {
-  let proxyPort: MessagePort | null = null
+  const proxyPort: MessagePort | null = null
 
   const listenForProxyDispatches = (e: MessageEvent) => {
     proxyPort = e.ports[0]

@@ -20,8 +20,8 @@ export const addToLineupHandler: ActionHandler<PlayerId> = (state, id) => {
   try {
     return {
       ...state,
-      playerPool,
       lineup: addPlayersToNbaLineup(...state.lineup, newPlayer),
+      playerPool,
     }
   } catch (e) {
     console.error('unable to add player to lineup', e)
@@ -33,7 +33,9 @@ export const removeFromLineup = actionCreator<ZeroThroughEight>('removeFromLineu
 export const removeFromLineupHandler: ActionHandler<ZeroThroughEight> = (state, playerIndex) => {
   const player = state.lineup[playerIndex]
 
-  if (!player) { return state }
+  if (!player) {
+    return state
+  }
 
   const playerPool: ReadonlyArray<any> = [...state.playerPool, player]
 
@@ -44,24 +46,24 @@ export const removeFromLineupHandler: ActionHandler<ZeroThroughEight> = (state, 
 
   return {
     ...state,
-    playerPool,
     lineup,
+    playerPool,
   }
 }
 
 export const setPlayerSort = actionCreator<keyof Player>('setPlayerSort')
 export const setPlayerSortHandler: ActionHandler<keyof Player> = (state, sortBy) => ({
   ...state,
-  sortBy,
   isSortByReversed: sortBy === state.sortBy && !state.isSortByReversed,
+  sortBy,
 })
 
-interface ToggleFilterHandlerPayload {
+interface IToggleFilterHandlerPayload {
   readonly item: string
   readonly filter: keyof Filters
 }
 
-const toggleFilterHandler: ActionHandler<ToggleFilterHandlerPayload> = (
+const toggleFilterHandler: ActionHandler<IToggleFilterHandlerPayload> = (
   state,
   { item, filter }
 ) => ({
@@ -94,8 +96,8 @@ export const toggleAllGamesHandler: ActionHandler<undefined> = state => ({
 export const togglePositionFilter = actionCreator<string>('togglePositionFilter')
 export const togglePositionFilterHandler: ActionHandler<string> = (state, position) =>
   toggleFilterHandler(state, {
-    item: position,
     filter: 'position',
+    item: position,
   })
 
 export const setPickerSearch = actionCreator<string>('setPickerSearch')

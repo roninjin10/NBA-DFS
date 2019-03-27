@@ -1,13 +1,13 @@
 import { combineEpics, Epic } from 'redux-observable'
 import { mergeMap } from 'rxjs/operators'
-import { messageWorker } from '../serviceWorker'
+import { messageWorker as curriedMessageWorker } from '../serviceWorker'
 
 type WTF = any
 
-const _messageWorker = messageWorker(new MessageChannel()) as WTF
+const messageWorker = curriedMessageWorker(new MessageChannel()) as WTF
 
 const dispatchToProxyStore: Epic = action$ =>
-  action$.pipe(mergeMap(action => _messageWorker(action)))
+  action$.pipe(mergeMap(action => messageWorker(action)))
 
 export const proxyEpics = combineEpics(dispatchToProxyStore)
 

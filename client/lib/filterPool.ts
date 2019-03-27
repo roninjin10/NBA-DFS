@@ -1,6 +1,6 @@
 import { Filters } from '../redux/AppState'
-import { Player } from './types'
 import { buildAutoCompleter } from './buildAutoCompleter'
+import { Player } from './types'
 
 export type FilterWithFilters = (filters: Filters) => (player: Player) => boolean
 export type FilterByString = (

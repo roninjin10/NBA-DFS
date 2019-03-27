@@ -6,16 +6,18 @@ interface MaybeAsNumber {
 }
 
 const maybeAsNumber: MaybeAsNumber = (field: HomeAway | string): any => {
-  if (typeof field === 'object') return field.home
+  if (typeof field === 'object') {
+    return field.home
+  }
 
-  if (isNaN(Number(field))) return field
+  if (isNaN(Number(field))) {
+    return field
+  }
 
   return Number(field)
 }
 
-interface SortPool {
-  (field: keyof Player, playerPool: Player[], isReversed: boolean): Player[]
-}
+type SortPool = (field: keyof Player, playerPool: Player[], isReversed: boolean) => Player[]
 
 export const sortPool: SortPool = (field, playerPool, isReversed) =>
   [...playerPool].sort((playerA: Player, playerB: Player) => {

@@ -24,12 +24,12 @@ export const messageWorker = checkForWorker(
     })
 )
 
-type ListenToWorker = (cb: (t: MessageEvent) => void) => void
+type AddWorkerListener = (cb: (t: MessageEvent) => void) => void
 
-const _listenToWorker: ListenToWorker = cb =>
+const addWorkerListener: AddWorkerListener = cb =>
   navigator.serviceWorker.addEventListener('message', cb)
 
-export const listenToWorker = checkForWorker(_listenToWorker)
+export const listenToWorker = checkForWorker(addWorkerListener)
 
 type WTF = any
 

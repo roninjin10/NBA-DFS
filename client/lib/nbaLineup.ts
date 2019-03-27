@@ -1,13 +1,13 @@
-import { INBALineup, ZeroThroughEight, Player } from './types'
 import { AppState } from '../redux/AppState'
+import { INBALineup, Player, ZeroThroughEight } from './types'
 
-type LineupShape = Set<NBAPosition>[]
+type LineupShape = Array<Set<NBAPosition>>
 
-export type PlayerRoster = (Player | null)[]
+export type PlayerRoster = Array<Player | null>
 
 const buildEmptyLinep = (lineupShape: LineupShape): PlayerRoster => lineupShape.map(() => null)
 
-const sumField = (field: 'fantasyPoints' | 'salary') => (lineup: (Player | null)[]) => {
+const sumField = (field: 'fantasyPoints' | 'salary') => (lineup: Array<Player | null>) => {
   return lineup
     .map(spot => (spot === null ? 0 : Number(spot[field])))
     .reduce((total, points) => total + points, 0)
@@ -39,9 +39,13 @@ const sportSpecificLineup = (lineupShape: LineupShape, salaryCap: number) => {
   ): PlayerRoster | null => {
     const [nextPlayer, ...restOfPlayers] = playersToAdd
 
-    if (!nextPlayer) return currentLineup
+    if (!nextPlayer) {
+      return currentLineup
+    }
 
-    if (getTotalSalary(currentLineup) + Number(nextPlayer.fantasyPoints) > salaryCap) return null
+    if (getTotalSalary(currentLineup) + Number(nextPlayer.fantasyPoints) > salaryCap) {
+      return null
+    }
 
     for (const position of nextPlayer.position.split('/')) {
       const filledSpots = new Set(getFilledSpots(currentLineup))
@@ -56,7 +60,9 @@ const sportSpecificLineup = (lineupShape: LineupShape, salaryCap: number) => {
 
         const luFilledOut = _addPlayersToLineup(restOfPlayers, luWithPlayer)
 
-        if (luFilledOut) return luFilledOut
+        if (luFilledOut) {
+          return luFilledOut
+        }
       }
     }
 
@@ -68,7 +74,9 @@ const sportSpecificLineup = (lineupShape: LineupShape, salaryCap: number) => {
     currentLineup = buildEmptyLinep(lineupShape)
   ): PlayerRoster => {
     const out = _addPlayersToLineup(playersToAdd, currentLineup)
-    if (!out) throw new Error('Cannot add players to roster')
+    if (!out) {
+      throw new Error('Cannot add players to roster')
+    }
     return out
   }
 
@@ -97,7 +105,7 @@ const nbaDkShape: LineupShape = [
 const FIFTY_THOUSAND = 50000
 const SALARY_CAP_NBA_DK = FIFTY_THOUSAND
 
-export const addPlayersToNbaLineup = (...players: (Player | null)[]) =>
+export const addPlayersToNbaLineup = (...players: Array<Player | null>) =>
   sportSpecificLineup(nbaDkShape, SALARY_CAP_NBA_DK)(players.filter(
     player => player
   ) as Player[]) as INBALineup

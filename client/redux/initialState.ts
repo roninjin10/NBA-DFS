@@ -1,19 +1,15 @@
 import rawPlayerPool from '../dummyData/pool.json'
-import { Filters, SortBy, AppState } from './AppState'
 import { dummyDataToPlayer } from '../lib/dummyDataToPlayer'
-import { Player, HomeAway, INBALineup } from '../lib/types'
+import { HomeAway, INBALineup, Player } from '../lib/types'
+import { AppState, Filters, SortBy } from './AppState'
 
 const freeze = Object.freeze.bind(Object) as <T>(obj: T) => T
 
-interface Unique {
-  <T extends any[]>(arr: T): T
-}
+type Unique = <T extends any[]>(arr: T) => T
 
 const unique: Unique = arr => [...new Set(arr)] as typeof arr
 
-interface GetGames {
-  (playerPool: Player[]): HomeAway[]
-}
+type GetGames = (playerPool: Player[]) => HomeAway[]
 
 const getGames: GetGames = playerPool =>
   freeze(

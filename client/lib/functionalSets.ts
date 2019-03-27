@@ -1,6 +1,4 @@
-interface SetFunction {
-  <T>(set: Set<T>, item: T): Set<T>
-}
+type SetFunction = <T>(set: Set<T>, item: T) => Set<T>
 
 export const removeFromSet: SetFunction = (set, item) => new Set([...set].filter(x => x !== item))
 

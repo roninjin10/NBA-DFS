@@ -1,6 +1,6 @@
+import { ReducerBuilder, reducerWithInitialState } from 'typescript-fsa-reducers/dist'
 import * as actions from './actions'
 import { AppState } from './AppState'
-import { reducerWithInitialState, ReducerBuilder } from 'typescript-fsa-reducers/dist'
 import { INITIAL_STATE } from './initialState'
 
 export const workerReducers: ReducerBuilder<AppState, AppState> = reducerWithInitialState(

@@ -1,4 +1,4 @@
-import { Player, INBALineup, HomeAway } from '../lib/types'
+import { HomeAway, INBALineup, Player } from '../lib/types'
 
 export interface AppState {
   readonly games: HomeAway[]
@@ -15,8 +15,8 @@ export type Team = Set<string>
 export type Position = Set<string>
 
 export interface Filters {
-  team: Team
-  position: Team
+  readonly team: Team
+  readonly position: Team
 }
 
 export type SortBy = keyof Player

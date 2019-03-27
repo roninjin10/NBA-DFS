@@ -3,6 +3,8 @@
     "target": "es5",
     "downlevelIteration": true,
     "allowJs": true,
+    "noImplicitReturns": true,
+    "noImplicitThis": true,
     "skipLibCheck": false,
     "esModuleInterop": true,
     "allowSyntheticDefaultImports": true,

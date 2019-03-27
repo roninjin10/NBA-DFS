@@ -1,5 +1,5 @@
-import { AnyAction } from 'typescript-fsa'
 import { Dispatch } from 'redux'
+import { AnyAction } from 'typescript-fsa'
 import { AppState } from '../redux/AppState'
 
 export type ObjectWithValues<T> = { [key in string]: T }
@@ -16,13 +16,9 @@ export type SecondArg<F extends Function> = F extends (
   ? A
   : never
 
-export interface MapStateToProps<T extends Object> {
-  (appState: AppState): T
-}
+export type MapStateToProps<T extends Object> = (appState: AppState) => T
 
-export interface MapDispatchToProps<T extends Object> {
-  (dispatch: Dispatch): T
-}
+export type MapDispatchToProps<T extends Object> = (dispatch: Dispatch) => T
 
 export type INBALineup = [
   Player | null,
@@ -38,18 +34,18 @@ export type INBALineup = [
 export type ZeroThroughEight = 0 | 1 | 2 | 3 | 4 | 5 | 6 | 7
 
 export interface HomeAway {
-  home: string
-  away: string
+  readonly home: string
+  readonly away: string
 }
 
 export interface Player {
-  position: string
-  namePlusId: string
-  name: string
-  id: string
-  rosterPosition: string
-  salary: number
-  gameInfo: HomeAway
-  fantasyPoints: number
-  team: string
+  readonly position: string
+  readonly namePlusId: string
+  readonly name: string
+  readonly id: string
+  readonly rosterPosition: string
+  readonly salary: number
+  readonly gameInfo: HomeAway
+  readonly fantasyPoints: number
+  readonly team: string
 }

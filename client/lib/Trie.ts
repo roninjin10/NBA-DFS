@@ -1,12 +1,12 @@
 import { ObjectWithValues } from './types'
 
-type TrieChildren<T> = { [key in string]: Trie<T> }
+type TrieChildren<T> = { [key in string]: (undefined | Trie<T>) }
 
 export class Trie<T> {
   private readonly _children: TrieChildren<T> = {}
-  private _item: T | null = null
+  private readonly _item: T | null = null
 
-  get children(): Trie<T>[] {
+  get children(): Array<Trie<T>> {
     return Object.values(this._children)
   }
 
@@ -14,30 +14,34 @@ export class Trie<T> {
     return this._item
   }
 
-  public findNode = (word: string): Trie<T> | null => {
-    const letterStack = word
-      .toLowerCase()
-      .split('')
-      .reverse()
-
-    let currentTrie: Trie<T> | null = this
-
-    while (currentTrie && letterStack.length) {
-      currentTrie = currentTrie._children[letterStack.pop() as string]
+  public readonly findNode = (word: string, startIndex = 0): Trie<T> | null => {
+    if (startIndex >= word.length) {
+      console.error('startIndex is greater than word length')
+      return null
     }
 
-    return currentTrie
+    if (startIndex === word.length - 1) {
+      return this
+    }
+
+    const nextNode = this._children[word[startIndex]]
+
+    if (!nextNode) {
+      return null
+    }
+
+    return nextNode
   }
 
-  public traverse = (cb: (node: Trie<T>) => void) => {
+  public readonly traverse = (cb: (node: Trie<T>) => void) => {
     cb(this)
     this.children.forEach(child => child.traverse(cb))
   }
 
-  public addItems = (items: ObjectWithValues<T>) =>
+  public readonly addItems = (items: ObjectWithValues<T>) =>
     Object.keys(items).forEach(word => this._addItem(items[word], word))
 
-  public findAllValues = (): T[] => {
+  public readonly findAllValues = (): T[] => {
     const allValues: T[] = []
 
     this.traverse(node => node.item && allValues.push(node.item))
@@ -45,7 +49,7 @@ export class Trie<T> {
     return allValues
   }
 
-  private _addItem = (item: T, word: string) => {
+  private readonly _addItem = (item: T, word: string) => {
     const _word = word.toLowerCase()
 
     if (_word === '') {

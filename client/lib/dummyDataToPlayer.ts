@@ -1,38 +1,34 @@
 import { HomeAway, Player } from './types'
 
-interface DummyDataPlayer {
-  AvgPointsPerGame: string
-  Salary: string
-  Position: string
-  Name: string
-  ID: string
-  TeamAbbrev: string
-  'Roster Position': string
-  'Name + ID': string
-  'Game Info': string
+interface IDummyDataPlayer {
+  readonly AvgPointsPerGame: string
+  readonly Salary: string
+  readonly Position: string
+  readonly Name: string
+  readonly ID: string
+  readonly TeamAbbrev: string
+  readonly 'Roster Position': string
+  readonly 'Name + ID': string
+  readonly 'Game Info': string
 }
 
-interface GetHomeAway {
-  (gameInfo: string): HomeAway
-}
+type GetHomeAway = (gameInfo: string) => HomeAway
 
 const getHomeAway: GetHomeAway = gameInfo => {
   const [away, home] = gameInfo.split(' ')[0].split('@')
   return { away, home }
 }
 
-interface DummyDataToPlayer {
-  (player: DummyDataPlayer): Player
-}
+type DummyDataToPlayer = (player: IDummyDataPlayer) => Player
 
 export const dummyDataToPlayer: DummyDataToPlayer = player => ({
-  position: player.Position,
-  namePlusId: player['Name + ID'],
-  name: player.Name,
+  fantasyPoints: Number(player.AvgPointsPerGame),
+  gameInfo: getHomeAway(player['Game Info']),
   id: player.ID,
-  team: player.TeamAbbrev,
+  name: player.Name,
+  namePlusId: player['Name + ID'],
+  position: player.Position,
   rosterPosition: player['Roster Position'],
   salary: Number(player.Salary),
-  gameInfo: getHomeAway(player['Game Info']),
-  fantasyPoints: Number(player.AvgPointsPerGame),
+  team: player.TeamAbbrev,
 })
