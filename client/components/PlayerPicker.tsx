@@ -1,7 +1,7 @@
 import React, { FunctionComponent } from 'react'
+import { PlayerPickerGrid } from './PlayerPickerGrid'
 import { PlayerPickerSearch } from './PlayerPickerSearch'
 import { PositionFilters } from './PositionFilters'
-import { PlayerPickerGrid } from './PlayerPickerGrid'
 
 export const PlayerPicker: FunctionComponent = () => (
   <div className="PlayerPicker">

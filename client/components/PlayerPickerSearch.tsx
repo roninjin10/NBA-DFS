@@ -1,16 +1,16 @@
-import React, { FunctionComponent, ChangeEvent } from 'react'
+import React, { ChangeEvent, FunctionComponent } from 'react'
 import { connect } from 'react-redux'
-import { MapStateToProps, MapDispatchToProps } from '../lib/types'
+import { MapDispatchToProps, MapStateToProps } from '../lib/types'
 import * as actions from '../redux/actions'
 
-interface StateProps {
-  value: string
+interface IStateProps {
+  readonly value: string
 }
-interface DispatchProps {
-  onChange: (e: ChangeEvent<HTMLInputElement>) => void
+interface IDispatchProps {
+  readonly onChange: (e: ChangeEvent<HTMLInputElement>) => void
 }
 
-type PlayerPickerSearchProps = StateProps & DispatchProps
+type PlayerPickerSearchProps = IStateProps & IDispatchProps
 
 const _PlayerPickerSearch: FunctionComponent<PlayerPickerSearchProps> = ({ value, onChange }) => (
   <div>
@@ -18,11 +18,11 @@ const _PlayerPickerSearch: FunctionComponent<PlayerPickerSearchProps> = ({ value
   </div>
 )
 
-const mapDispatchToProps: MapDispatchToProps<DispatchProps> = dispatch => ({
+const mapDispatchToProps: MapDispatchToProps<IDispatchProps> = dispatch => ({
   onChange: e => dispatch(actions.setPickerSearch(e.target.value)),
 })
 
-const mapStateToProps: MapStateToProps<StateProps> = state => ({ value: state.playerSearch })
+const mapStateToProps: MapStateToProps<IStateProps> = state => ({ value: state.playerSearch })
 
 export const PlayerPickerSearch = connect(
   mapStateToProps,

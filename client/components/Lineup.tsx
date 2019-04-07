@@ -1,18 +1,17 @@
 import React, { StatelessComponent } from 'react'
-import * as actions from '../redux/actions'
-import { ZeroThroughEight, Player, MapStateToProps, MapDispatchToProps } from '../lib/types'
 import { connect } from 'react-redux'
+import { IPlayer, MapDispatchToProps, MapStateToProps, ZeroThroughEight } from '../lib/types'
+import * as actions from '../redux/actions'
 import { PlayerPickerRow } from './PlayerPickerGrid'
 
-interface AggregateStat {
-  (lineup: (Player | null)[]): string
-}
+type AggregateStat = (lineup: Array<IPlayer | null>) => string
 
 const positions = ['PG', 'SG', 'SF', 'PF', 'C', 'G', 'F', 'UTIL']
 
 const sum = (a: number, b: number) => a + b
 
-const onlyPlayers = (players: (Player | null)[]) => players.filter(player => player) as Player[]
+const onlyPlayers = (players: Array<IPlayer | null>) =>
+  players.filter(player => player) as IPlayer[]
 
 const getPoints: AggregateStat = lineup =>
   onlyPlayers(lineup)
@@ -29,64 +28,67 @@ const getSalary: AggregateStat = lineup =>
     .toFixed(0)
 
 const validateZeroThroughEight = (n: number): ZeroThroughEight => {
-  if (!Number.isInteger(n) || n < 0 || n > 8)
+  if (!Number.isInteger(n) || n < 0 || n > 8) {
     throw new Error(`${n} is not an integer between zero and eight`)
+  }
   return n as ZeroThroughEight
 }
 
-const makeNullPlayer = (position: string): Player => ({
-  position: position,
-  namePlusId: '',
-  name: '',
+const makeNullPlayer = (position: string): IPlayer => ({
+  fantasyPoints: 0,
+  gameInfo: { home: '', away: '' },
   id: '',
+  name: '',
+  namePlusId: '',
+  position,
   rosterPosition: '',
   salary: 0,
-  gameInfo: { home: '', away: '' },
-  fantasyPoints: 0,
   team: '',
 })
 
-interface StateProps {
-  lineup: (Player | null)[]
+interface IStateProps {
+  readonly lineup: Array<IPlayer | null>
 }
 
-interface DispatchProps {
-  removeFromLineup: (i: ZeroThroughEight) => () => void
+interface IDispatchProps {
+  readonly removeFromLineup: (i: ZeroThroughEight) => () => void
 }
 
-type LineupProps = StateProps & DispatchProps
+type LineupProps = IStateProps & IDispatchProps
 
-const _Lineup: StatelessComponent<LineupProps> = ({ lineup, removeFromLineup }) => (
-  <div className="Lineup">
-    <table className="EditableLineup-container">
-      <thead>
-        <tr>
-          <th>GAME</th>
-          <th>POS</th>
-          <th>PLAYER</th>
-          <th>SALARY</th>
-          <th>PROJECTION</th>
-          <th>VALUE</th>
-        </tr>
-      </thead>
-      <tbody>
-        {lineup.map((player, i) => (
-          <PlayerPickerRow
-            player={player || makeNullPlayer(positions[i])}
-            key={i}
-            onClick={removeFromLineup(validateZeroThroughEight(i))}
-          />
-        ))}
-      </tbody>
-    </table>
-    <div>FantasyPoints: {getPoints(lineup)}</div>
-    <div>SalaryUsed: {getSalary(lineup)}</div>
-  </div>
-)
+const _Lineup: StatelessComponent<LineupProps> = ({ lineup, removeFromLineup }) => {
+  const renderedLineups = lineup.map((player, i) => (
+    <PlayerPickerRow
+      player={player || makeNullPlayer(positions[i])}
+      key={i}
+      onClick={removeFromLineup(validateZeroThroughEight(i))}
+    />
+  ))
 
-const mapStateToProps: MapStateToProps<StateProps> = state => ({ lineup: state.lineup })
+  return (
+    <div className="Lineup">
+      <table className="EditableLineup-container">
+        <thead>
+          <tr>
+            <th>GAME</th>
+            <th>POS</th>
+            <th>PLAYER</th>
+            <th>SALARY</th>
+            <th>PROJECTION</th>
+            <th>VALUE</th>
+          </tr>
+        </thead>
+        <tbody>{renderedLineups}</tbody>
+      </table>
+      <div>FantasyPoints: {getPoints(lineup)}</div>
+      <div>SalaryUsed: {getSalary(lineup)}</div>
+    </div>
+  )
+}
 
-const mapDispatchToProps: MapDispatchToProps<DispatchProps> = dispatch => ({
+const mapStateToProps: MapStateToProps<IStateProps> = state => ({ lineup: state.lineup })
+
+const mapDispatchToProps: MapDispatchToProps<IDispatchProps> = dispatch => ({
   removeFromLineup: i => () => dispatch(actions.removeFromLineup(i)),
 })
 

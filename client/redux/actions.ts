@@ -1,15 +1,15 @@
 import actionCreatorFactory from 'typescript-fsa'
 import * as functionalSets from '../lib/functionalSets'
 import { addPlayersToNbaLineup, removePlayer } from '../lib/nbaLineup'
-import { Player, ZeroThroughEight } from '../lib/types'
-import { AppState, Filters } from './AppState'
+import { IPlayer, ZeroThroughEight } from '../lib/types'
+import { IAppState, IFilters } from './AppState'
 
 // can pass in an isError function here
 const actionCreator = actionCreatorFactory('app')
 
 type PlayerId = string
 
-type ActionHandler<T> = (state: AppState, payload: T) => AppState
+type ActionHandler<T> = (state: IAppState, payload: T) => IAppState
 
 export const addToLineup = actionCreator<PlayerId>('addToLineup')
 export const addToLineupHandler: ActionHandler<PlayerId> = (state, id) => {
@@ -37,7 +37,7 @@ export const removeFromLineupHandler: ActionHandler<ZeroThroughEight> = (state, 
     return state
   }
 
-  const playerPool: ReadonlyArray<any> = [...state.playerPool, player]
+  const playerPool: ReadonlyArray<IPlayer> = [...state.playerPool, player]
 
   const lineup = removePlayer(
     addPlayersToNbaLineup(...state.lineup),
@@ -51,8 +51,8 @@ export const removeFromLineupHandler: ActionHandler<ZeroThroughEight> = (state, 
   }
 }
 
-export const setPlayerSort = actionCreator<keyof Player>('setPlayerSort')
-export const setPlayerSortHandler: ActionHandler<keyof Player> = (state, sortBy) => ({
+export const setPlayerSort = actionCreator<keyof IPlayer>('setPlayerSort')
+export const setPlayerSortHandler: ActionHandler<keyof IPlayer> = (state, sortBy) => ({
   ...state,
   isSortByReversed: sortBy === state.sortBy && !state.isSortByReversed,
   sortBy,
@@ -60,7 +60,7 @@ export const setPlayerSortHandler: ActionHandler<keyof Player> = (state, sortBy)
 
 interface IToggleFilterHandlerPayload {
   readonly item: string
-  readonly filter: keyof Filters
+  readonly filter: keyof IFilters
 }
 
 const toggleFilterHandler: ActionHandler<IToggleFilterHandlerPayload> = (
@@ -77,11 +77,11 @@ const toggleFilterHandler: ActionHandler<IToggleFilterHandlerPayload> = (
 export const toggleTeamFilter = actionCreator<string>('toggleTeamFilter')
 export const toggleTeamFilterHandler: ActionHandler<string> = (state, team) =>
   toggleFilterHandler(state, {
-    item: team,
     filter: 'team',
+    item: team,
   })
 
-const allTeams = (games: AppState['games']) =>
+const allTeams = (games: IAppState['games']) =>
   games.reduce((a, { home, away }) => [...a, home, away], [] as ReadonlyArray<string>)
 
 export const toggleAllGames = actionCreator<undefined>('toggleAllGames')
@@ -106,5 +106,5 @@ export const setPickerSearchHandler: ActionHandler<string> = (state, searchStrin
   playerSearch: searchString,
 })
 
-export const updateState = actionCreator<AppState>('__updateState__')
-export const updateStateHandler: ActionHandler<AppState> = (_, newState) => newState
+export const updateState = actionCreator<IAppState>('__updateState__')
+export const updateStateHandler: ActionHandler<IAppState> = (_, newState) => newState

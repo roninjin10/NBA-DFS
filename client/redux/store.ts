@@ -8,7 +8,7 @@ import { IS_PROD } from '../lib/isProd'
 import { INITIAL_STATE } from '../redux/initialState'
 import { proxyReducers, workerReducers } from '../redux/reducers'
 import * as actions from './actions'
-import { AppState } from './AppState'
+import { IAppState } from './AppState'
 import { proxyEpics, workerEpics } from './epics'
 
 const getProxyMiddleware = () => {
@@ -36,8 +36,9 @@ const getWorkerMiddleware = () => {
   }
 }
 
-const connectWorkerToProxy = (worker: ServiceWorker) => (store: Store<AppState>) => {
-  const proxyPort: MessagePort | null = null
+const connectWorkerToProxy = (worker: ServiceWorker) => (store: Store<IAppState>) => {
+  // tslint:disable-next-line:no-let
+  let proxyPort: MessagePort | null = null
 
   const listenForProxyDispatches = (e: MessageEvent) => {
     proxyPort = e.ports[0]
@@ -45,7 +46,7 @@ const connectWorkerToProxy = (worker: ServiceWorker) => (store: Store<AppState>)
   }
 
   const updateProxy = () =>
-    proxyPort ? proxyPort.postMessage(store.getState()) : console.warn('proxy store is not ready')
+    proxyPort ? proxyPort.postMessage(store.getState()) : console.log('proxy store is not ready')
 
   store.subscribe(updateProxy)
   worker.addEventListener('message', (e: Event) => listenForProxyDispatches(e as MessageEvent))
@@ -53,9 +54,9 @@ const connectWorkerToProxy = (worker: ServiceWorker) => (store: Store<AppState>)
   return store
 }
 
-const connectProxyToWorker = (navigator: Navigator) => (store: Store<AppState>) => {
+const connectProxyToWorker = (navigator: Navigator) => (store: Store<IAppState>) => {
   const handleWorkerStoreUpdate = (ev: MessageEvent) =>
-    store.dispatch(actions.updateState(ev.data as AppState))
+    store.dispatch(actions.updateState(ev.data as IAppState))
 
   navigator.serviceWorker.addEventListener('message', handleWorkerStoreUpdate)
 

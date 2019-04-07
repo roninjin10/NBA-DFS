@@ -1,4 +1,4 @@
-import { HomeAway, Player } from './types'
+import { IHomeAway, IPlayer } from './types'
 
 interface IDummyDataPlayer {
   readonly AvgPointsPerGame: string
@@ -12,14 +12,14 @@ interface IDummyDataPlayer {
   readonly 'Game Info': string
 }
 
-type GetHomeAway = (gameInfo: string) => HomeAway
+type GetHomeAway = (gameInfo: string) => IHomeAway
 
 const getHomeAway: GetHomeAway = gameInfo => {
   const [away, home] = gameInfo.split(' ')[0].split('@')
   return { away, home }
 }
 
-type DummyDataToPlayer = (player: IDummyDataPlayer) => Player
+type DummyDataToPlayer = (player: IDummyDataPlayer) => IPlayer
 
 export const dummyDataToPlayer: DummyDataToPlayer = player => ({
   fantasyPoints: Number(player.AvgPointsPerGame),

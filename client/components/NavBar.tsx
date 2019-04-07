@@ -1,8 +1,8 @@
 import React, { FunctionComponent } from 'react'
 import { ReduxDispatch } from '../lib/types'
 
-interface NavBarProps {
-  reduxDispatch: ReduxDispatch
+interface INavBarProps {
+  readonly reduxDispatch: ReduxDispatch
 }
 
-export const NavBar: FunctionComponent<NavBarProps> = () => <div>Nav bar fantasy stacks</div>
+export const NavBar: FunctionComponent<INavBarProps> = () => <div>Nav bar fantasy stacks</div>

@@ -1,37 +1,35 @@
-import React, { FunctionComponent } from 'react'
-import * as actions from '../redux/actions'
 import classNames from 'classnames'
+import React, { FunctionComponent } from 'react'
 import { connect } from 'react-redux'
-import { MapStateToProps, MapDispatchToProps } from '../lib/types'
+import { MapDispatchToProps, MapStateToProps } from '../lib/types'
+import * as actions from '../redux/actions'
 
 const POSITIONS = ['PG', 'SG', 'SF', 'PF', 'C']
 
-interface StateProps {
-  getClassName: (position: string) => string
-  positions: string[]
+interface IStateProps {
+  readonly getClassName: (position: string) => string
+  readonly positions: string[]
 }
 
-interface DispatchProps {
-  onClickHandler: (position: string) => () => void
+interface IDispatchProps {
+  readonly onClickHandler: (position: string) => () => void
 }
 
-type AllProps = StateProps & DispatchProps
+type AllProps = IStateProps & IDispatchProps
 
 const _PositionFilters: FunctionComponent<AllProps> = ({
   getClassName,
   onClickHandler,
   positions,
-}) => (
-  <div className="pool-filters">
-    {positions.map(position => (
-      <button className={getClassName(position)} onClick={onClickHandler(position)} key={position}>
-        {position}
-      </button>
-    ))}
-  </div>
-)
-
-const mapStateToProps: MapStateToProps<StateProps> = ({
+}) => {
+  const filters = positions.map(position => (
+    <button className={getClassName(position)} onClick={onClickHandler(position)} key={position}>
+      {position}
+    </button>
+  ))
+  return <div className="pool-filters">{filters}</div>
+}
+const mapStateToProps: MapStateToProps<IStateProps> = ({
   playerPool,
   lineup,
   games,
@@ -39,11 +37,11 @@ const mapStateToProps: MapStateToProps<StateProps> = ({
   isSortByReversed,
   filters,
 }) => ({
-  positions: POSITIONS,
   getClassName: () => classNames({ selected: false }),
+  positions: POSITIONS,
 })
 
-const mapDispatchToProps: MapDispatchToProps<DispatchProps> = dispatch => ({
+const mapDispatchToProps: MapDispatchToProps<IDispatchProps> = dispatch => ({
   onClickHandler: position => () => dispatch(actions.togglePositionFilter(position)),
 })
 

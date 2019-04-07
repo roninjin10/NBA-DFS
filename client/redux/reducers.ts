@@ -1,9 +1,9 @@
 import { ReducerBuilder, reducerWithInitialState } from 'typescript-fsa-reducers/dist'
 import * as actions from './actions'
-import { AppState } from './AppState'
+import { IAppState } from './AppState'
 import { INITIAL_STATE } from './initialState'
 
-export const workerReducers: ReducerBuilder<AppState, AppState> = reducerWithInitialState(
+const workerReducersBuilder: ReducerBuilder<IAppState, IAppState> = reducerWithInitialState(
   INITIAL_STATE
 )
   .case(actions.removeFromLineup, actions.removeFromLineupHandler)
@@ -14,6 +14,9 @@ export const workerReducers: ReducerBuilder<AppState, AppState> = reducerWithIni
   .case(actions.toggleAllGames, actions.toggleAllGamesHandler)
   .case(actions.setPickerSearch, actions.setPickerSearchHandler)
 
-export const proxyReducers: ReducerBuilder<AppState, AppState> = reducerWithInitialState(
+const proxyReducersBuilder: ReducerBuilder<IAppState, IAppState> = reducerWithInitialState(
   INITIAL_STATE
 ).case(actions.updateState, actions.updateStateHandler)
+
+export const workerReducers = workerReducersBuilder.build()
+export const proxyReducers = proxyReducersBuilder.build()

@@ -1,11 +1,11 @@
-import { HomeAway, Player } from './types'
+import { IHomeAway, IPlayer } from './types'
 
-interface MaybeAsNumber {
+interface IMaybeAsNumber {
   (field: string): string | number
-  (field: HomeAway): string
+  (field: IHomeAway): string
 }
 
-const maybeAsNumber: MaybeAsNumber = (field: HomeAway | string): any => {
+const maybeAsNumber: IMaybeAsNumber = (field: IHomeAway | string): any => {
   if (typeof field === 'object') {
     return field.home
   }
@@ -17,10 +17,10 @@ const maybeAsNumber: MaybeAsNumber = (field: HomeAway | string): any => {
   return Number(field)
 }
 
-type SortPool = (field: keyof Player, playerPool: Player[], isReversed: boolean) => Player[]
+type SortPool = (field: keyof IPlayer, playerPool: IPlayer[], isReversed: boolean) => IPlayer[]
 
 export const sortPool: SortPool = (field, playerPool, isReversed) =>
-  [...playerPool].sort((playerA: Player, playerB: Player) => {
+  [...playerPool].sort((playerA: IPlayer, playerB: IPlayer) => {
     const [a, b] = [playerA, playerB].map(player => player[field])
 
     const [firstItem, secondItem] = (!isReversed ? [b, a] : [a, b]).map(item =>

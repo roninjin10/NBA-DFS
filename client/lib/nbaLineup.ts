@@ -1,13 +1,13 @@
-import { AppState } from '../redux/AppState'
-import { INBALineup, Player, ZeroThroughEight } from './types'
+import { IAppState } from '../redux/AppState'
+import { INBALineup, IPlayer, ZeroThroughEight } from './types'
 
 type LineupShape = Array<Set<NBAPosition>>
 
-export type PlayerRoster = Array<Player | null>
+export type PlayerRoster = Array<IPlayer | null>
 
 const buildEmptyLinep = (lineupShape: LineupShape): PlayerRoster => lineupShape.map(() => null)
 
-const sumField = (field: 'fantasyPoints' | 'salary') => (lineup: Array<Player | null>) => {
+const sumField = (field: 'fantasyPoints' | 'salary') => (lineup: Array<IPlayer | null>) => {
   return lineup
     .map(spot => (spot === null ? 0 : Number(spot[field])))
     .reduce((total, points) => total + points, 0)
@@ -34,7 +34,7 @@ const getFilledSpots = (lineup: PlayerRoster): number[] =>
 
 const sportSpecificLineup = (lineupShape: LineupShape, salaryCap: number) => {
   const _addPlayersToLineup = (
-    playersToAdd: Player[],
+    playersToAdd: IPlayer[],
     currentLineup = buildEmptyLinep(lineupShape)
   ): PlayerRoster | null => {
     const [nextPlayer, ...restOfPlayers] = playersToAdd
@@ -70,7 +70,7 @@ const sportSpecificLineup = (lineupShape: LineupShape, salaryCap: number) => {
   }
 
   const addPlayersToLineup = (
-    playersToAdd: Player[],
+    playersToAdd: IPlayer[],
     currentLineup = buildEmptyLinep(lineupShape)
   ): PlayerRoster => {
     const out = _addPlayersToLineup(playersToAdd, currentLineup)
@@ -105,14 +105,14 @@ const nbaDkShape: LineupShape = [
 const FIFTY_THOUSAND = 50000
 const SALARY_CAP_NBA_DK = FIFTY_THOUSAND
 
-export const addPlayersToNbaLineup = (...players: Array<Player | null>) =>
+export const addPlayersToNbaLineup = (...players: Array<IPlayer | null>) =>
   sportSpecificLineup(nbaDkShape, SALARY_CAP_NBA_DK)(players.filter(
     player => player
-  ) as Player[]) as INBALineup
+  ) as IPlayer[]) as INBALineup
 
 export const defaultNbaLineup: INBALineup = [null, null, null, null, null, null, null, null]
 
-export const addPlayers = (lineup: INBALineup, ...players: Player[]) =>
+export const addPlayers = (lineup: INBALineup, ...players: IPlayer[]) =>
   addPlayersToNbaLineup(...lineup, ...players)
 
 export const removePlayer = (lineup: INBALineup, index: ZeroThroughEight) =>

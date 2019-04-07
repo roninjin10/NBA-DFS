@@ -1,5 +1,5 @@
 import { createStore, Store } from 'redux'
-import { AppState } from './redux/AppState'
+import { IAppState } from './redux/AppState'
 import { createWorkerStore } from './redux/store'
 
 type CheckForWorker = <TArgs extends any[], TReturn>(
@@ -33,7 +33,7 @@ export const listenToWorker = checkForWorker(addWorkerListener)
 
 type WTF = any
 
-export const listenForProxyStore = (self: ServiceWorker, store: Store<AppState>): void => {
+export const listenForProxyStore = (self: ServiceWorker, store: Store<IAppState>): void => {
   self.addEventListener('message', ({ data, ports: [port] }: WTF) => {
     store.dispatch(data)
 

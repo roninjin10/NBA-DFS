@@ -1,61 +1,67 @@
 import React, { FunctionComponent } from 'react'
-import * as actions from '../redux/actions'
-import { AnyAction } from 'redux'
-import { Player, MapStateToProps, MapDispatchToProps } from '../lib/types'
 import { connect } from 'react-redux'
+import { AnyAction } from 'redux'
 import { filterPool } from '../lib/filterPool'
+import { IPlayer, MapDispatchToProps, MapStateToProps } from '../lib/types'
+import * as actions from '../redux/actions'
 
-interface StateProps {
-  playerPool: Player[]
-  isInLineup: (player: string) => boolean
-  availableToAdd: (player: string) => boolean
+interface IStateProps {
+  readonly playerPool: IPlayer[]
+  readonly isInLineup: (player: string) => boolean
+  readonly availableToAdd: (player: string) => boolean
 }
 
-interface DispatchProps {
-  onClick: PlayerPickerHeadingsProps['onClick']
-  addToPool: (playerId: string) => () => void
+interface IDispatchProps {
+  readonly onClick: IPlayerPickerHeadingsProps['onClick']
+  readonly addToPool: (playerId: string) => () => void
 }
 
-type PlayerPickerGridProps = StateProps & DispatchProps
+type PlayerPickerGridProps = IStateProps & IDispatchProps
 
 const _PlayerPickerGrid: FunctionComponent<PlayerPickerGridProps> = ({
   playerPool,
   addToPool,
   onClick,
-}) => (
-  <table className="player-pool">
-    <PlayerPickerHeadings onClick={onClick} />
-    <tbody>
-      {playerPool.map(player => (
-        <PlayerPickerRow player={player} onClick={addToPool(player.id)} key={player.id} />
-      ))}
-    </tbody>
-  </table>
-)
+}) => {
+  const playerPickerRows = playerPool.map(player => (
+    <PlayerPickerRow player={player} onClick={addToPool(player.id)} key={player.id} />
+  ))
 
-interface PlayerPickerHeadingsProps {
-  onClick: (heading: keyof Player) => AnyAction
+  return (
+    <table className="player-pool">
+      <PlayerPickerHeadings onClick={onClick} />
+      <tbody>{playerPickerRows}</tbody>
+    </table>
+  )
 }
 
-export const PlayerPickerHeadings: FunctionComponent<PlayerPickerHeadingsProps> = ({ onClick }) => (
+interface IPlayerPickerHeadingsProps {
+  readonly onClick: (heading: keyof IPlayer) => () => AnyAction
+}
+
+const noop = () => undefined
+
+export const PlayerPickerHeadings: FunctionComponent<IPlayerPickerHeadingsProps> = ({
+  onClick,
+}) => (
   <thead>
     <tr>
-      <th onClick={() => onClick('gameInfo')}>GAME</th>
-      <th onClick={() => onClick('position')}>POS</th>
-      <th onClick={() => onClick('name')}>PLAYER</th>
-      <th onClick={() => onClick('salary')}>SALARY</th>
-      <th onClick={() => onClick('fantasyPoints')}>POINTS</th>
-      <th onClick={() => {}}>VALUE</th>
+      <th onClick={onClick('gameInfo')}>GAME</th>
+      <th onClick={onClick('position')}>POS</th>
+      <th onClick={onClick('name')}>PLAYER</th>
+      <th onClick={onClick('salary')}>SALARY</th>
+      <th onClick={onClick('fantasyPoints')}>POINTS</th>
+      <th onClick={noop}>VALUE</th>
     </tr>
   </thead>
 )
 
-interface PlayerPickerRowProps {
-  player: Player
-  onClick: () => void
+interface IPlayerPickerRowProps {
+  readonly player: IPlayer
+  readonly onClick: () => void
 }
 
-export const PlayerPickerRow: FunctionComponent<PlayerPickerRowProps> = ({
+export const PlayerPickerRow: FunctionComponent<IPlayerPickerRowProps> = ({
   player: { name, salary, gameInfo, position, fantasyPoints },
   onClick,
 }) => {
@@ -76,23 +82,24 @@ export const PlayerPickerRow: FunctionComponent<PlayerPickerRowProps> = ({
   )
 }
 
-const getMapStateToProps: () => MapStateToProps<StateProps> = () => {
+const getMapStateToProps: () => MapStateToProps<IStateProps> = () => {
+  // tslint:disable-next-line:no-let
   let _filterPool: ReturnType<typeof filterPool>
 
   return state => {
     _filterPool = _filterPool || filterPool(state.playerPool)
     return {
-      playerPool: _filterPool(state.filters, state.playerSearch),
       availableToAdd: () => true,
       isInLineup: playerId =>
         !!state.lineup.find(rosterSpot => !!rosterSpot && rosterSpot.id === playerId),
+      playerPool: _filterPool(state.filters, state.playerSearch),
     }
   }
 }
 
-export const mapDispatchToProps: MapDispatchToProps<DispatchProps> = dispatch => ({
-  onClick: heading => dispatch(actions.setPlayerSort(heading)),
+export const mapDispatchToProps: MapDispatchToProps<IDispatchProps> = dispatch => ({
   addToPool: playerId => () => dispatch(actions.addToLineup(playerId)),
+  onClick: heading => () => dispatch(actions.setPlayerSort(heading)),
 })
 
 export const PlayerPickerGrid = connect(
