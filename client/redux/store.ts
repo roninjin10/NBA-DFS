@@ -45,8 +45,7 @@ const connectWorkerToProxy = (worker: ServiceWorker) => (store: Store<IAppState>
     store.dispatch(e.data)
   }
 
-  const updateProxy = () =>
-    proxyPort ? proxyPort.postMessage(store.getState()) : console.log('proxy store is not ready')
+  const updateProxy = () => proxyPort && proxyPort.postMessage(store.getState())
 
   store.subscribe(updateProxy)
   worker.addEventListener('message', (e: Event) => listenForProxyDispatches(e as MessageEvent))
@@ -63,14 +62,14 @@ const connectProxyToWorker = (navigator: Navigator) => (store: Store<IAppState>)
   return store
 }
 
-export const createWorkerStore = (worker: ServiceWorker) => {
+export const createWorkerStore = (worker: ServiceWorker): Store<IAppState> => {
   const { middleware, run } = getWorkerMiddleware()
   const store = connectWorkerToProxy(worker)(createStore(workerReducers, INITIAL_STATE, middleware))
   run()
   return store
 }
 
-export const createProxyStore = (navigator: Navigator) => {
+export const createProxyStore = (navigator: Navigator): Store<IAppState> => {
   const { middleware, run } = getProxyMiddleware()
   const store = connectProxyToWorker(navigator)(
     createStore(proxyReducers, INITIAL_STATE, middleware)

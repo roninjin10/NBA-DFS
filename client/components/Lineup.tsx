@@ -4,14 +4,23 @@ import { IPlayer, MapDispatchToProps, MapStateToProps, ZeroThroughEight } from '
 import * as actions from '../redux/actions'
 import { PlayerPickerRow } from './PlayerPickerGrid'
 
-type AggregateStat = (lineup: Array<IPlayer | null>) => string
+type AggregateStat = (lineup: ReadonlyArray<IPlayer | null>) => string
 
-const positions = ['PG', 'SG', 'SF', 'PF', 'C', 'G', 'F', 'UTIL']
+const positions: ['PG', 'SG', 'SF', 'PF', 'C', 'G', 'F', 'UTIL'] = [
+  'PG',
+  'SG',
+  'SF',
+  'PF',
+  'C',
+  'G',
+  'F',
+  'UTIL',
+]
 
 const sum = (a: number, b: number) => a + b
 
-const onlyPlayers = (players: Array<IPlayer | null>) =>
-  players.filter(player => player) as IPlayer[]
+const onlyPlayers = (players: ReadonlyArray<IPlayer | null>) =>
+  players.filter(player => player) as ReadonlyArray<IPlayer>
 
 const getPoints: AggregateStat = lineup =>
   onlyPlayers(lineup)
@@ -47,7 +56,7 @@ const makeNullPlayer = (position: string): IPlayer => ({
 })
 
 interface IStateProps {
-  readonly lineup: Array<IPlayer | null>
+  readonly lineup: ReadonlyArray<IPlayer | null>
 }
 
 interface IDispatchProps {

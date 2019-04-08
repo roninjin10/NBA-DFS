@@ -4,11 +4,11 @@ import { connect } from 'react-redux'
 import { MapDispatchToProps, MapStateToProps } from '../lib/types'
 import * as actions from '../redux/actions'
 
-const POSITIONS = ['PG', 'SG', 'SF', 'PF', 'C']
+const POSITIONS: ['PG', 'SG', 'SF', 'PF', 'C'] = ['PG', 'SG', 'SF', 'PF', 'C']
 
 interface IStateProps {
   readonly getClassName: (position: string) => string
-  readonly positions: string[]
+  readonly positions: ReadonlyArray<string>
 }
 
 interface IDispatchProps {

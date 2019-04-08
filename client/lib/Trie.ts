@@ -1,10 +1,11 @@
-import { ObjectWithValues } from './types'
+// tslint:disable:no-class no-object-mutation readonly-keyword
 
+import { ObjectWithValues } from './types'
 type TrieChildren<T> = { [key in string]: (undefined | Trie<T>) }
 
 export class Trie<T> {
   private readonly _children: TrieChildren<T> = {}
-  private readonly _item: T | null = null
+  private _item: T | null = null
 
   get children(): Array<Trie<T>> {
     return Object.values(this._children)
@@ -16,7 +17,6 @@ export class Trie<T> {
 
   public readonly findNode = (word: string, startIndex = 0): Trie<T> | null => {
     if (startIndex >= word.length) {
-      console.error('startIndex is greater than word length')
       return null
     }
 
@@ -41,8 +41,8 @@ export class Trie<T> {
   public readonly addItems = (items: ObjectWithValues<T>) =>
     Object.keys(items).forEach(word => this._addItem(items[word], word))
 
-  public readonly findAllValues = (): T[] => {
-    const allValues: T[] = []
+  public readonly findAllValues = (): Array<T> => {
+    const allValues: Array<T> = []
 
     this.traverse(node => node.item && allValues.push(node.item))
 

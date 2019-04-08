@@ -1,40 +1,32 @@
 import { IAppState } from '../redux/AppState'
 import { INBALineup, IPlayer, ZeroThroughEight } from './types'
 
-type LineupShape = Array<Set<NBAPosition>>
+type LineupShape = ReadonlyArray<Set<NBAPosition>>
 
-export type PlayerRoster = Array<IPlayer | null>
+export type PlayerRoster = ReadonlyArray<IPlayer | null>
 
 const buildEmptyLinep = (lineupShape: LineupShape): PlayerRoster => lineupShape.map(() => null)
 
-const sumField = (field: 'fantasyPoints' | 'salary') => (lineup: Array<IPlayer | null>) => {
-  return lineup
+const sumField = (field: 'fantasyPoints' | 'salary') => (lineup: ReadonlyArray<IPlayer | null>) =>
+  lineup
     .map(spot => (spot === null ? 0 : Number(spot[field])))
     .reduce((total, points) => total + points, 0)
-}
 
 export const getTotalSalary = sumField('salary')
 export const getTotalFantasyPoints = sumField('fantasyPoints')
 
 const getValidPositions = (lineupShape: LineupShape, position: string) =>
   [...lineupShape].reduce(
-    (a, positionShape, i) => {
-      return positionShape.has(position as any) ? [...a, i] : a
-    },
-    [] as number[]
+    (a, positionShape, i) => (positionShape.has(position as any) ? [...a, i] : a),
+    [] as ReadonlyArray<number>
   )
 
-const getFilledSpots = (lineup: PlayerRoster): number[] =>
-  [...lineup].reduce(
-    (a, spot, i) => {
-      return spot !== null ? [...a, i] : a
-    },
-    [] as number[]
-  )
+const getFilledSpots = (lineup: PlayerRoster): ReadonlyArray<number> =>
+  [...lineup].reduce((a, spot, i) => (spot !== null ? [...a, i] : a), [] as ReadonlyArray<number>)
 
 const sportSpecificLineup = (lineupShape: LineupShape, salaryCap: number) => {
   const _addPlayersToLineup = (
-    playersToAdd: IPlayer[],
+    playersToAdd: ReadonlyArray<IPlayer>,
     currentLineup = buildEmptyLinep(lineupShape)
   ): PlayerRoster | null => {
     const [nextPlayer, ...restOfPlayers] = playersToAdd
@@ -54,9 +46,9 @@ const sportSpecificLineup = (lineupShape: LineupShape, salaryCap: number) => {
       const availablePositions = validPositions.filter(i => !filledSpots.has(i))
 
       for (const i of availablePositions) {
-        const luWithPlayer = currentLineup.map((currentPlayer, j) => {
-          return i === j ? nextPlayer : currentPlayer
-        })
+        const luWithPlayer = currentLineup.map((currentPlayer, j) =>
+          i === j ? nextPlayer : currentPlayer
+        )
 
         const luFilledOut = _addPlayersToLineup(restOfPlayers, luWithPlayer)
 
@@ -70,17 +62,19 @@ const sportSpecificLineup = (lineupShape: LineupShape, salaryCap: number) => {
   }
 
   const addPlayersToLineup = (
-    playersToAdd: IPlayer[],
+    playersToAdd: ReadonlyArray<IPlayer>,
     currentLineup = buildEmptyLinep(lineupShape)
-  ): PlayerRoster => {
-    const out = _addPlayersToLineup(playersToAdd, currentLineup)
-    if (!out) {
-      throw new Error('Cannot add players to roster')
-    }
-    return out
-  }
+  ): PlayerRoster =>
+    existsOrThrow(_addPlayersToLineup(playersToAdd, currentLineup), 'Cannot add players to roster')
 
   return addPlayersToLineup
+}
+
+const existsOrThrow = <T extends any>(value: T, message = ''): T => {
+  if (!value) {
+    throw new Error(message)
+  }
+  return value
 }
 
 enum NBAPosition {
@@ -108,11 +102,11 @@ const SALARY_CAP_NBA_DK = FIFTY_THOUSAND
 export const addPlayersToNbaLineup = (...players: Array<IPlayer | null>) =>
   sportSpecificLineup(nbaDkShape, SALARY_CAP_NBA_DK)(players.filter(
     player => player
-  ) as IPlayer[]) as INBALineup
+  ) as ReadonlyArray<IPlayer>) as INBALineup
 
 export const defaultNbaLineup: INBALineup = [null, null, null, null, null, null, null, null]
 
-export const addPlayers = (lineup: INBALineup, ...players: IPlayer[]) =>
+export const addPlayers = (lineup: INBALineup, ...players: Array<IPlayer>) =>
   addPlayersToNbaLineup(...lineup, ...players)
 
 export const removePlayer = (lineup: INBALineup, index: ZeroThroughEight) =>

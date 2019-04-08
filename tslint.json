@@ -1,19 +1,24 @@
 {
   "extends": [
-    "tslint:recommended", 
-    "tslint-react", 
-    "tslint-immutable", 
-    "tslint-plugin-prettier", 
+    "tslint:recommended",
+    "tslint-react",
+    "tslint-immutable",
+    "tslint-plugin-prettier",
     "tslint-config-prettier"
   ],
   "rules": {
+    "arrow-return-shorthand": [true, "multiline"],
+    "array-type": [true, "generic"],
     "no-var-keyword": true,
     "no-parameter-reassignment": true,
+    "no-any": false,
     "readonly-keyword": true,
     "readonly-array": false,
     "no-let": true,
     "no-object-mutation": true,
+    "no-relative-imports": true,
     "no-delete": true,
+    "no-unused": [true, "ignore-parameters"],
     "no-default-export": true,
     "prefer-for-of": true,
     "only-arrow-functions": [true],
@@ -21,6 +26,9 @@
     "jsx-no-string-ref": true,
     "no-method-signature": true,
     "variable-name": false,
-    "prettier": true
+    "prettier": true,
+    "jsx-boolean-value": [true, "never"],
+    "no-class": true,
+    "no-this": false
   }
 }
