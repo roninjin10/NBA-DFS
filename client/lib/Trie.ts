@@ -7,7 +7,7 @@ export class Trie<T> {
   private readonly _children: TrieChildren<T> = {}
   private _item: T | null = null
 
-  get children(): Array<Trie<T>> {
+  get children(): ReadonlyArray<Trie<T>> {
     return Object.values(this._children)
   }
 
@@ -24,32 +24,24 @@ export class Trie<T> {
       return this
     }
 
-    const nextNode = this._children[word[startIndex]]
-
-    if (!nextNode) {
-      return null
-    }
-
-    return nextNode
+    return this._children[word[startIndex]] || null
   }
 
-  public readonly traverse = (cb: (node: Trie<T>) => void) => {
+  public readonly traverse = (cb: (node: Trie<T>) => void): void => {
     cb(this)
     this.children.forEach(child => child.traverse(cb))
   }
 
-  public readonly addItems = (items: ObjectWithValues<T>) =>
+  public readonly addItems = (items: ObjectWithValues<T>): void =>
     Object.keys(items).forEach(word => this._addItem(items[word], word))
 
   public readonly findAllValues = (): Array<T> => {
     const allValues: Array<T> = []
-
     this.traverse(node => node.item && allValues.push(node.item))
-
     return allValues
   }
 
-  private readonly _addItem = (item: T, word: string) => {
+  private readonly _addItem = (item: T, word: string): void => {
     const _word = word.toLowerCase()
 
     if (_word === '') {

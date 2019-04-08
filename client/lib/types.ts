@@ -2,7 +2,7 @@ import { Dispatch } from 'redux'
 import { AnyAction } from 'typescript-fsa'
 import { IAppState } from '../redux/AppState'
 
-export type AnyFunction = (...args: any[]) => any
+export type AnyFunction = (...args: Array<any>) => any
 
 export type ObjectWithValues<T> = { [key in string]: T }
 
@@ -13,7 +13,7 @@ export type Args<F extends AnyFunction> = F extends (...args: infer A) => any ? 
 export type SecondArg<F extends AnyFunction> = F extends (
   firstArg: any,
   secondArg: infer A,
-  ...args: any[]
+  ...args: Array<any>
 ) => any
   ? A
   : never

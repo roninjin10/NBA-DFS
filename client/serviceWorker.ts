@@ -2,13 +2,12 @@ import { createStore, Store } from 'redux'
 import { IAppState } from './redux/AppState'
 import { createWorkerStore } from './redux/store'
 
-type CheckForWorker = <TArgs extends any[], TReturn>(
+type CheckForWorker = <TArgs extends Array<any>, TReturn>(
   cb: (...args: TArgs) => TReturn
 ) => (...args: TArgs) => TReturn | null
 
 const checkForWorker: CheckForWorker = cb => (...args) => {
   if (!navigator.serviceWorker) {
-    console.warn('this browser does not support service workers')
     return null
   }
   return cb(...args)

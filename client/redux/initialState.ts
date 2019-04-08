@@ -3,18 +3,18 @@ import { dummyDataToPlayer } from '../lib/dummyDataToPlayer'
 import { IHomeAway, INBALineup, IPlayer } from '../lib/types'
 import { IAppState, IFilters, SortBy } from './AppState'
 
-type Unique = <T extends Array<any>>(arr: T) => T
+type Unique = <T extends any>(arr: ReadonlyArray<T>) => ReadonlyArray<T>
 
-const unique: Unique = arr => [...new Set(arr)] as typeof arr
+const unique: Unique = arr => [...new Set(arr)]
 
-type GetGames = (playerPool: Array<IPlayer>) => Array<IHomeAway>
+type GetGames = (playerPool: ReadonlyArray<IPlayer>) => ReadonlyArray<IHomeAway>
 
 const getGames: GetGames = playerPool =>
   unique(playerPool.map(player => player.gameInfo).map(info => JSON.stringify(info))).map(
     jsonString => JSON.parse(jsonString)
   )
 
-const INITIAL_POOL: Array<IPlayer> = rawPlayerPool.map(dummyDataToPlayer)
+const INITIAL_POOL: ReadonlyArray<IPlayer> = rawPlayerPool.map(dummyDataToPlayer)
 
 const INITIAL_LINEUP = [null, null, null, null, null, null, null, null] as INBALineup
 

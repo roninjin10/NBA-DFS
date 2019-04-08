@@ -17,7 +17,11 @@ const maybeAsNumber: IMaybeAsNumber = (field: IHomeAway | string): any => {
   return Number(field)
 }
 
-type SortPool = (field: keyof IPlayer, playerPool: IPlayer[], isReversed: boolean) => IPlayer[]
+type SortPool = (
+  field: keyof IPlayer,
+  playerPool: ReadonlyArray<IPlayer>,
+  isReversed: boolean
+) => ReadonlyArray<IPlayer>
 
 export const sortPool: SortPool = (field, playerPool, isReversed) =>
   [...playerPool].sort((playerA: IPlayer, playerB: IPlayer) => {
